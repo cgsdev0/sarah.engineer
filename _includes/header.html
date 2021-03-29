@@ -1,9 +1,20 @@
-<header class="site-header" role="banner">
+{%- if page.name == "index.markdown" -%}
+  {%- assign big_banner = true -%}
+  {%- assign header_element = "span" -%}
+{%- else -%}
+  {%- assign header_element = "a" -%}
+{%- endif -%}
+<header class="site-header{%- if big_banner %} big-banner{%- endif -%}" role="banner">
 
   <div class="wrapper">
+    <!-- {% if big_banner %}
+      hey
+    {% endif %} -->
     {%- assign default_paths = site.pages | map: "path" -%}
     {%- assign page_paths = site.header_pages | default: default_paths -%}
-    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+    <{{ header_element }} class="site-title" rel="author" href="{{ "/" | relative_url }}">
+      <span class="typewriter">sarah<span class="dot">.</span><span class="tld">engineer</span></span>
+    </{{ header_element }}>
 
     {%- if page_paths -%}
       <nav class="site-nav">

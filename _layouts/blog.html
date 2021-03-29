@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "en" }}">
-
-  {%- include head.html -%}
-
-  <body>
-
-    {%- include header.html -%}
+---
+layout: default
+---
 
 <div class="home">
-  {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
-  {%- endif -%}
 
   {{ content }}
 
@@ -35,8 +27,3 @@
   {%- endif -%}
 
 </div>
-
-{%- include footer.html -%}
-
-</body>
-</html>

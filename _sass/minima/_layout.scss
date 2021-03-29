@@ -10,17 +10,28 @@
   position: relative;
 }
 
+@font-face {
+  font-family: "Hack";
+  src: url("https://cdnjs.cloudflare.com/ajax/libs/hack-font/3.3.0/web/fonts/hack-regular.woff")
+    format("woff");
+}
 .site-title {
+  font-family: "Hack";
   @include relative-font-size(1.625);
-  font-weight: 300;
   line-height: $base-line-height * $base-font-size * 2.25;
   letter-spacing: -1px;
   margin-bottom: 0;
   float: left;
-
-  &,
+  color: black;
   &:visited {
-    color: $grey-color-dark;
+    color: black;
+  }
+
+  .dot {
+    color: gray;
+  }
+  .tld {
+    color: $brand-color;
   }
 }
 
@@ -29,7 +40,7 @@
   line-height: $base-line-height * $base-font-size * 2.25;
 
   .nav-trigger {
-      display: none;
+    display: none;
   }
 
   .menu-icon {
@@ -100,7 +111,54 @@
   }
 }
 
+.big-banner {
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 
+  .site-title {
+    @include relative-font-size(3);
+    float: none;
+    letter-spacing: -1px;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+
+    .typewriter {
+      overflow: hidden;
+      width: 0%;
+      animation: typing 1.5s steps(15, end) forwards;
+      animation-delay: 1.5s;
+    }
+
+    &::after {
+      content: "_";
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes typing {
+      from {
+        width: 0%;
+      }
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        color: transparent;
+      }
+    }
+  }
+
+  .site-nav {
+    float: none;
+    text-align: center;
+  }
+}
 
 /**
  * Site footer
@@ -136,29 +194,29 @@
 
 .footer-col-1 {
   width: -webkit-calc(35% - (#{$spacing-unit} / 2));
-  width:         calc(35% - (#{$spacing-unit} / 2));
+  width: calc(35% - (#{$spacing-unit} / 2));
 }
 
 .footer-col-2 {
   width: -webkit-calc(20% - (#{$spacing-unit} / 2));
-  width:         calc(20% - (#{$spacing-unit} / 2));
+  width: calc(20% - (#{$spacing-unit} / 2));
 }
 
 .footer-col-3 {
   width: -webkit-calc(45% - (#{$spacing-unit} / 2));
-  width:         calc(45% - (#{$spacing-unit} / 2));
+  width: calc(45% - (#{$spacing-unit} / 2));
 }
 
 @include media-query($on-laptop) {
   .footer-col-1,
   .footer-col-2 {
     width: -webkit-calc(50% - (#{$spacing-unit} / 2));
-    width:         calc(50% - (#{$spacing-unit} / 2));
+    width: calc(50% - (#{$spacing-unit} / 2));
   }
 
   .footer-col-3 {
     width: -webkit-calc(100% - (#{$spacing-unit} / 2));
-    width:         calc(100% - (#{$spacing-unit} / 2));
+    width: calc(100% - (#{$spacing-unit} / 2));
   }
 }
 
@@ -166,11 +224,9 @@
   .footer-col {
     float: none;
     width: -webkit-calc(100% - (#{$spacing-unit} / 2));
-    width:         calc(100% - (#{$spacing-unit} / 2));
+    width: calc(100% - (#{$spacing-unit} / 2));
   }
 }
-
-
 
 /**
  * Page content
@@ -206,8 +262,6 @@
   display: block;
   @include relative-font-size(1.5);
 }
-
-
 
 /**
  * Posts

@@ -110,16 +110,89 @@
     }
   }
 }
+:root {
+  --codeTiltAngle: -5;
+  --bigBannerHeight: 60vh;
+  --scrollDuration: 300s;
+  --fudgeRight: 0vw;
+}
+
+.appearing-link {
+  max-width: 0px;
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  overflow: hidden;
+  height: auto;
+  line-height: 1.5em;
+  animation: appearing 3s forwards;
+  animation-delay: 15s;
+  animation-iteration-count: 1;
+  white-space: nowrap;
+}
+
+@keyframes appearing {
+  from {
+    max-width: 0px;
+    opacity: 0;
+  }
+  to {
+    max-width: 11em;
+    opacity: 1;
+  }
+}
 
 .big-banner {
-  height: 60vh;
+  height: var(--bigBannerHeight);
   justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  background-color: transparent;
+  position: relative;
+
+  .code-banner {
+    --zRot: calc(var(--codeTiltAngle) * 1deg);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: transparent;
+    border-width: 0px;
+    color: $brand-color;
+    filter: blur(3px);
+    z-index: -1;
+    user-select: none;
+    overflow-x: hidden;
+    overflow-y: visible;
+    pointer-events: none;
+    touch-action: none;
+    transform: translateY(var(--bigBannerHeight)) rotateZ(var(--zRot));
+  }
+
+  .banner-scroller {
+    animation: scrolling linear forwards;
+    animation-duration: var(--scrollDuration);
+    animation-delay: 4s;
+  }
+
+  @keyframes scrolling {
+    from {
+      transform: rotateZ(var(--zRot)) translateX(var(--fudgeRight))
+        translateY(calc(var(--bigBannerHeight) + 10vh));
+    }
+    to {
+      transform: rotateZ(var(--zRot)) translateX(var(--fudgeRight))
+        translateY(-150%);
+    }
+  }
 
   .site-title {
+    z-index: 5;
     @include relative-font-size(3);
+    @include media-query($on-palm) {
+      @include relative-font-size(2);
+    }
     float: none;
     letter-spacing: -1px;
     white-space: nowrap;

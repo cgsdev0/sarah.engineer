@@ -5,11 +5,59 @@
   {%- assign header_element = "a" -%}
 {%- endif -%}
 <header class="site-header{%- if big_banner %} big-banner{%- endif -%}" role="banner">
+{% if big_banner %}
+      <pre class="code-banner" id="banner-snippet"></pre>
+      <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+          const backgrounds = [
+          {%- for snippet in site.data.snippets %}
+            {
+              rawUrl: "{{ snippet.rawUrl }}",
+              niceUrl: "{{ snippet.niceUrl }}",
+              description: "{{ snippet.description }}"
+            },
+            {%- endfor %}
+          ];
+          const { rawUrl, niceUrl, description } = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+          // const { rawUrl, niceUrl, description } = backgrounds[backgrounds.length - 1];
+          window.fetch(rawUrl).then(value => value.text().then(content => {
+            // Scale animation duration based on document length
+            const lineCount = content.split(/\r\n|\r|\n/).length;
+            document.documentElement.style.setProperty('--scrollDuration', lineCount + "s");
 
-  <div class="wrapper">
-    <!-- {% if big_banner %}
-      hey
-    {% endif %} -->
+            // Fix horizontal positioning
+            document.documentElement.style.setProperty('--fudgeRight', (lineCount / 18 + 20) + "vw");
+
+            // Insert snippet into DOM
+            const snippet = document.querySelector('#banner-snippet');
+            snippet.innerText = content;
+
+            // Start animation
+            snippet.classList.add("banner-scroller");
+
+            // Insert snippet link into the DOM
+            const container = document.createElement('span');
+            container.classList.add("appearing-link");
+            const a = document.createElement('a');
+            a.classList.add("page-link");
+            a.target = "_blank";
+            a.title = description;
+            a.href = niceUrl;
+            a.appendChild(document.createTextNode("Background Snippet ->"));
+            container.appendChild(a);
+            document.querySelector('#header-wrapper').appendChild(container);
+          }))
+        }, false);
+
+        // Easter egg
+        var a="Arrow";let k_index=0;const konami=[a+"Up",a+"Up",a+"Down",a+"Down",
+        a+"Left",a+"Right",a+"Left",a+"Right","KeyB","KeyA"];document.addEventListener('keydown',
+        function(e){if(e.code!=konami[k_index++]) k_index=0;else if(k_index>=konami.length)
+        window.location=(atob("aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ=="));});
+      </script>
+    {% endif %}
+  <div class="wrapper" id="header-wrapper">
+    
     {%- assign default_paths = site.pages | map: "path" -%}
     {%- assign page_paths = site.header_pages | default: default_paths -%}
     <{{ header_element }} class="site-title" rel="author" href="{{ "/" | relative_url }}">

@@ -153,6 +153,10 @@
   position: relative;
 
   .code-banner {
+    @include media-query($on-palm) {
+      @include relative-font-size(0.7);
+      margin-left: 100px;
+    }
     --zRot: calc(var(--codeTiltAngle) * 1deg);
     position: absolute;
     left: 0;
@@ -178,11 +182,11 @@
 
   @keyframes scrolling {
     from {
-      transform: rotateZ(var(--zRot)) translateX(var(--fudgeRight))
+      transform: translateX(var(--fudgeRight)) rotateZ(var(--zRot))
         translateY(calc(var(--bigBannerHeight) + 10vh));
     }
     to {
-      transform: rotateZ(var(--zRot)) translateX(var(--fudgeRight))
+      transform: translateX(var(--fudgeRight)) rotateZ(var(--zRot))
         translateY(-150%);
     }
   }

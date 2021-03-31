@@ -25,12 +25,13 @@
             const lineCount = content.split(/\r\n|\r|\n/).length;
             document.documentElement.style.setProperty('--scrollDuration', lineCount + "s");
 
-            // Fix horizontal positioning
-            document.documentElement.style.setProperty('--fudgeRight', (lineCount / 18 + 20) + "vw");
-
             // Insert snippet into DOM
             const snippet = document.querySelector('#banner-snippet');
             snippet.innerText = content;
+
+            // Fix horizontal positioning
+            console.log("height", snippet.offsetHeight)
+            document.documentElement.style.setProperty('--fudgeRight', -snippet.offsetHeight * Math.tan(-5 * Math.PI / 180) + "px");
 
             // Start animation
             snippet.classList.add("banner-scroller");
@@ -61,7 +62,7 @@
     {%- assign default_paths = site.pages | map: "path" -%}
     {%- assign page_paths = site.header_pages | default: default_paths -%}
     <{{ header_element }} class="site-title" rel="author" href="{{ "/" | relative_url }}">
-      <span class="typewriter">sarah<span class="dot">.</span><span class="tld">engineer</span></span>
+      <span class="typewriter"><span class="name">sarah</span><span class="dot">.</span><span class="tld">engineer</span></span>
     </{{ header_element }}>
 
     {%- if page_paths -%}

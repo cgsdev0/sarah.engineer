@@ -30,7 +30,6 @@
             snippet.innerText = content;
 
             // Fix horizontal positioning
-            console.log("height", snippet.offsetHeight)
             document.documentElement.style.setProperty('--fudgeRight', -snippet.offsetHeight * Math.tan(-5 * Math.PI / 180) + "px");
 
             // Start animation
@@ -48,13 +47,51 @@
             container.appendChild(a);
             document.querySelector('#header-wrapper').appendChild(container);
           }))
+
+          // Easter egg
+          let k_index=0;let lol={'red':1,'green':0}
+          const sarah=document.querySelector('.site-title .name')
+          const flash=(a)=>{sarah.classList.remove(`flash-red`);
+          sarah.classList.remove(`flash-green`);if(k_index<konami.length+lol[a])window.
+          requestAnimationFrame(()=>{sarah.classList.add(`flash-${a}`)})}
+          const red=()=>{flash('red')};const green=()=>{flash('green')};
+          var a="Arrow";var konami=[a+"Up",a+"Up",a+"Down",a+"Down",
+          a+"Left",a+"Right",a+"Left",a+"Right","KeyB","KeyA"];document
+          .addEventListener('keydown',function(e){if(k_index<konami.length&&
+          e.code!=konami[k_index++]){if(k_index>1)red();k_index=0;}else{green();
+          if(k_index>=konami.length)document.body.classList.add("crt");}});
+
+          // Prompt interactivity
+          const prompt=document.querySelector('.site-title .typewriter');
+          function isLetter(str) {
+            return str.length === 1 && str.match(/[|;:'"a-z .1-9\s-.,<>\\\/$\-_?\^*@!&#%\(\)\[\]{}]/i);
+          }
+          setTimeout(() => {
+          document.addEventListener('keydown', function(e){
+            if(e.ctrlKey) return;
+            let { key } = e;
+            if(key==="Backspace"){
+              const cur = prompt.lastChild.innerText;
+              prompt.lastChild.innerText = cur.substr(0, cur.length - 1)
+              if(cur.length === 1 && prompt.children.length > 1) {
+                prompt.removeChild(prompt.lastChild)
+              }
+            }
+            else if(isLetter(key)) {
+              const cur = prompt.lastChild.innerText;
+              let total = "";
+              prompt.childNodes.forEach((c) => total += c.innerText)
+              if (total.length < 22) {
+                if (key === " ") {
+                  prompt.lastChild.innerHTML += '\u00A0'
+                }
+                else prompt.lastChild.innerText = cur + e.key
+              }
+            }
+          })}, 4000);
         }, false);
 
-        // Easter egg
-        var a="Arrow";let k_index=0;const konami=[a+"Up",a+"Up",a+"Down",a+"Down",
-        a+"Left",a+"Right",a+"Left",a+"Right","KeyB","KeyA"];document.addEventListener('keydown',
-        function(e){if(e.code!=konami[k_index++]) k_index=0;else if(k_index>=konami.length)
-        document.body.classList.add("crt");});
+        
       </script>
     {% endif %}
   <div class="wrapper" id="header-wrapper">

@@ -232,6 +232,10 @@
       overflow: hidden;
       width: 0%;
       animation: typing 1.5s steps(17, end) forwards;
+      max-width: max-content;
+      line-height: $base-font-size * 4;
+      height: $base-font-size * 4;
+      display: inline-block;
       animation-delay: 2s;
       margin-bottom: 20px;
     }
@@ -335,6 +339,31 @@ footer .wrapper {
     float: none;
     width: -webkit-calc(100% - (#{$spacing-unit} / 2));
     width: calc(100% - (#{$spacing-unit} / 2));
+  }
+}
+
+.flash-green {
+  animation: flash-green-animation 1s;
+}
+.flash-red {
+  animation: flash-red-animation 1s;
+}
+
+@keyframes flash-green-animation {
+  from {
+    color: limegreen;
+  }
+  to {
+    color: default;
+  }
+}
+
+@keyframes flash-red-animation {
+  from {
+    color: red;
+  }
+  to {
+    color: default;
   }
 }
 

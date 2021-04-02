@@ -10,5 +10,9 @@
   "license": "ISC",
   "devDependencies": {
     "browserify": "^17.0.0"
+  },
+  "dependencies": {
+    "add": "^2.0.6",
+    "bash-parser": "^0.5.0"
   }
 }

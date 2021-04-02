@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node_modules/.bin/browserify -p tinyify main.js -o bundle.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "browserify": "^17.0.0"
+    "browserify": "^17.0.0",
+    "tinyify": "^3.0.0"
   },
   "dependencies": {
     "add": "^2.0.6",

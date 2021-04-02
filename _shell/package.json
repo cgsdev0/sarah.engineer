@@ -4,16 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/browserify main.js -o ../assets/shell.js"
+    "bundle": "node_modules/.bin/parcel build main.js",
+    "move": "cp dist/main.js ../assets/shell.js",
+    "build": "yarn bundle && yarn move"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "browserify": "^17.0.0",
-    "tinyify": "^3.0.0"
+    "parcel": "^2.0.0-beta.2",
+    "terser": "^5.6.1"
   },
   "dependencies": {
-    "add": "^2.0.6",
     "bash-parser": "^0.5.0"
   }
 }

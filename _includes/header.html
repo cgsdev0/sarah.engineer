@@ -19,7 +19,6 @@
             {%- endfor %}
           ];
           const { rawUrl, niceUrl, description } = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-          // const { rawUrl, niceUrl, description } = backgrounds[backgrounds.length - 1];
           window.fetch(rawUrl).then(value => value.text().then(content => {
             // Scale animation duration based on document length
             const lineCount = content.split(/\r\n|\r|\n/).length;
@@ -45,32 +44,56 @@
             a.href = niceUrl;
             a.appendChild(document.createTextNode("Background Snippet ->"));
             container.appendChild(a);
-            document.querySelector('#header-wrapper').appendChild(container);
+            document.querySelector('.big-banner').appendChild(container);
           }))
 
-          // Easter egg
-          let k_index=0;let lol={'red':1,'green':0}
-          const sarah=document.querySelector('.site-title .name')
-          const flash=(a)=>{sarah.classList.remove(`flash-red`);
-          sarah.classList.remove(`flash-green`);if(k_index<konami.length+lol[a])window.
-          requestAnimationFrame(()=>{sarah.classList.add(`flash-${a}`)})}
-          const red=()=>{flash('red')};const green=()=>{flash('green')};
-          var a="Arrow";var konami=[a+"Up",a+"Up",a+"Down",a+"Down",
-          a+"Left",a+"Right",a+"Left",a+"Right","KeyB","KeyA"];document
-          .addEventListener('keydown',function(e){if(k_index<konami.length&&
-          e.code!=konami[k_index++]){if(k_index>1)red();k_index=0;}else{green();
-          if(k_index>=konami.length)document.body.classList.add("crt");}});
+          // Easter eggs
+          let k_index=0;let lol={'red':1,'green':0};const sarah=document
+          .querySelector('.site-title .name');const flash=(a)=>{sarah
+          .classList.remove(`flash-red`);sarah.classList.remove(`flash-green`
+          );if(k_index<konami.length+lol[a])window.requestAnimationFrame(
+          ()=>{sarah.classList.add(`flash-${a}`)})};const red=()=>{flash(
+          'red')};const green=()=>{flash('green')};var a="Arrow";var konami
+          =[a+"Up",a+"Up",a+"Down",a+"Down",a+"Left",a+"Right",a+"Left",a+
+          "Right","KeyB","KeyA"];document.addEventListener('keydown',function
+          (e){if(k_index<konami.length&&e.code!=konami[k_index++]){if(k_index
+          >1)red();k_index=0;}else{green();if(k_index>=konami.length)document
+          .body.classList.add("crt");}});
 
           // Prompt interactivity
           const prompt=document.querySelector('.site-title .typewriter');
+          const headerWrapper=document.querySelector('#header-wrapper');
+          const output=document.querySelector('#command-output');
           function isLetter(str) {
-            return str.length === 1 && str.match(/[|;:'"a-z .1-9\s-.,<>\\\/$\-_?\^*@!&#%\(\)\[\]{}]/i);
+            return str.length === 1 && str.match(/[|~;:'"a-z .1-9\s-.,<>\\\/$\-_?\^*@!&#%\(\)\[\]{}]/i);
           }
           setTimeout(() => {
           document.addEventListener('keydown', function(e){
             if(e.ctrlKey) return;
             let { key } = e;
-            if(key==="Backspace"){
+            if(key==="Backspace" || isLetter(key) || key==="Enter") {
+              headerWrapper.classList.add("slide-to-top");
+              
+            }
+            if(key==="Enter") {
+              output.classList.add("command-output")
+              let total = "";
+              prompt.childNodes.forEach((c) => total += c.innerText);
+              const a = prompt.childNodes[0];
+              a.innerText = ''
+              prompt.innerText = ''
+              prompt.appendChild(a);
+
+              if (total === "clear") {
+                output.innerText = ''
+              }
+              else if (total) {
+                const br = document.createElement('br');
+                output.appendChild(br);
+                output.appendChild(document.createTextNode('$ '+total+'\nUnrecognized command'))
+              }
+            }
+            else if(key==="Backspace"){
               const cur = prompt.lastChild.innerText;
               prompt.lastChild.innerText = cur.substr(0, cur.length - 1)
               if(cur.length === 1 && prompt.children.length > 1) {
@@ -103,7 +126,7 @@
     </{{ header_element }}>
 
     {%- if page_paths -%}
-      <nav class="site-nav">
+      <nav class="site-nav{%- if big_banner %} big-banner-nav{%- endif -%}">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
@@ -124,4 +147,5 @@
       </nav>
     {%- endif -%}
   </div>
+  <pre class="hidden" id="command-output"></pre>
 </header>

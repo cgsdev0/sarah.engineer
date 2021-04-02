@@ -58,55 +58,57 @@
     display: none;
   }
 
-  @include media-query($on-palm) {
-    position: absolute;
-    top: 9px;
-    right: $spacing-unit / 2;
-    background-color: $grey-color-dark;
-    border-radius: 5px;
-    text-align: right;
+  &:not(.big-banner-nav) {
+    @include media-query($on-palm) {
+      position: absolute;
+      top: 9px;
+      right: $spacing-unit / 2;
+      background-color: $grey-color-dark;
+      border-radius: 5px;
+      text-align: right;
 
-    label[for="nav-trigger"] {
-      display: block;
-      float: right;
-      width: 36px;
-      height: 36px;
-      z-index: 2;
-      cursor: pointer;
-    }
-
-    .menu-icon {
-      display: block;
-      float: right;
-      width: 36px;
-      height: 26px;
-      line-height: 0;
-      padding-top: 10px;
-      text-align: center;
-
-      > svg {
-        fill: $background-color;
+      label[for="nav-trigger"] {
+        display: block;
+        float: right;
+        width: 36px;
+        height: 36px;
+        z-index: 2;
+        cursor: pointer;
       }
-    }
 
-    input ~ .trigger {
-      clear: both;
-      display: none;
-    }
+      .menu-icon {
+        display: block;
+        float: right;
+        width: 36px;
+        height: 26px;
+        line-height: 0;
+        padding-top: 10px;
+        text-align: center;
 
-    input:checked ~ .trigger {
-      display: block;
-      padding-bottom: 5px;
-    }
-
-    .page-link {
-      display: block;
-      padding: 5px 10px;
-
-      &:not(:last-child) {
-        margin-right: 0;
+        > svg {
+          fill: $background-color;
+        }
       }
-      margin-left: 20px;
+
+      input ~ .trigger {
+        clear: both;
+        display: none;
+      }
+
+      input:checked ~ .trigger {
+        display: block;
+        padding-bottom: 5px;
+      }
+
+      .page-link {
+        display: block;
+        padding: 5px 10px;
+
+        &:not(:last-child) {
+          margin-right: 0;
+        }
+        margin-left: 20px;
+      }
     }
   }
 }
@@ -115,6 +117,78 @@
   --bigBannerHeight: 100vh;
   --scrollDuration: 300s;
   --fudgeRight: 0vw;
+}
+
+.slide-to-top {
+  margin-top: 0px;
+  animation: slidingToTop 0.8s ease-out forwards;
+}
+
+.big-banner {
+  #header-wrapper {
+    position: absolute;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.command-output {
+  padding: 16px;
+  text-align: left;
+  width: 90vw;
+  max-width: 800px;
+  height: calc(100vh - 300px);
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: auto;
+  margin-top: 150px;
+  background-color: rgba(240, 240, 240, 0.15);
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: #222;
+  opacity: 0%;
+  animation: fadeIn 1s ease-out forwards;
+}
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $text-color transparent;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: $text-color;
+  border-radius: 20px;
+  border: 3px solid transparent;
+}
+
+@keyframes slidingToTop {
+  from {
+    margin-top: 0px;
+  }
+  to {
+    margin-top: calc(-100vh + 250px);
+  }
 }
 
 .appearing-link {

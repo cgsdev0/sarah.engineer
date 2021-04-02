@@ -1,12 +1,12 @@
 {
-  "name": "sarash",
+  "name": "shell",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "bundle": "node_modules/.bin/parcel build main.js",
-    "move": "cp dist/main.js ../assets/shell.js",
-    "build": "yarn bundle && yarn move"
+    "minify": "node_modules/.bin/terser --compress --mangle -o ../assets/shell.js -- dist/main.js",
+    "build": "yarn bundle && yarn minify"
   },
   "author": "",
   "license": "ISC",

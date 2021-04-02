@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "bundle": "node_modules/.bin/parcel build main.js",
+    "bundle": "mkdir -p dist; node_modules/.bin/browserify main.js -o dist/main.js",
     "minify": "node_modules/.bin/terser --compress --mangle -o ../assets/shell.js -- dist/main.js",
     "build": "yarn bundle && yarn minify"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.0.0-beta.2",
+    "browserify": "^17.0.0",
     "terser": "^5.6.1"
   },
   "dependencies": {

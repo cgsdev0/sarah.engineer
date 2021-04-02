@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/browserify -p tinyify main.js -o bundle.js"
+    "build": "node_modules/.bin/browserify main.js -o ../assets/shell.js"
   },
   "author": "",
   "license": "ISC",

@@ -70,7 +70,7 @@
           const headerWrapper=document.querySelector('#header-wrapper');
           const output=document.querySelector('#command-output');
           function isLetter(str) {
-            return str.length === 1 && str.match(/[|~=;:'"a-z .0-9\s-.,<>\\\/$\-_?\^*@!&#%\(\)\[\]{}]/i);
+            return str.length === 1 && str.match(/[|~=`;:'"a-z .0-9\s-.,<>\\\/$\-_?\^*@!&#%\(\)\[\]{}]/i);
           }
           function createSpan(str) {
             const span = document.createElement('span');

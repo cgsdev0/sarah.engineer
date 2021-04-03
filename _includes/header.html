@@ -126,6 +126,9 @@
                 if(window.returnCode) {
                   cmdSpan.style = 'color: red';
                 }
+                else {
+                  cmdSpan.style = 'color: darkblue';
+                }
                 output.prepend(cmdSpan)
                 if(typeof result === "string") {
                   output.prepend(createSpan(result))

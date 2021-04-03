@@ -1,4 +1,5 @@
 ---
-layout: feed
-permalink: /feed.json
+layout: blog
+title: Blog
+permalink: /blog/
 ---

@@ -9,7 +9,7 @@
       <pre class="code-banner" id="banner-snippet"></pre>
       <script type="text/javascript" src="assets/shell.js"></script>
       <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
           const backgrounds = [
           {%- for snippet in site.data.snippets %}
             {
@@ -62,6 +62,10 @@
           .body.classList.add("crt");}});
 
           // Prompt interactivity
+          window.addEventListener('copy', async (event) => {
+              console.log()
+          });
+
           const prompt=document.querySelector('.site-title .typewriter');
           const headerWrapper=document.querySelector('#header-wrapper');
           const output=document.querySelector('#command-output');
@@ -73,10 +77,33 @@
             span.innerText = str;
             return span;
           }
+          try {
+            const resp = await window.fetch("/sitemap.xml");
+            const text = await resp.text();
+            window.initFilesystem(text);
+          } catch(e) {
+            console.error(e);
+          }
           setTimeout(() => {
+
           document.addEventListener('keydown', async function(e){
-            if(e.ctrlKey) return;
+            if(e.ctrlKey && e.key === "v") {
+              // paste detected
+              const clip = await navigator.clipboard.readText()
+              const cur = prompt.lastChild.innerText;
+              let total = "";
+              prompt.childNodes.forEach((c) => total += c.innerText)
+              for(let i = 0; i < clip.length; ++i) {
+                if(!isLetter(clip[i])) continue;
+                headerWrapper.classList.add("slide-to-top");
+                if (clip[i] === " ") {
+                  prompt.lastChild.innerHTML += '\u00A0'
+                }
+                else prompt.lastChild.innerText += clip[i]
+              }
+            }
             let { key } = e;
+            if(key !=="Backspace" && e.ctrlKey) return;
             if(key==="Backspace" || isLetter(key) || key==="Enter") {
               headerWrapper.classList.add("slide-to-top");
               
@@ -111,10 +138,20 @@
               }
             }
             else if(key==="Backspace"){
-              const cur = prompt.lastChild.innerText;
-              prompt.lastChild.innerText = cur.substr(0, cur.length - 1)
-              if(cur.length === 1 && prompt.children.length > 1) {
-                prompt.removeChild(prompt.lastChild)
+              if(e.ctrlKey) {
+                let total = "";
+                prompt.childNodes.forEach((c) => total += c.innerText);
+                const a = prompt.childNodes[0];
+                a.innerText = ''
+                prompt.innerText = ''
+                prompt.appendChild(a);
+              }
+              else {
+                const cur = prompt.lastChild.innerText;
+                prompt.lastChild.innerText = cur.substr(0, cur.length - 1)
+                if(cur.length === 1 && prompt.children.length > 1) {
+                  prompt.removeChild(prompt.lastChild)
+                }
               }
             }
             else if(isLetter(key)) {

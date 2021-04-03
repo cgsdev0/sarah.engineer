@@ -5,19 +5,19 @@ const parse = require("bash-parser");
 
 const aliases = {};
 
-const linkParents = (system, parent = null) => {
+const indexFilesystem = (system, parent = null) => {
     Object.keys(system.children || []).forEach(key => {
         if(typeof system.children[key] !== "object") {
             return;
         }
-        linkParents(system.children[key], system.children[key]);
+        indexFilesystem(system.children[key], system.children[key]);
         system.children[key].parent = parent;
         system.children[key].name = key;
     })
     return system;
 }
 const identity = (a) => a;
-const filesystem = linkParents({
+let filesystem = indexFilesystem({
 children: {
     '/': {
     children: {
@@ -44,6 +44,39 @@ console.log({filesystem})
 
 let cwd = '/';
 let cwd_p = filesystem.children[cwd];
+const fs_root = cwd_p;
+
+window.initFilesystem = (xml) => {
+    parser = new DOMParser();
+    xmlDoc = parser.parseFromString(xml,"text/xml");
+    const urls = window.xmlDoc.getElementsByTagName('url');
+    let pages = [];
+    for(let i = 0; i < urls.length; ++i) {
+        pages.push(urls[i].getElementsByTagName('loc')[0].innerHTML);
+    }
+    pages = pages.filter(p => p !== '/').map(page => {
+        let newPage = page.replace('.html', '.md');
+        if(newPage.endsWith('/')) newPage += 'index.md';
+        return newPage;
+    })
+    pages.forEach(page => {
+        let inode = filesystem.children['/'];
+        const segs = page.split('/').filter(p => p);
+        for(let i = 0; i < segs.length - 1; ++i) {
+            if(inode.children.hasOwnProperty(segs[i] + '/')) {
+                inode = inode.children[segs[i]+'/'];
+                continue;
+            }
+            inode.children[segs[i] + '/'] = { children: {} }
+            inode = inode.children[segs[i] + '/']
+        }
+        // Link final node
+        inode.children[segs[segs.length - 1]] = { linkTo: identity }
+    });
+    // Re-index filesystem
+    filesystem = indexFilesystem(filesystem);
+    console.log("Filesystem loaded from sitemap!", {filesystem})
+}
 
 const environment = {
     "SHELL": "javascript 🚀",
@@ -71,12 +104,59 @@ const welcome = () => {
     return 'You\'ve discovered the hidden shell!\nWhat else is there to find? 🤔\n';
 }
 
-const cat = (...files) => {
+const printFile = async (file) => {
+    if(window.returnCode) return;
+    let inode = cwd_p;
+    if(file.startsWith('/')) {
+        inode = fs_root;
+    }
+    try {
+        file.split('/').filter(p => p).forEach(seg => {
+            if(!seg || seg === '.') return;
+            if(seg === '..') {
+                inode = inode.parent || inode;
+            }
+            else {
+                inode = inode.children[seg + '/'] || inode.children[seg];
+            }
+        })
+        } catch(e) {
+            window.returnCode = 1
+            return "file not found"
+        }
+        if(!inode) {
+            window.returnCode = 1
+            return "file not found"
+        }
+        if(inode.name.endsWith('/')) {
+            window.returnCode = 1
+            return `${inode.name} is a directory`
+        }
+
+        if(inode.cache) {
+            return inode.cache;
+        }
+
+        // build full path
+        let path = inode.name
+        let t_inode = inode
+        while(t_inode.parent) {
+            path = t_inode.parent.name + path;
+            t_inode = t_inode.parent;
+        }
+
+        // no one has to know that cat makes a network call...
+        const resp = await window.fetch(inode.linkTo(path));
+        const body = await resp.text();
+        inode.cache = body;
+        return body;
+}
+
+const cat = async (...files) => {
     if (window.stdin) {
         return window.stdin;
     } else {
-        // TODO: read the files or something
-        return echo(...files);
+        return (await Promise.all(files.map(printFile))).join('\n');
     }
 }
 
@@ -162,11 +242,11 @@ const ls = async (dir) => {
 }
 
 const find_r = (path) => (inode) => {
-    console.warn("traversing node", inode)
     if(!inode.children) {
         return [path + inode.name];
     }
-    return [path + inode.name].concat(Object.values(inode.children).map(find_r(path + inode.name)));
+    console.log("debug", Object.values(inode.children).map(find_r(path + inode.name)))
+    return [path + inode.name, Object.values(inode.children).map(find_r(path + inode.name))];
 }
 
 const find = async (dir) => {
@@ -191,8 +271,7 @@ const find = async (dir) => {
             return "directory not found"
         }
     }
-    const base = ['.'];
-    return base.concat(find_r('')(inode).flat()).join('\n');
+    return ['.', find_r('')(inode)].flat(Infinity).join('\n');
 }
 
 const cd = async (dir) => {

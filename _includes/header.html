@@ -66,10 +66,15 @@
           const headerWrapper=document.querySelector('#header-wrapper');
           const output=document.querySelector('#command-output');
           function isLetter(str) {
-            return str.length === 1 && str.match(/[|~;:'"a-z .1-9\s-.,<>\\\/$\-_?\^*@!&#%\(\)\[\]{}]/i);
+            return str.length === 1 && str.match(/[|~=;:'"a-z .0-9\s-.,<>\\\/$\-_?\^*@!&#%\(\)\[\]{}]/i);
+          }
+          function createSpan(str) {
+            const span = document.createElement('span');
+            span.innerText = str;
+            return span;
           }
           setTimeout(() => {
-          document.addEventListener('keydown', function(e){
+          document.addEventListener('keydown', async function(e){
             if(e.ctrlKey) return;
             let { key } = e;
             if(key==="Backspace" || isLetter(key) || key==="Enter") {
@@ -89,9 +94,20 @@
                 output.innerText = ''
               }
               else if (total) {
-                const br = document.createElement('br');
-                output.appendChild(br);
-                output.appendChild(document.createTextNode('$ '+total+'\nUnrecognized command'))
+                const result = await window.executeBash(total)
+                const cmdSpan = createSpan('$ '+total+'\n')
+                if(window.returnCode) {
+                  cmdSpan.style = 'color: red';
+                }
+                output.prepend(cmdSpan)
+                if(typeof result === "string") {
+                  output.prepend(createSpan(result))
+                }
+                else {
+                  const errorSpan = createSpan(result.error);
+                  errorSpan.style = 'color: red';
+                  output.prepend(errorSpan);
+                }
               }
             }
             else if(key==="Backspace"){
@@ -105,12 +121,10 @@
               const cur = prompt.lastChild.innerText;
               let total = "";
               prompt.childNodes.forEach((c) => total += c.innerText)
-              if (total.length < 22) {
                 if (key === " ") {
                   prompt.lastChild.innerHTML += '\u00A0'
                 }
                 else prompt.lastChild.innerText = cur + e.key
-              }
             }
           })}, 4000);
         }, false);

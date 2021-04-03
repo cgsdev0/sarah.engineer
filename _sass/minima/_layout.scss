@@ -127,6 +127,7 @@
 .big-banner {
   #header-wrapper {
     position: absolute;
+    max-width: calc(100vw - (30px * 2));
   }
 }
 

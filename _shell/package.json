@@ -6,7 +6,8 @@
   "scripts": {
     "bundle": "mkdir -p dist; node_modules/.bin/browserify main.js -o dist/main.js",
     "minify": "node_modules/.bin/terser --compress --mangle -o ../assets/shell.js -- dist/main.js",
-    "build": "yarn bundle && yarn minify"
+    "build": "yarn bundle && yarn minify",
+    "build-dev": "yarn bundle && cp dist/main.js ../assets/shell.js"
   },
   "author": "",
   "license": "ISC",

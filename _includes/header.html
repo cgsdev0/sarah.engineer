@@ -48,8 +48,16 @@
             document.querySelector('.big-banner').appendChild(container);
           }))
 
+          const output=document.querySelector('#command-output');
+
+          function createSpan(str) {
+            const span = document.createElement('span');
+            span.innerText = str;
+            return span;
+          }
+
           // Easter eggs
-          let k_index=0;let lol={'red':1,'green':0};const sarah=document
+          let k_index=0;let c=0;let lol={'red':1,'green':0};const sarah=document
           .querySelector('.site-title .name');const flash=(a)=>{sarah
           .classList.remove(`flash-red`);sarah.classList.remove(`flash-green`
           );if(k_index<konami.length+lol[a])window.requestAnimationFrame(
@@ -58,8 +66,9 @@
           =[a+"Up",a+"Up",a+"Down",a+"Down",a+"Left",a+"Right",a+"Left",a+
           "Right","KeyB","KeyA"];document.addEventListener('keydown',function
           (e){if(k_index<konami.length&&e.code!=konami[k_index++]){if(k_index
-          >1)red();k_index=0;}else{green();if(k_index>=konami.length)document
-          .body.classList.add("crt");}});
+          >1)red();k_index=0;}else{green();if(k_index>=konami.length&&!c){c=1;document
+          .body.classList.add("crt");const s=createSpan("CRT mode enabled.");
+          s.style='color:limegreen;';output.prepend(s);}}});
 
           // Prompt interactivity
           window.addEventListener('copy', async (event) => {
@@ -68,15 +77,11 @@
 
           const prompt=document.querySelector('.site-title .typewriter');
           const headerWrapper=document.querySelector('#header-wrapper');
-          const output=document.querySelector('#command-output');
+          
           function isLetter(str) {
             return str.length === 1 && str.match(/[|~=`;:'"a-z .0-9\s-.,<>\\\/$\-_?\^*@!&#%\(\)\[\]{}]/i);
           }
-          function createSpan(str) {
-            const span = document.createElement('span');
-            span.innerText = str;
-            return span;
-          }
+
           try {
             const resp = await window.fetch("/sitemap.xml");
             const text = await resp.text();
@@ -84,6 +89,8 @@
           } catch(e) {
             console.error(e);
           }
+          const commandHistory = [];
+          let historyPointer = -1;
           setTimeout(() => {
 
           document.addEventListener('keydown', async function(e){
@@ -108,6 +115,33 @@
               headerWrapper.classList.add("slide-to-top");
               
             }
+            if(key === "ArrowUp") {
+              if(!commandHistory.length) return;
+              if(historyPointer == -1) {
+                historyPointer = commandHistory.length;
+              }
+              if(historyPointer === 0) {
+                return;
+              }
+              historyPointer--;
+              const a = prompt.childNodes[0];
+              a.innerText = commandHistory[historyPointer];
+              prompt.innerText = ''
+              prompt.appendChild(a);
+            }
+            if(key === "ArrowDown") {
+              if(!commandHistory.length) return;
+              if(historyPointer == -1) return;
+              if(historyPointer === commandHistory.length) {
+                historyPointer = -1;
+                return;
+              }
+              historyPointer++;
+              const a = prompt.childNodes[0];
+              a.innerText = commandHistory[historyPointer] || '';
+              prompt.innerText = ''
+              prompt.appendChild(a);
+            }
             if(key==="Enter") {
               output.classList.add("command-output")
               let total = "";
@@ -121,6 +155,8 @@
                 output.innerText = ''
               }
               else if (total) {
+                historyPointer = -1;
+                commandHistory.push(total);
                 const result = await window.executeBash(total)
                 const cmdSpan = createSpan('$ '+total+'\n')
                 if(window.returnCode) {

@@ -26,20 +26,20 @@ let filesystem = indexFilesystem({
 children: {
     '/': {
     children: {
-        'about/': {
-        children: {
-            'index.html': {
-                linkTo: identity,
-            }
-        }
-        },
-        'blog/': {
-        children: {
-            'post-1.html': {
-                linkTo: (path) => path.replace('.html', '.md'),
-            }
-        }
-        }
+        // 'about/': {
+        // children: {
+        //     'index.html': {
+        //         linkTo: identity,
+        //     }
+        // }
+        // },
+        // 'blog/': {
+        // children: {
+        //     'post-1.html': {
+        //         linkTo: (path) => path.replace('.html', '.md'),
+        //     }
+        // }
+        // }
     }
     }
 }
@@ -107,16 +107,30 @@ const welcome = () => {
     return 'You\'ve discovered the hidden shell!\nWhat else is there to find? 🤔\n';
 }
 
+const xargs = async (...args) => {
+    if(!window.stdin) {
+        return;
+    }
+    const command = args.shift();
+    console.log("xargs-ing", command)
+    const expandedArgs = [await asyncMap(args, expand)].flat(Infinity);
+    const allArgs = expandedArgs.concat(window.stdin.split('\n'));
+    console.log({allArgs})
+    window.stdin = ''
+    return await commands[command](...allArgs);
+}
+
 const printFile = async (file) => {
+    console.log("catting file", file);
     if(window.returnCode) return;
     let inode = find_inode(file);
     if(!inode) {
         window.returnCode = 1
-        return "directory not found"
+        return "directory not found\n"
     }
     if(inode.isDirectory) {
         window.returnCode = 1
-        return `${inode.name} is a directory`
+        return `${inode.name} is a directory\n`
     }
 
     if(inode.cache) {
@@ -142,7 +156,7 @@ const cat = async (...files) => {
     if (window.stdin) {
         return window.stdin;
     } else {
-        return (await asyncMap(files, printFile)).join('\n');
+        return (await asyncMap(files.map(fileList => fileList.split('\n')).flat(), printFile)).join('\n');
     }
 }
 
@@ -204,7 +218,7 @@ const ls = async (dir) => {
     let inode = find_inode(dir);
     if(!inode || inode.isFile) {
         window.returnCode = 1
-        return "directory not found"
+        return "directory not found\n"
     }
     const base = ['.'];
     if (inode.parent) base.push('..');
@@ -218,13 +232,37 @@ const find_r = (path) => (inode) => {
     return [path + inode.name].concat(Object.values(inode.children).map(find_r(path + inode.name)));
 }
 
-const find = async (dir) => {
-    let inode = find_inode(dir);
+const find = async (...args) => {
+    let fileFilter = false;
+    let dirFilter = false;
+    while((args[0] || '').startsWith('-')) {
+        const flag = args.shift();
+        switch(flag) {
+            case '-type':
+                const typeFilter = args.shift();
+                if(typeFilter === 'f') {
+                    fileFilter = true;
+                }
+                else if(typeFilter === 'd') {
+                    dirFilter = true;
+                }
+                else {
+                    window.returnCode = 1;
+                    throw new Error('unknown type flag\n');
+                }
+            break;
+        }
+    }
+    let inode = find_inode(args[0]);
     if(!inode || inode.isFile) {
         window.returnCode = 1
-        return "directory not found"
+        return "directory not found\n"
     }
-    return ['.', find_r('')(inode)].flat(Infinity).join('\n');
+    const base = fileFilter ? [] : ['.'];
+    return base.concat(
+        find_r('')(inode).flat(Infinity)
+        .filter(file => (!fileFilter && !dirFilter) || (fileFilter && !file.endsWith('/') || (dirFilter && file.endsWith('/')))))
+        .join('\n');
 }
 
 const find_inode = (path) => {
@@ -254,7 +292,7 @@ const cd = async (dir) => {
     let inode = find_inode(dir);
     if(!inode || inode.isFile) {
         window.returnCode = 1
-        return "directory not found"
+        return "directory not found\n"
     }
     cwd_p = inode;
     // build new cwd
@@ -266,14 +304,30 @@ const cd = async (dir) => {
     return '';
 }
 
+const grep = async (...args) => {
+    let invert = false;
+    if(args.includes('-v'))
+    {
+        invert = true;
+    }
+    args = args.filter(arg => arg !== '-v');
+    let re = new RegExp(args[0] || '', 'i')
+    if (!window.stdin) {
+        window.stdin = await cat(args[1]);
+    }
+    return window.stdin.split('\n').filter(line => invert ^ re.test(line)).join('\n');
+}
+
 const commands = {
     find,
     clear,
     echo,
+    xargs,
     pwd,
     sudo,
     alias,
     unalias,
+    grep,
     "sarah.engineer": welcome,
     cat,
     env,
@@ -291,33 +345,34 @@ const commands = {
 };
 
 
-const parseAssignments = (prefix) => {
+const parseAssignments = async (prefix) => {
     switch(prefix.type) {
         case "AssignmentWord":
+            const expanded = await expand(prefix);
             const split = prefix.text.split('=');
             if (split.length < 2) {
                 window.returnCode = 1;
                 return '';
             }
             const environmentVar = split.shift();
-            environment[environmentVar] = split.join('');
+            environment[environmentVar] = prefix.hasOwnProperty('expansion') ? expanded : split.join('');
             break;
         default:
             window.returnCode = 1;
-            throw new Error(`stop trying to be so fancy, with your ${prefix.type} 😜`)
+            throw new Error(`stop trying to be so fancy, with your ${prefix.type} 😜\n`)
     }
 }
 
 const execCommand = async (command) => {
     console.log("exec-ing command", command);
     if(!command.name) {
-        (command.prefix || []).map(parseAssignments);
+        await asyncMap((command.prefix || []), parseAssignments);
         return '';
     }
     const cmd = await expand(command.name);
     if(!commands.hasOwnProperty(cmd)) {
         window.returnCode = 1;
-        return `command not found: ${cmd}`;
+        return `command not found: ${cmd}\n`;
     }
     window.returnCode = 0;
     const res = await commands[cmd](...(command.suffix ? await asyncMap(command.suffix, expand) : []));
@@ -334,6 +389,9 @@ const expand = async (node) => {
     if (node.hasOwnProperty('expansion')) {
         return (await asyncMap(node.expansion, resolveExpansion)).join('');
     }
+    if (node.type === "Redirect") {
+        throw new Error ("redirection is not supported\n");
+    }
     return node.text;
 }
 
@@ -344,7 +402,7 @@ const resolveExpansion = async (expansion) => {
         case "CommandExpansion":
             return await execAST(expansion);
         default:
-            throw new Error(`Unknown expansion type ${expansion.type}`)
+            throw new Error(`Unknown expansion type ${expansion.type}\n`)
     }
 }
 
@@ -370,6 +428,16 @@ const execSubshell = async (commands) => {
     return result;
 }
 
+const execLogicalExpression = async (expr) => {
+    let outLeft = "", outRight = "";
+    outLeft = await walk(expr.left);
+    if ((window.returnCode && expr.op === "or") || (!window.returnCode && expr.op === "and")) {
+        window.returnCode = 0;
+        outRight = await walk(expr.right);
+    }
+    return outLeft + outRight;
+}
+
 const walk = async (command) => {
     switch(command.type) {
         case "Command":
@@ -378,8 +446,10 @@ const walk = async (command) => {
             return execSubshell(command.list.commands); // command.list.commands.map(execCommand).join('');
         case "Pipeline":
             return await execPipeline(command.commands);
+        case "LogicalExpression":
+            return await execLogicalExpression(command);
         default:
-            throw new Error(`${command.type} is not supported :(`);
+            throw new Error(`${command.type} is not supported :(\n`);
     }
 }
 
@@ -389,7 +459,7 @@ const execAST = async (ast) => {
         return await execAST(ast.commandAST);
     }
     if(ast.type !== "Script") {
-        throw new Error("Something went wrong!");
+        throw new Error("Something went wrong!\n");
     }
     return (await asyncMap(ast.commands, walk)).join('');
 }
@@ -418,7 +488,7 @@ window.executeBash = async (bash) => {
         try {
             ast = parse(bash, { resolveEnv, resolveParameter, resolveAlias });
         } catch(e) {
-            throw new Error("invalid syntax");
+            throw new Error("invalid syntax\n");
         }
         return await execAST(ast);
     } catch(e) {

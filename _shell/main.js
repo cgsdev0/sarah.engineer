@@ -45,6 +45,10 @@ class Shell {
   };
 
   execCommand = async (command) => {
+    if (command.async) {
+      this.returnCode = 1;
+      throw new Error("background tasks are not supported");
+    }
     if (!command.name) {
       await asyncMap(command.prefix || [], this.parseAssignments);
       return "";

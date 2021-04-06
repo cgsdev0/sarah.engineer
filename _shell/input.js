@@ -131,6 +131,7 @@ module.exports = (shell) => async () => {
         if (!total) return;
 
         output.classList.add("command-output"); // reveal the shell
+        output.parentElement.classList.remove("hidden");
         setPromptText("");
 
         if (total === "clear") {
@@ -143,7 +144,7 @@ module.exports = (shell) => async () => {
         commandHistory.push(total);
         const result = await shell.executeBash(total);
         output.prepend(
-          createSpan("$ " + total + "\n", shell.returnCode ? "red" : "darkblue")
+          createSpan("$ " + total + "\n", shell.returnCode ? "red" : "cyan")
         );
         if (typeof result === "string") {
           output.prepend(createSpan(result));

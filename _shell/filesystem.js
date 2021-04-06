@@ -77,7 +77,7 @@ module.exports = class FileSystem {
   };
 
   readFileAsync = async (cwd, file) => {
-    let inode = findFileNode(cwd, file);
+    let inode = this.findFileNode(cwd, file);
     if (!inode) {
       throw new Error("directory not found\n");
     }

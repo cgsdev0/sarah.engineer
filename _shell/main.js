@@ -2,12 +2,14 @@ const parse = require("bash-parser");
 
 const CommandSet = require("./commands");
 const FileSystem = require("./filesystem");
+const initializeInput = require("./input");
 
 class Shell {
   constructor() {
     this.aliases = {};
-    this.environment = {
+    this.env = {
       SHELL: "javascript 🚀",
+      USER: "definitelynotroot",
     };
 
     this.returnCode = 0;
@@ -29,8 +31,8 @@ class Shell {
           this.returnCode = 1;
           return "";
         }
-        const environmentVar = split.shift();
-        this.environment[environmentVar] = prefix.hasOwnProperty("expansion")
+        const envVar = split.shift();
+        this.env[envVar] = prefix.hasOwnProperty("expansion")
           ? expanded
           : split.join("");
         break;
@@ -43,7 +45,6 @@ class Shell {
   };
 
   execCommand = async (command) => {
-    console.log("exec-ing command", command);
     if (!command.name) {
       await asyncMap(command.prefix || [], this.parseAssignments);
       return "";
@@ -58,7 +59,6 @@ class Shell {
       ...(command.suffix ? await asyncMap(command.suffix, this.expand) : [])
     );
     this.stdin = "";
-    console.log("result", res);
     return res;
   };
 
@@ -84,7 +84,6 @@ class Shell {
   };
 
   resolveAlias = (alias) => {
-    console.warn("RESOLVE ALIAS", alias);
     return this.aliases[alias] || alias;
   };
 
@@ -135,7 +134,6 @@ class Shell {
   };
 
   execAST = async (ast) => {
-    console.warn("EXEC AST", ast);
     if (ast.type === "command_expansion" || ast.type === "CommandExpansion") {
       return await this.execAST(ast.commandAST);
     }
@@ -146,17 +144,15 @@ class Shell {
   };
 
   resolveEnv = (name) => {
-    console.warn("RESOLVING ENV", name);
     return null;
   };
 
   resolveParameter = (param) => {
-    console.warn("RESOLVING PARAM", param);
     if (param.kind === "last-exit-status") {
       return `${this.returnCode}`;
     }
-    if (this.environment.hasOwnProperty(param.parameter)) {
-      return this.environment[param.parameter];
+    if (this.env.hasOwnProperty(param.parameter)) {
+      return this.env[param.parameter];
     }
     return "";
   };
@@ -189,4 +185,10 @@ asyncMap = async (arr, fn) => {
 
 // Debug
 window.parseBash = parse;
-window.shell = new Shell();
+
+// Hook
+document.addEventListener(
+  "DOMContentLoaded",
+  initializeInput(new Shell()),
+  false
+);

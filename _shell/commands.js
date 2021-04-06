@@ -138,7 +138,7 @@ module.exports = class CommandSet {
   };
 
   whoami = () => {
-    return "definitelynotroot\n";
+    return `${this.shell.env["USER"]}\n`;
   };
 
   sad = () => {
@@ -147,7 +147,7 @@ module.exports = class CommandSet {
   };
 
   env = () => {
-    return Object.entries(this.shell.environment)
+    return Object.entries(this.shell.env)
       .map(([k, v]) => `${k}="${v}"`)
       .join("\n");
   };
@@ -167,8 +167,8 @@ module.exports = class CommandSet {
       this.shell.returnCode = 1;
       return "";
     }
-    const environmentVar = split.shift();
-    this.shell.environment[environmentVar] = split.join("");
+    const envVar = split.shift();
+    this.shell.env[envVar] = split.join("");
     return "";
   };
 

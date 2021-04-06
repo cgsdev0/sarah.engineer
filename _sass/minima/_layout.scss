@@ -148,7 +148,6 @@
   background-color: #202020;
   width: 100%;
   height: 24px;
-  margin-top: 150px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   color: #444;
@@ -156,7 +155,6 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  z-index: -10;
   user-select: none;
 
   .buttons {
@@ -188,9 +186,11 @@
 #command-output-wrapper {
   filter: drop-shadow(8px 8px 8px rgba(0, 0, 0, 0.3));
   animation: fadeIn 1s ease-out forwards;
+  margin-top: 150px;
   opacity: 0%;
 }
 .command-output {
+  filter: none;
   font-family: "Hack";
   padding: 16px;
   text-align: left;

@@ -85,7 +85,7 @@
           try {
             const resp = await window.fetch("/sitemap.xml");
             const text = await resp.text();
-            window.initFilesystem(text);
+            window.shell.fs.initFilesystem(text);
           } catch(e) {
             console.error(e);
           }
@@ -98,13 +98,16 @@
               // paste detected
               const clip = await navigator.clipboard.readText()
               const cur = prompt.lastChild.innerText;
-              let total = "";
+              let total = '';
               prompt.childNodes.forEach((c) => total += c.innerText)
               for(let i = 0; i < clip.length; ++i) {
                 if(!isLetter(clip[i])) continue;
                 headerWrapper.classList.add("slide-to-top");
-                if (clip[i] === " ") {
+                if (clip[i] === ' ') {
                   prompt.lastChild.innerHTML += '\u00A0'
+                }
+                if (clip[i] === '\n') {
+                  continue;
                 }
                 else prompt.lastChild.innerText += clip[i]
               }
@@ -157,9 +160,9 @@
               else if (total) {
                 historyPointer = -1;
                 commandHistory.push(total);
-                const result = await window.executeBash(total)
+                const result = await window.shell.executeBash(total)
                 const cmdSpan = createSpan('$ '+total+'\n')
-                if(window.returnCode) {
+                if(window.shell.returnCode) {
                   cmdSpan.style = 'color: red';
                 }
                 else {

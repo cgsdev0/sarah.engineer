@@ -54,7 +54,7 @@ module.exports = class FileSystem {
   findFileNode = (cwd, path) => {
     let inode = cwd;
     if (path && path.startsWith("/")) {
-      inode = getFsRoot();
+      inode = this.getFsRoot();
     }
     if (path) {
       try {

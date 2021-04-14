@@ -120,14 +120,14 @@
 }
 
 .slide-to-top {
-  margin-top: 0px;
-  animation: slidingToTop 0.8s ease-out forwards;
+  margin-top: calc(-100vh + 250px);
 }
 
 .big-banner {
   #header-wrapper {
     position: absolute;
     max-width: calc(100vw - (30px * 2));
+    transition: margin-top 0.8s;
   }
 }
 
@@ -140,8 +140,19 @@
   }
 }
 
+@keyframes fadeOut {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+
 .hidden {
-  display: none;
+  visibility: hidden;
+  transition: visibility 0.5s;
+  opacity: 0;
 }
 
 .titlebar {
@@ -168,6 +179,7 @@
       border-radius: 50%;
       margin-left: 6px;
       opacity: 60%;
+      cursor: pointer;
       &:hover {
         opacity: 100%;
       }
@@ -183,20 +195,81 @@
     }
   }
 }
+
+.floating {
+  #command-output-wrapper {
+    margin-top: 100px;
+    height: calc(100vh - 350px);
+    width: 90vw;
+    max-width: 800px;
+  }
+}
+
+.fullscreen {
+  #command-output-wrapper {
+    height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+    margin-top: 0px;
+
+    .command-output::before {
+      content: "\a";
+      white-space: pre;
+    }
+  }
+
+  #header-wrapper {
+    // the alignment here is a disaster
+    position: absolute;
+    bottom: -26px;
+    left: 0;
+    z-index: 10;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    @keyframes delayedFadeIn {
+      0% {
+        opacity: 0%;
+      }
+      50% {
+        opacity: 0%;
+      }
+      100% {
+        opacity: 100%;
+      }
+    }
+    .site-title {
+      font-size: $base-font-size;
+      line-height: 63px;
+      opacity: 0;
+      animation: delayedFadeIn 0.8s forwards;
+    }
+  }
+  .site-nav {
+    display: none;
+  }
+}
+
 #command-output-wrapper {
   filter: drop-shadow(8px 8px 8px rgba(0, 0, 0, 0.3));
-  animation: fadeIn 1s ease-out forwards;
-  margin-top: 150px;
-  opacity: 0%;
+  //animation: fadeIn 1s ease-out forwards;
+  visibility: visible;
+  transition: opacity 0.5s, width 0.5s, height 0.5s, max-width 0.5s,
+    margin-top 0.5s;
+  &:not(.hidden) {
+    opacity: 100%;
+  }
 }
+
 .command-output {
   filter: none;
   font-family: "Hack";
   padding: 16px;
   text-align: left;
-  width: 90vw;
-  max-width: 800px;
-  height: calc(100vh - 350px);
+  // width: 90vw;
+  // max-width: 800px;
+  // height: calc(100vh - 350px);
+  height: calc(100% - 58px);
   display: flex;
   flex-direction: column-reverse;
   overflow-y: auto;
@@ -232,15 +305,6 @@
   border: 3px solid transparent;
 }
 
-@keyframes slidingToTop {
-  from {
-    margin-top: 0px;
-  }
-  to {
-    margin-top: calc(-100vh + 250px);
-  }
-}
-
 .appearing-link {
   max-width: 0px;
   position: absolute;
@@ -253,6 +317,7 @@
   animation-delay: 10s;
   animation-iteration-count: 1;
   white-space: nowrap;
+  z-index: -10;
 }
 
 @keyframes appearing {
@@ -266,6 +331,13 @@
   }
 }
 
+.shell-command::before {
+  content: "$\00a0";
+}
+
+.shell-command::after {
+  content: "\a";
+}
 .landing-page {
   overflow: hidden;
 }

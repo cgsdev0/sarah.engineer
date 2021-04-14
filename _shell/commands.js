@@ -23,6 +23,8 @@ module.exports = class CommandSet {
       curl: this.curl,
       ls: this.ls,
       cd: this.cd,
+      mc: this.minecraft,
+      minecraft: this.minecraft,
       /** pity points */
       bash: this.sad,
       zsh: this.sad,
@@ -31,6 +33,22 @@ module.exports = class CommandSet {
       chsh: this.sad,
     };
   }
+
+  minecraft = async () => {
+    const res = await window.fetch(
+      "https://api.mcsrvstat.us/2/mc.badcop.games"
+    );
+    const data = await res.json();
+    if (!data.online) {
+      this.shell.returnCode = 1;
+      return "The server appears to be offline.";
+    }
+    return `IP:\t\t${data.hostname}
+Version:\t${data.version}
+Players:\t${data.players.online}/${data.players.max}
+${data.players.list ? data.players.list.join(", ") : "(No one online)"}
+`;
+  };
 
   grep = async (...args) => {
     let invert = false;
@@ -210,7 +228,9 @@ module.exports = class CommandSet {
       return;
     }
     const command = args.shift();
-    const expandedArgs = [await asyncMap(args, expand)].flat(Infinity);
+    const expandedArgs = [await asyncMap(args, this.shell.expand)].flat(
+      Infinity
+    );
     const allArgs = expandedArgs.concat(this.shell.stdin.split("\n"));
 
     this.shell.stdin = "";

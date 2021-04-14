@@ -2,7 +2,7 @@
 function isLetter(str) {
   return (
     str.length === 1 &&
-    str.match(/[|~=`;:'"a-z .0-9\s-.,<>\\\/$\-_?\^*@!&#%\(\)\[\]{}]/i)
+    str.match(/[|~=`;:'"a-z .0-9\s-.,<>\\\/$\-_+?\^*@!&#%\(\)\[\]{}]/i)
   );
 }
 
@@ -32,19 +32,67 @@ const konami = [
 
 module.exports = (shell) => async () => {
   const output = document.querySelector("#command-output");
+  const prompt = document.querySelector(".site-title .typewriter");
+
+  // Back up the original prompt elements
+  const promptChildren = [];
+  for (let i = 0; i < prompt.childNodes.length; ++i) {
+    promptChildren.push(prompt.childNodes[i].cloneNode(true));
+  }
+
+  // Button handlers
+  let closing = false;
+  document.querySelector(".buttons .green").addEventListener("click", () => {
+    if (closing) return;
+    document.body.classList.remove("floating");
+    document.body.classList.add("fullscreen");
+  });
+
+  document.querySelector(".buttons .yellow").addEventListener("click", () => {
+    if (closing) return;
+    document.body.classList.remove("fullscreen");
+    document.body.classList.add("floating");
+  });
+
+  document.querySelector(".buttons .red").addEventListener("click", () => {
+    const close = () => {
+      document
+        .querySelector("#header-wrapper")
+        .classList.remove("slide-to-top");
+      document.querySelector("#command-output-wrapper").classList.add("hidden");
+
+      // Restore the prompt
+      prompt.innerHTML = "";
+      for (let i = 0; i < promptChildren.length; ++i) {
+        prompt.appendChild(promptChildren[i].cloneNode(true));
+      }
+      closing = true;
+      setTimeout(() => {
+        closing = false;
+        output.innerText = "";
+      }, 500);
+    };
+    if (document.body.className.includes("fullscreen")) {
+      document.body.classList.remove("fullscreen");
+      document.body.classList.add("floating");
+      setTimeout(close, 250);
+    } else {
+      close();
+    }
+  });
 
   // Konami handler
   let k_index = 0,
     c = 0,
     mux = { red: 1, green: 0 };
-  const sarah = document.querySelector(".site-title .name");
   const flash = (a) => {
+    const sarah = document.querySelector(".site-title .name");
     sarah.classList.remove(`flash-red`);
     sarah.classList.remove(`flash-green`);
     if (k_index < konami.length + mux[a])
-      window.requestAnimationFrame(() => {
+      setTimeout(() => {
         sarah.classList.add(`flash-${a}`);
-      });
+      }, 10);
   };
 
   document.addEventListener("keydown", function (e) {
@@ -62,7 +110,6 @@ module.exports = (shell) => async () => {
   });
 
   // Prompt interactivity
-  const prompt = document.querySelector(".site-title .typewriter");
   const headerWrapper = document.querySelector("#header-wrapper");
   const commandHistory = [];
   let historyPointer = -1;
@@ -107,19 +154,25 @@ module.exports = (shell) => async () => {
         }
       }
 
-      if (key === "Backspace" || key === "Enter" || isLetter(key)) {
+      if (
+        key === "Backspace" ||
+        key === "Enter" ||
+        (isLetter(key) && !ctrlKey)
+      ) {
         headerWrapper.classList.add("slide-to-top");
       }
 
       // Shell history controls
       if (key === "ArrowUp") {
         if (!commandHistory.length || !historyPointer) return;
+        headerWrapper.classList.add("slide-to-top");
         if (historyPointer === -1) historyPointer = commandHistory.length;
         setPromptText(commandHistory[--historyPointer]);
       }
       if (key === "ArrowDown") {
         if (!commandHistory.length || historyPointer === -1) return;
-        if (historyPointer === commandHistory.length) {
+        headerWrapper.classList.add("slide-to-top");
+        if (historyPointer === commandHistory.length - 1) {
           historyPointer = -1;
           return;
         }
@@ -143,9 +196,9 @@ module.exports = (shell) => async () => {
         historyPointer = -1;
         commandHistory.push(total);
         const result = await shell.executeBash(total);
-        output.prepend(
-          createSpan("$ " + total + "\n", shell.returnCode ? "red" : "cyan")
-        );
+        const cmd = createSpan(total, shell.returnCode ? "red" : "cyan");
+        cmd.classList.add("shell-command");
+        output.prepend(cmd);
         if (typeof result === "string") {
           output.prepend(createSpan(result));
         } else {

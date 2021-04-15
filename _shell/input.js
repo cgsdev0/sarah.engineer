@@ -1,3 +1,6 @@
+const Convert = require("ansi-to-html");
+const convert = new Convert();
+
 // Utils
 function isLetter(str) {
   return (
@@ -196,11 +199,33 @@ module.exports = (shell) => async () => {
         historyPointer = -1;
         commandHistory.push(total);
         const result = await shell.executeBash(total);
-        const cmd = createSpan(total, shell.returnCode ? "red" : "cyan");
+        const cmd = createSpan(
+          // style.green.open + total + style.green.close,
+          total,
+          shell.returnCode ? "red" : "cyan"
+        );
         cmd.classList.add("shell-command");
         output.prepend(cmd);
         if (typeof result === "string") {
-          output.prepend(createSpan(result));
+          const span = document.createElement("span");
+          span.innerHTML = convert.toHtml(
+            result.replace(">", "&gt;").replace("<", "&lt;")
+          );
+          // Parse links
+          span.querySelectorAll("u").forEach((u) => {
+            var node = u,
+              newNode = document.createElement("a"),
+              parent = node.parentNode,
+              children = node.childNodes;
+
+            newNode.setAttribute("href", u.innerText);
+            newNode.setAttribute("target", "_blank");
+            Array.prototype.forEach.call(children, function (elem) {
+              newNode.appendChild(elem);
+            });
+            parent.replaceChild(newNode, node);
+          });
+          output.prepend(span);
         } else {
           output.prepend(createSpan(result.error, "red"));
         }

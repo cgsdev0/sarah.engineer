@@ -1,3 +1,5 @@
+const style = require("ansi-styles");
+
 module.exports = class CommandSet {
   constructor(shell, fs) {
     this.shell = shell;
@@ -15,6 +17,7 @@ module.exports = class CommandSet {
       alias: this.alias,
       unalias: this.unalias,
       grep: this.grep,
+      lolcat: this.colortest,
       "sarah.engineer": this.welcome,
       cat: this.cat,
       env: this.env,
@@ -34,6 +37,25 @@ module.exports = class CommandSet {
     };
   }
 
+  colortest = () => {
+    const rainbow = function (i) {
+      const freq = 0.3;
+      const red = Math.round(Math.sin(freq * i + 0) * 127 + 128);
+      const green = Math.round(
+        Math.sin(freq * i + (2 * Math.PI) / 3) * 127 + 128
+      );
+      const blue = Math.round(
+        Math.sin(freq * i + (4 * Math.PI) / 3) * 127 + 128
+      );
+
+      return style.color.ansi256(style.rgbToAnsi256(red, green, blue));
+    };
+    return this.shell.stdin
+      .split("")
+      .map((c, i) => rainbow(i) + c)
+      .join("");
+  };
+
   minecraft = async () => {
     const res = await window.fetch(
       "https://api.mcsrvstat.us/2/mc.badcop.games"
@@ -44,6 +66,7 @@ module.exports = class CommandSet {
       return "The server appears to be offline.";
     }
     return `IP:\t\t${data.hostname}
+Map:\t\t${style.underline.open}https://${data.hostname}${style.underline.close}
 Version:\t${data.version}
 Players:\t${data.players.online}/${data.players.max}
 ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
@@ -56,13 +79,33 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
       invert = true;
     }
     args = args.filter((arg) => arg !== "-v");
-    let re = new RegExp(args[0] || "", "i");
+    let re = new RegExp(args[0] || "", "gi");
     if (!this.shell.stdin) {
       this.shell.stdin = await readFileAsync(this.shell.cwd_p, args[1]);
     }
     return this.shell.stdin
       .split("\n")
-      .filter((line) => invert ^ re.test(line))
+      .filter((line) => {
+        re.lastIndex = 0;
+        return invert ^ re.test(line);
+      })
+      .map((line) => {
+        re.lastIndex = 0;
+        let match;
+        let colorizedLine = "";
+        let index = 0;
+        while ((match = re.exec(line))) {
+          console.log("Match", match);
+          colorizedLine += line.slice(index, match.index);
+          colorizedLine += style.redBright.open;
+          colorizedLine += match[0];
+          colorizedLine += style.redBright.close;
+          index = match.index + match[0].length;
+          console.log(colorizedLine);
+        }
+        colorizedLine += line.slice(index, line.length);
+        return colorizedLine;
+      })
       .join("\n");
   };
 

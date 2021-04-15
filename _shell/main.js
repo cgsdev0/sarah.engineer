@@ -81,7 +81,10 @@ class Shell {
       case "ParameterExpansion":
         return this.resolveParameter(expansion);
       case "CommandExpansion":
-        return await this.execAST(expansion);
+        return await this.execAST(expansion).replace(
+          /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+          ""
+        );
       default:
         throw new Error(`Unknown expansion type ${expansion.type}\n`);
     }
@@ -94,6 +97,13 @@ class Shell {
   execPipeline = async (commands) => {
     for (let i = 0; i < commands.length; ++i) {
       this.stdin = await this.execCommand(commands[i]);
+      if (i + 1 < commands.length) {
+        // yeet the ANSI escape codes
+        this.stdin = this.stdin.replace(
+          /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+          ""
+        );
+      }
     }
     const res = this.stdin;
     this.stdin = "";

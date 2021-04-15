@@ -281,6 +281,13 @@
   border-top-right-radius: 0;
   border-color: #222;
   white-space: break-spaces;
+
+  a {
+    color: $name-color;
+  }
+  a:hover {
+    color: $white-color;
+  }
 }
 
 /* Works on Firefox */

@@ -82,6 +82,7 @@
       </nav>
     {%- endif -%}
   </div>
+  {% if big_banner %}
   <div class="hidden" id="command-output-wrapper">
     <div class="titlebar">SarahOS
       <div class="buttons">
@@ -92,4 +93,5 @@
     </div>
     <pre id="command-output"></pre>
   </div>
+  {%- endif -%}
 </header>

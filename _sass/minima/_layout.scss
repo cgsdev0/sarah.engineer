@@ -256,8 +256,10 @@
   visibility: visible;
   transition: opacity 0.5s, width 0.5s, height 0.5s, max-width 0.5s,
     margin-top 0.5s;
+  pointer-events: none;
   &:not(.hidden) {
     opacity: 100%;
+    pointer-events: auto;
   }
 }
 

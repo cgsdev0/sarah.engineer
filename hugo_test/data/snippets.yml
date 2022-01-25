@@ -1,0 +1,35 @@
+- description: C++ Kenken Solver
+  rawUrl: https://gist.githubusercontent.com/cgsdev0/d5c61b58a8d159b1733bb23cf268d48c/raw/bf34646f9643eeeb04ba833adc300496b0c0dbc1/kenken.cpp
+  niceUrl: https://gist.github.com/cgsdev0/d5c61b58a8d159b1733bb23cf268d48c
+
+- description: FizzBuzz State Machine
+  rawUrl: https://gist.githubusercontent.com/cgsdev0/e2c518c30dac6c05376243ad0c5fbbbf/raw/6b0b96b716382dcd6f86a583629842244ac7ca77/fizzbuzz.cpp
+  niceUrl: https://gist.github.com/cgsdev0/e2c518c30dac6c05376243ad0c5fbbbf
+
+- description: TMUX Config
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/dotfiles/master/.tmux.conf
+  niceUrl: https://github.com/cgsdev0/dotfiles/blob/master/.tmux.conf
+
+- description: JIRA Workflow Script
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/jira-tools/master/jira-tools
+  niceUrl: https://github.com/cgsdev0/jira-tools/blob/master/jira-tools
+
+- description: Golfed Flappy Bird
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/flap/main/golf.cpp
+  niceUrl: https://github.com/cgsdev0/flap/blob/main/golf.cpp
+
+- description: ComputerCraft Energy Monitor
+  niceUrl: https://github.com/cgsdev0/computercraft-energy-monitor/blob/master/server.lua
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/computercraft-energy-monitor/master/server.lua
+
+- description: Rolly Cubes 3D
+  niceUrl: https://github.com/cgsdev0/rollycubes/blob/master/client/src/3d/main.ts
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/rollycubes/master/client/src/3d/main.ts
+
+- description: Rolly Cubes Server
+  niceUrl: https://github.com/cgsdev0/rollycubes/blob/master/src/Game.cpp
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/rollycubes/master/src/Game.cpp
+
+- description: SGDQ Site
+  niceUrl: https://github.com/aeroberts/gdq-rate/blob/master/src/components/avatar.tsx
+  rawUrl: https://raw.githubusercontent.com/aeroberts/gdq-rate/master/src/components/avatar.tsx

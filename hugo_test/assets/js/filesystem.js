@@ -121,7 +121,7 @@ module.exports = class FileSystem {
       });
     pages.forEach((page) => {
       let inode = this.filesystem.children["/"];
-      const segs = page.split("/").filter((p) => p);
+      const segs = new URL(page).pathname.split("/").filter((p) => p);
       for (let i = 0; i < segs.length - 1; ++i) {
         if (inode.children.hasOwnProperty(segs[i] + "/")) {
           inode = inode.children[segs[i] + "/"];

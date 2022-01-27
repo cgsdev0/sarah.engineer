@@ -1,4 +1,17 @@
-baseURL = "http://example.org/"
+baseURL = "https://sarah.engineer/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "sarah.engineer"
 theme = "hyde"
+
+[mediaTypes]
+[mediaTypes."text/markdown"]
+suffixes = ["md"]
+
+[outputFormats]
+  [outputFormats.MD]
+    baseName = 'index'
+    isPlainText = true
+    mediaType = 'text/markdown'
+
+[outputs]
+  page = ['HTML', 'MD']

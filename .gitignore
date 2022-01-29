@@ -1,5 +1,4 @@
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-vendor
+.hugo_build.lock
+
+node_modules/
+resources/

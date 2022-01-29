@@ -1,8 +1,15 @@
+"use strict";
+import "babel-polyfill";
 import parse from "bash-parser";
 
 import CommandSet from "./commands";
 import FileSystem from "./filesystem";
 import initializeInput from "./input";
+
+// Utils
+const asyncMap = async (arr, fn) => {
+  return await Promise.all(arr.map(fn));
+};
 
 class Shell {
   constructor() {
@@ -91,6 +98,7 @@ class Shell {
   };
 
   resolveAlias = (alias) => {
+    console.warn("ALIAS", param);
     return this.aliases[alias] || alias;
   };
 
@@ -158,10 +166,12 @@ class Shell {
   };
 
   resolveEnv = (name) => {
+    console.warn("ENV", param);
     return null;
   };
 
   resolveParameter = (param) => {
+    console.warn("PARAM", param);
     if (param.kind === "last-exit-status") {
       return `${this.returnCode}`;
     }
@@ -172,6 +182,8 @@ class Shell {
   };
 
   executeBash = async (bash) => {
+    console.warn("BASH", bash);
+    debugger;
     let ast = {};
     try {
       try {
@@ -192,11 +204,6 @@ class Shell {
     }
   };
 }
-
-// Utils
-asyncMap = async (arr, fn) => {
-  return await Promise.all(arr.map(fn));
-};
 
 // Debug
 window.parseBash = parse;

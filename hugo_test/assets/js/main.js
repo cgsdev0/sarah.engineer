@@ -1,11 +1,11 @@
 "use strict";
-import "babel-polyfill";
-import parse from "bash-parser";
 
+// import parse from "bash-parser";
 import CommandSet from "./commands";
 import FileSystem from "./filesystem";
 import initializeInput from "./input";
 
+const parse = window.parseBash;
 // Utils
 const asyncMap = async (arr, fn) => {
   return await Promise.all(arr.map(fn));
@@ -60,7 +60,7 @@ class Shell {
       await asyncMap(command.prefix || [], this.parseAssignments);
       return "";
     }
-    const cmd = await this.expand(command.name);
+    const cmd = (await this.expand(command.name)).trim();
     if (!this.commands.commands.hasOwnProperty(cmd)) {
       this.returnCode = 1;
       return `command not found: ${cmd}\n`;
@@ -88,17 +88,18 @@ class Shell {
       case "ParameterExpansion":
         return this.resolveParameter(expansion);
       case "CommandExpansion":
-        return await this.execAST(expansion).replace(
-          /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
-          ""
-        );
+        return (await this.execAST(expansion))
+          .replace(
+            /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+            ""
+          )
+          .trim();
       default:
         throw new Error(`Unknown expansion type ${expansion.type}\n`);
     }
   };
 
   resolveAlias = (alias) => {
-    console.warn("ALIAS", param);
     return this.aliases[alias] || alias;
   };
 
@@ -166,12 +167,10 @@ class Shell {
   };
 
   resolveEnv = (name) => {
-    console.warn("ENV", param);
     return null;
   };
 
   resolveParameter = (param) => {
-    console.warn("PARAM", param);
     if (param.kind === "last-exit-status") {
       return `${this.returnCode}`;
     }
@@ -182,8 +181,6 @@ class Shell {
   };
 
   executeBash = async (bash) => {
-    console.warn("BASH", bash);
-    debugger;
     let ast = {};
     try {
       try {
@@ -194,7 +191,7 @@ class Shell {
         });
       } catch (e) {
         console.error(e);
-        throw new Error("invalid syntax\n");
+        throw new Error("invalid/unsupported syntax\n");
       }
       return await this.execAST(ast);
     } catch (e) {
@@ -204,9 +201,6 @@ class Shell {
     }
   };
 }
-
-// Debug
-window.parseBash = parse;
 
 // Hook
 document.addEventListener(

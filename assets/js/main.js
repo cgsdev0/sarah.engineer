@@ -4,7 +4,6 @@
 import CommandSet from "./commands";
 import FileSystem from "./filesystem";
 import initializeInput from "./input";
-import initializeInput2 from "./input2";
 import { asyncMap } from "./utils";
 
 const parse = window.parseBash;
@@ -203,6 +202,6 @@ class Shell {
 // Hook
 document.addEventListener(
   "DOMContentLoaded",
-  initializeInput2(new Shell()),
+  initializeInput(new Shell()),
   false
 );

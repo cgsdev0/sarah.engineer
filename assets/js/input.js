@@ -1,35 +1,43 @@
+// like input.js but better
+
 import Convert from "ansi-to-html";
+import { timeout, createSpanWithClasses, isLetter, createSpan } from "./utils";
+
 const convert = new Convert();
-
-// Utils
-function isLetter(str) {
-  return (
-    str.length === 1 &&
-    str.match(/[|~=`;:'"a-z .0-9\s-.,<>\\\/$\-_+?\^*@!&#%\(\)\[\]{}]/i)
-  );
-}
-
-function createSpan(str, color = undefined) {
-  const span = document.createElement("span");
-  span.innerText = str;
-  if (color) {
-    span.style = `color: ${color};`;
-  }
-  return span;
-}
 
 // Consts
 const SHELL_INTERACTIVITY_DELAY = 4000;
 
 module.exports = (shell) => async () => {
-  const output = document.querySelector("#command-output");
-  const prompt = document.querySelector(".site-title .typewriter");
+  const commandHistory = [];
+  let historyPointer = -1;
 
-  // Back up the original prompt elements
-  const promptChildren = [];
-  for (let i = 0; i < prompt.childNodes.length; ++i) {
-    promptChildren.push(prompt.childNodes[i].cloneNode(true));
-  }
+  const headerWrapper = document.querySelector("#header-wrapper");
+  const output = document.querySelector("#command-output");
+  const fake = document.querySelector("#fake-input");
+  const input = document.querySelector("#hidden-input");
+  const container = document.querySelector("#container");
+
+  const words = [
+    { color: "name", word: "sarah" },
+    { color: "dot", word: "." },
+    { color: "tld", word: "engineer" },
+  ];
+
+  input.value = words.map((w) => w.word).join("");
+
+  const spawn_title = async () => {
+    await timeout(2000);
+    for (let i = 0; i < words.length; ++i) {
+      const { color, word } = words[i];
+      for (let j = 0; j < word.length; ++j) {
+        fake.appendChild(createSpanWithClasses(word[j], [color]));
+        await timeout(88);
+      }
+    }
+  };
+
+  spawn_title();
 
   // Button handlers
   let closing = false;
@@ -53,10 +61,9 @@ module.exports = (shell) => async () => {
       document.querySelector("#command-output-wrapper").classList.add("hidden");
 
       // Restore the prompt
-      prompt.innerHTML = "";
-      for (let i = 0; i < promptChildren.length; ++i) {
-        prompt.appendChild(promptChildren[i].cloneNode(true));
-      }
+      input.value = words.map((w) => w.word).join("");
+      update(input);
+
       closing = true;
       setTimeout(() => {
         closing = false;
@@ -72,11 +79,7 @@ module.exports = (shell) => async () => {
     }
   });
 
-  // Prompt interactivity
-  const headerWrapper = document.querySelector("#header-wrapper");
-  const commandHistory = [];
-  let historyPointer = -1;
-
+  // Load filesystem
   try {
     const resp = await window.fetch("/sitemap.xml");
     const text = await resp.text();
@@ -85,133 +88,149 @@ module.exports = (shell) => async () => {
     console.error(e);
   }
 
-  const setPromptText = (text) => {
-    const a = prompt.childNodes[0];
-    a.innerText = text;
-    prompt.innerText = "";
-    prompt.appendChild(a);
-  };
-
-  const getPromptText = () => {
-    let total = "";
-    prompt.childNodes.forEach((c) => (total += c.innerText));
-    return total;
+  const selectEnd = () => {
+    setTimeout(() => {
+      const l = input.value.length;
+      input.setSelectionRange(l, l);
+    }, 1);
   };
 
   setTimeout(() => {
-    document.addEventListener("keydown", async function (e) {
-      let { key, ctrlKey } = e;
+    // Start cursor at the end of input
 
-      if (ctrlKey && key === "v") {
-        // paste detected
-        const clip = await navigator.clipboard.readText();
-
-        for (let i = 0; i < clip.length; ++i) {
-          if (!isLetter(clip[i])) continue;
-
-          headerWrapper.classList.add("slide-to-top");
-
-          if (clip[i] === " ") prompt.lastChild.innerHTML += "\u00A0";
-          if (clip[i] === "\n") continue;
-          else prompt.lastChild.innerText += clip[i];
-        }
-      }
-
-      if (
-        key === "Backspace" ||
-        key === "Enter" ||
-        (isLetter(key) && !ctrlKey)
-      ) {
-        headerWrapper.classList.add("slide-to-top");
-      }
-
-      // Shell history controls
-      if (key === "ArrowUp") {
-        if (!commandHistory.length || !historyPointer) return;
-        headerWrapper.classList.add("slide-to-top");
-        if (historyPointer === -1) historyPointer = commandHistory.length;
-        setPromptText(commandHistory[--historyPointer]);
-      }
-      if (key === "ArrowDown") {
-        if (!commandHistory.length || historyPointer === -1) return;
-        headerWrapper.classList.add("slide-to-top");
-        if (historyPointer === commandHistory.length - 1) {
-          historyPointer = -1;
-          return;
-        }
-        setPromptText(commandHistory[++historyPointer] || "");
-      }
-
-      if (key === "Enter") {
-        let total = getPromptText();
-        if (!total) return;
-
-        output.classList.add("command-output"); // reveal the shell
-        output.parentElement.classList.remove("hidden");
-        setPromptText("");
-
-        if (total === "clear") {
-          output.innerText = "";
-          return;
-        }
-
-        // Execute the command
-        historyPointer = -1;
-        commandHistory.push(total);
-        const result = await shell.executeBash(total);
-        const cmd = createSpan(
-          // style.green.open + total + style.green.close,
-          total,
-          shell.returnCode ? "red" : "cyan"
-        );
-        cmd.classList.add("shell-command");
-        output.prepend(cmd);
-        if (typeof result === "string") {
-          const span = document.createElement("span");
-          span.innerHTML = convert.toHtml(
-            result.replace(">", "&gt;").replace("<", "&lt;")
-          );
-          // Parse links
-          span.querySelectorAll("u").forEach((u) => {
-            var node = u,
-              newNode = document.createElement("a"),
-              parent = node.parentNode,
-              children = node.childNodes;
-
-            newNode.setAttribute("href", u.innerText);
-            newNode.setAttribute("target", "_blank");
-            Array.prototype.forEach.call(children, function (elem) {
-              newNode.appendChild(elem);
-            });
-            parent.replaceChild(newNode, node);
-          });
-          output.prepend(span);
-        } else {
-          output.prepend(createSpan(result.error, "red"));
-        }
-      }
-
-      if (key === "Backspace") {
-        if (e.ctrlKey) {
-          // Delete the entire line
-          setPromptText("");
-        } else {
-          // Delete a single character
-          const cur = prompt.lastChild.innerText;
-          prompt.lastChild.innerText = cur.substr(0, cur.length - 1);
-          if (cur.length === 1 && prompt.children.length > 1) {
-            prompt.removeChild(prompt.lastChild);
-          }
-        }
-      }
-
-      // Handle general input
-      if (isLetter(key) && !ctrlKey) {
-        const cur = prompt.lastChild.innerText;
-        if (key === " ") {
-          prompt.lastChild.innerHTML += "\u00A0";
-        } else prompt.lastChild.innerText = cur + e.key;
-      }
+    input.focus();
+    document.addEventListener("click", () => {
+      input.focus();
     });
   }, SHELL_INTERACTIVITY_DELAY);
+
+  function update(target) {
+    setTimeout(() => {
+      let i = 0;
+      let j = 0;
+      let className = "nothing";
+
+      fake.textContent = "";
+      const caret =
+        target.selectionStart === target.selectionEnd ||
+        target.selectionDirection === "backward"
+          ? target.selectionStart + 1
+          : target.selectionEnd + 1;
+      const hasSelection = target.selectionStart !== target.selectionEnd;
+      for (const c of target.value) {
+        if (j === 0) {
+          for (const { word, color } of words) {
+            if (target.value.slice(i).startsWith(word)) {
+              j = word.length;
+              className = color;
+            }
+          }
+        }
+        const span = document.createElement("span");
+        if (j > 0) {
+          j--;
+          span.classList.add(className);
+        }
+        i++;
+        if (i > target.selectionStart && i <= target.selectionEnd) {
+          span.classList.add("selected");
+        }
+
+        if (!hasSelection && i === caret) {
+          span.classList.add("caret");
+        }
+        if (c === " ") span.innerHTML = "&nbsp;";
+        else span.innerText = c;
+
+        fake.appendChild(span);
+      }
+      if (!hasSelection && i + 1 === caret) {
+        container.lastChild.classList.remove("invisible-caret");
+      }
+      if (hasSelection || i + 1 !== caret) {
+        container.lastChild.classList.add("invisible-caret");
+      }
+    }, 1);
+  }
+
+  input.addEventListener("blur", (e) => e.target.focus());
+  input.addEventListener("input", (e) => update(e.target));
+  input.addEventListener("keydown", async function (e) {
+    const { key } = e;
+    // Shell history controls
+    if (key === "ArrowUp") {
+      if (!commandHistory.length || !historyPointer) return;
+      headerWrapper.classList.add("slide-to-top");
+      if (historyPointer === -1) historyPointer = commandHistory.length;
+      input.value = commandHistory[--historyPointer];
+      selectEnd();
+    }
+    if (key === "ArrowDown") {
+      if (!commandHistory.length || historyPointer === -1) return;
+      headerWrapper.classList.add("slide-to-top");
+      if (historyPointer === commandHistory.length - 1) {
+        historyPointer = -1;
+        input.value = "";
+      } else {
+        input.value = commandHistory[++historyPointer] || "";
+      }
+      selectEnd();
+    }
+
+    // Input submit
+    if (key === "Enter") {
+      let total = input.value;
+      if (!total) return;
+
+      output.classList.add("command-output"); // reveal the shell
+      output.parentElement.classList.remove("hidden");
+      input.value = "";
+      update(input);
+
+      if (total === "clear") {
+        output.innerText = "";
+        return;
+      }
+
+      // Execute the command
+      historyPointer = -1;
+      commandHistory.push(total);
+      const result = await shell.executeBash(total);
+      const cmd = createSpan(
+        // style.green.open + total + style.green.close,
+        total,
+        shell.returnCode ? "red" : "cyan"
+      );
+      cmd.classList.add("shell-command");
+      output.prepend(cmd);
+      if (typeof result === "string") {
+        const span = document.createElement("span");
+        span.innerHTML = convert.toHtml(
+          result.replace(">", "&gt;").replace("<", "&lt;")
+        );
+        // Parse links
+        span.querySelectorAll("u").forEach((u) => {
+          var node = u,
+            newNode = document.createElement("a"),
+            parent = node.parentNode,
+            children = node.childNodes;
+
+          newNode.setAttribute("href", u.innerText);
+          newNode.setAttribute("target", "_blank");
+          Array.prototype.forEach.call(children, function (elem) {
+            newNode.appendChild(elem);
+          });
+          parent.replaceChild(newNode, node);
+        });
+        output.prepend(span);
+      } else {
+        output.prepend(createSpan(result.error, "red"));
+      }
+    }
+
+    // Slide on any key-press
+    headerWrapper.classList.add("slide-to-top");
+
+    update(e.target);
+  });
 };

@@ -4,12 +4,10 @@
 import CommandSet from "./commands";
 import FileSystem from "./filesystem";
 import initializeInput from "./input";
+import initializeInput2 from "./input2";
+import { asyncMap } from "./utils";
 
 const parse = window.parseBash;
-// Utils
-const asyncMap = async (arr, fn) => {
-  return await Promise.all(arr.map(fn));
-};
 
 class Shell {
   constructor() {
@@ -205,6 +203,6 @@ class Shell {
 // Hook
 document.addEventListener(
   "DOMContentLoaded",
-  initializeInput(new Shell()),
+  initializeInput2(new Shell()),
   false
 );

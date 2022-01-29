@@ -1,4 +1,5 @@
 import style from "ansi-styles";
+import { asyncMap } from "./utils";
 
 module.exports = class CommandSet {
   constructor(shell, fs) {

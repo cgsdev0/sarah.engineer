@@ -20,18 +20,6 @@ function createSpan(str, color = undefined) {
 
 // Consts
 const SHELL_INTERACTIVITY_DELAY = 4000;
-const konami = [
-  "ArrowUp",
-  "ArrowUp",
-  "ArrowDown",
-  "ArrowDown",
-  "ArrowLeft",
-  "ArrowRight",
-  "ArrowLeft",
-  "ArrowRight",
-  "KeyB",
-  "KeyA",
-];
 
 module.exports = (shell) => async () => {
   const output = document.querySelector("#command-output");
@@ -81,34 +69,6 @@ module.exports = (shell) => async () => {
       setTimeout(close, 250);
     } else {
       close();
-    }
-  });
-
-  // Konami handler
-  let k_index = 0,
-    c = 0,
-    mux = { red: 1, green: 0 };
-  const flash = (a) => {
-    const sarah = document.querySelector(".site-title .name");
-    sarah.classList.remove(`flash-red`);
-    sarah.classList.remove(`flash-green`);
-    if (k_index < konami.length + mux[a])
-      setTimeout(() => {
-        sarah.classList.add(`flash-${a}`);
-      }, 10);
-  };
-
-  document.addEventListener("keydown", function (e) {
-    if (k_index < konami.length && e.code != konami[k_index++]) {
-      if (k_index > 1) flash("red");
-      k_index = 0;
-    } else {
-      flash("green");
-      if (k_index >= konami.length && !c) {
-        c = 1;
-        document.body.classList.add("crt");
-        output.prepend(createSpan("CRT mode enabled.", "limegreen"));
-      }
     }
   });
 

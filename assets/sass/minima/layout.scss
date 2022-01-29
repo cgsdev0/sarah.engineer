@@ -126,7 +126,6 @@
 .big-banner {
   #header-wrapper {
     position: absolute;
-    max-width: calc(100vw - (30px * 2));
     transition: margin-top 0.8s;
   }
 }
@@ -314,6 +313,52 @@
   border: 3px solid transparent;
 }
 
+#hidden-input {
+    position: absolute;
+    left: -99999px;
+}
+
+.selected {
+  background-color: #5577cca0;
+  color: white;
+
+}
+
+.fancy-caret {
+  background-color: #999;
+  color: #eee;
+  animation-duration: 1.2s;
+  animation-timing-function: ease;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  animation-name: blink;
+}
+
+.invisible-caret {
+    background-color: transparent;
+}
+  .noselect {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.caret {
+      background-color: #999;
+  color: #eee;
+}
+@keyframes blink {
+  50% {
+    background-color: transparent;
+  }
+}
+
 .appearing-link {
   max-width: 0px;
   position: absolute;
@@ -433,40 +478,9 @@
     display: flex;
     justify-content: center;
 
-    .typewriter {
-      overflow: hidden;
-      width: 0%;
-      animation: typing 1.5s steps(17, end) forwards;
-      max-width: max-content;
-      line-height: $base-font-size * 4;
-      height: $base-font-size * 4;
-      display: inline-block;
-      animation-delay: 2s;
-      margin-bottom: 20px;
-    }
     &::before {
       content: "$\00a0";
       color: $dot-color;
-    }
-
-    &::after {
-      content: "_";
-      animation: blink 1.2s infinite;
-    }
-
-    @keyframes typing {
-      from {
-        width: 0%;
-      }
-      to {
-        width: 100%;
-      }
-    }
-
-    @keyframes blink {
-      50% {
-        color: transparent;
-      }
     }
   }
 

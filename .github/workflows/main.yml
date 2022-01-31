@@ -34,16 +34,8 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - name: Deploy to DigitalOcean Spaces
-        uses: BetaHuhn/do-spaces-action@v2.0.1
+      - name: Deploy to GH Pages
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
-          # Source directory/file to upload
-          source: public
-          # Name of your DO space
-          space_name: sarah-engineer-website
-          # Region of your DO space
-          space_region: sfo2
-          # DO access key
-          access_key: ${{ secrets.DO_ACCESS_KEY }}
-          # DO secret key
-          secret_key: ${{ secrets.DO_SECRET_KEY }}
+          branch: gh-pages # The branch the action should deploy to.
+          folder: public # The folder the action should deploy.

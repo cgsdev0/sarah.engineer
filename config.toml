@@ -2,6 +2,7 @@ baseURL = "https://sarah.engineer/"
 languageCode = "en-us"
 title = "sarah . engineer"
 theme = "hyde"
+enableEmoji = true
 
 [Menus]
   main = [
@@ -11,7 +12,7 @@ theme = "hyde"
 
 [params]
   themeColor = "theme-base-0d"
-  description = "hotdog"
+  description = "not hotdog"
 
 [mediaTypes]
 [mediaTypes."text/markdown"]
@@ -25,5 +26,6 @@ suffixes = ["md"]
 
 [outputs]
   page = ['HTML', 'MD']
+  section = ['HTML', 'MD']
   term = ['HTML', 'MD']
   taxonomy = ['HTML', 'MD']

@@ -59,6 +59,13 @@ html {
   color: rgba(255,255,255,.5);
   background-color: #202020;
 }
+
+.sidebar .color-name {
+  color: #61a0f1;
+}
+.sidebar .color-dot {
+  color: #828285;
+}
 @media (min-width: 48em) {
   .sidebar {
     position: fixed;
@@ -74,13 +81,17 @@ html {
 .sidebar a {
   color: #fff;
 }
-
+@font-face {
+  font-family: "Hack";
+  src: url("https://cdnjs.cloudflare.com/ajax/libs/hack-font/3.3.0/web/fonts/hack-regular.woff")
+    format("woff");
+}
 /* About section */
 .sidebar-about h1 {
   color: #fff;
   margin-top: 0;
-  font-family: "Abril Fatface", serif;
-  font-size: 3.25rem;
+  font-family: "Hack", serif;
+  font-size: 3rem;
 }
 
 /* Sidebar nav */
@@ -224,7 +235,7 @@ a.sidebar-nav-item:focus {
 
 /* Blue */
 .theme-base-0d .sidebar {
-  background-color: #6a9fb5;
+  background-color: #434345;
 }
 .theme-base-0d .content a,
 .theme-base-0d .related-posts li a:hover {

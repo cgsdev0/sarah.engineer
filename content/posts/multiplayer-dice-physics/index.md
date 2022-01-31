@@ -20,7 +20,7 @@ Previously, the the client/server architecture worked like this:
   1. The client plays a canned animation based on the values from the server.
 
 Put together, it looked like this:
-![2D Dice Roll Animation](/media/multiplayer-dice-physics/2d_roll.gif)
+![2D Dice Roll Animation](./2d_roll.gif)
 
 Functional, but definitely not 3D.
 
@@ -31,7 +31,7 @@ I wanted to keep the server logic simple; generate the random values, send them 
 Since my game is web-based, I needed to find a 3D library built in JavaScript. After some research, I decided on [Babylon.js](https://www.babylonjs.com/), which comes with compatibility with several different physics engines.
 
 I started by creating a simple set of cubes textured as dice, and connecting them up to a physics engine (I chose [cannon.js](https://schteppe.github.io/cannon.js/)). Here's what the early stages looked like:
-![Early 3D dice roll](/media/multiplayer-dice-physics/early_3d_dice.gif)
+![Early 3D dice roll](./early_3d_dice.gif)
 
 ## The Difficult Part
 

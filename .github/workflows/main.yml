@@ -38,7 +38,7 @@ jobs:
         uses: BetaHuhn/do-spaces-action@v2.0.1
         with:
           # Source directory/file to upload
-          source: $GITHUB_WORKSPACE/public
+          source: public
           # Name of your DO space
           space_name: sarah-engineer-website
           # Region of your DO space

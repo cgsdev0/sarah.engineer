@@ -17,6 +17,14 @@ jobs:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
+      - name: NPM or Yarn install with caching
+        # You may pin to the exact commit or the version.
+        # uses: bahmutov/npm-install@44b9e76df0949f3df6616b334af42e055ce24831
+        uses: bahmutov/npm-install@v1.6.0
+        with:
+          useLockFile: true
+          install-command: npm install
+          
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:

@@ -16,10 +16,10 @@
   <meta name="description" content="{{if .IsHome}}{{ $.Site.Params.description }}{{else}}{{.Description}}{{end}}" />
 
   <!-- CSS -->
-  <link type="text/css" rel="stylesheet" href="{{ .Site.BaseURL }}css/print.css" media="print">
-  <link type="text/css" rel="stylesheet" href="{{ .Site.BaseURL }}css/poole.css">
-  <link type="text/css" rel="stylesheet" href="{{ .Site.BaseURL }}css/syntax.css">
-  <link type="text/css" rel="stylesheet" href="{{ .Site.BaseURL }}css/hyde.css">
+  <link type="text/css" rel="stylesheet" href="/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="/css/hyde.css">
   {{ partial "head_fonts.html" . }}
 
   <!-- Icons -->
@@ -28,7 +28,7 @@
 
   <!-- RSS etc -->
   {{ range .AlternativeOutputFormats -}}
-    {{ printf `<link href="%s" rel="%s" type="%s" title="%s" />` .Permalink .Rel .MediaType.Type $.Site.Title | safeHTML }}
+    {{ printf `<link href="%s" rel="%s" type="%s" title="%s" />` .RelPermalink .Rel .MediaType.Type $.Site.Title | safeHTML }}
   {{ end -}}
 
   {{ partial "hook_head_end.html" . }}

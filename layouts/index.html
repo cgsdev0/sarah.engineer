@@ -9,9 +9,9 @@
         {{ $opts := dict "targetPath" "main.js" "externals" $externals "defines" $defines "format" "esm" }}
         {{ $built := resources.Get "js/main.js" | js.Build $opts | resources.Fingerprint }}
         {{ $bashParser := resources.GetRemote "https://raw.githubusercontent.com/cgsdev0/bash-parser/master/compiled.js" | resources.Minify | resources.Fingerprint }}
-            <script src="{{ $bashParser.Permalink }}" type="text/javascript"></script>
-        <script src="{{ $built.Permalink }}" type="text/javascript" integrity="{{ $built.Data.Integrity }}"></script>
-        <link rel="stylesheet" href="{{ $styles.Permalink }}" integrity="{{ $styles.Data.Integrity }}">
+            <script src="{{ $bashParser.RelPermalink }}" type="text/javascript"></script>
+        <script src="{{ $built.RelPermalink }}" type="text/javascript" integrity="{{ $built.Data.Integrity }}"></script>
+        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
     </head>
 
   <body class="landing-page floating">

@@ -1,0 +1,41 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main  # Set a branch to deploy
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.91.2'
+          extended: true
+
+      - name: Build
+        run: hugo --minify
+
+      - name: Deploy to DigitalOcean Spaces
+        uses: BetaHuhn/do-spaces-action@v2.0.1
+        with:
+          # Source directory/file to upload
+          source: $GITHUB_WORKSPACE/public
+          # Name of your DO space
+          space_name: sarah-engineer-website
+          # Region of your DO space
+          space_region: sfo2
+          # DO access key
+          access_key: $DO_ACCESS_KEY
+          # DO secret key
+          secret_key: $DO_SECRET_KEY

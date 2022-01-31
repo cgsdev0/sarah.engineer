@@ -1,7 +1,17 @@
 baseURL = "https://sarah.engineer/"
 languageCode = "en-us"
-title = "sarah.engineer"
+title = "sarah . engineer"
 theme = "hyde"
+
+[Menus]
+  main = [
+      {Name = "Github", URL = "https://github.com/cgsdev0"},
+      {Name = "LinkedIn", URL = "https://www.linkedin.com/in/cgsdev"}
+  ]
+
+[params]
+  themeColor = "theme-base-0d"
+  description = "hotdog"
 
 [mediaTypes]
 [mediaTypes."text/markdown"]
@@ -15,3 +25,5 @@ suffixes = ["md"]
 
 [outputs]
   page = ['HTML', 'MD']
+  term = ['HTML', 'MD']
+  taxonomy = ['HTML', 'MD']

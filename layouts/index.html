@@ -70,7 +70,12 @@
 
       <nav class="site-nav big-banner-nav">
         <div class="trigger">
-            <a class="page-link" href="Example">Example</a>
+            {{ range $.RegularPages }}
+            <a class="page-link" href="{{ .Permalink }}">{{ title ( index (split .File "/") 0 ) }}</a>
+            {{ end }}
+            {{ range $.Site.Sections }}
+            <a class="page-link" href="{{ .Permalink }}">{{ title .Type }}</a>
+            {{ end }}
         </div>
       </nav>
   </div>

@@ -44,6 +44,6 @@ jobs:
           # Region of your DO space
           space_region: sfo2
           # DO access key
-          access_key: $DO_ACCESS_KEY
+          access_key: ${{ secrets.DO_ACCESS_KEY }}
           # DO secret key
-          secret_key: $DO_SECRET_KEY
+          secret_key: ${{ secrets.DO_SECRET_KEY }}

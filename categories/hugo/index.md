@@ -1,0 +1,2 @@
+hugo:
+  - New Personal Site

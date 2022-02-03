@@ -1456,7 +1456,6 @@ var require_input = __commonJS({
           let total = input.value;
           if (!total)
             return;
-          document.querySelector("#command-output").scrollTo({ top: 0, left: 0, behavior: "smooth" });
           output.classList.add("command-output");
           output.parentElement.classList.remove("hidden");
           input.value = "";
@@ -1487,6 +1486,7 @@ var require_input = __commonJS({
           } else {
             output.prepend(createSpan(result.error, "red"));
           }
+          document.querySelector("#command-output").scrollTo({ top: 0, left: 0, behavior: "smooth" });
         }
         headerWrapper.classList.add("slide-to-top");
         update(e.target);

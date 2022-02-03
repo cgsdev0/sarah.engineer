@@ -182,7 +182,6 @@ module.exports = (shell) => async () => {
       let total = input.value;
       if (!total) return;
 
-      document.querySelector("#command-output").scrollTo({top: 0, left: 0, behavior: 'smooth'});
       output.classList.add("command-output"); // reveal the shell
       output.parentElement.classList.remove("hidden");
       input.value = "";
@@ -227,6 +226,7 @@ module.exports = (shell) => async () => {
       } else {
         output.prepend(createSpan(result.error, "red"));
       }
+      document.querySelector("#command-output").scrollTo({top: 0, left: 0, behavior: 'smooth'});
     }
 
     // Slide on any key-press

@@ -17,9 +17,11 @@
 
   <!-- JS -->
     <script type="text/javascript">
-      document.addEventListener('load', () => {
-        document.querySelector(".sidebar").classList.remove("animated-sidebar-reverse");
-        document.querySelector(".sidebar").classList.remove("animated-sidebar");
+      document.addEventListener('pageshow', (e) => {
+        if (e.persisted) {
+          document.querySelector(".sidebar").classList.remove("animated-sidebar-reverse");
+          document.querySelector(".sidebar").classList.remove("animated-sidebar");
+        }
         if (window.location.hash === "#animate") {
           window.location.hash = "";
           setTimeout(() => document.querySelector(".sidebar").classList.add("animated-sidebar"), 0);

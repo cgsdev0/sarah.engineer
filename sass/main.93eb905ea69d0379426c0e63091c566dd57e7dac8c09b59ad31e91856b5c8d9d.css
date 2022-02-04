@@ -727,6 +727,14 @@ footer .wrapper {
     @media screen and (max-width: 800px) {
       .post-content h4 {
         font-size: 18px; } }
+.slide-transition {
+  transition: margin 0.8s ease, opacity 0.4s ease;
+  margin-top: -60px;
+  opacity: 0%; }
+
+.unslide {
+  margin-top: 0px; }
+
 /**
  * Syntax highlighting styles
  */

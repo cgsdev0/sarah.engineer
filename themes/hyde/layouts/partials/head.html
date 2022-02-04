@@ -17,20 +17,25 @@
 
   <!-- JS -->
     <script type="text/javascript">
-      if (window.location.hash === "#animate") {
-        window.location.hash = "";
-        setTimeout(() =>
-        document.querySelector(".sidebar").classList.add("animated-sidebar"), 0);
-        setTimeout(() =>
-        document.querySelector(".sidebar").classList.remove("animated-sidebar"), 3000);
-      }
+      document.addEventListener('load', () => {
+        document.querySelector(".sidebar").classList.remove("animated-sidebar-reverse");
+        document.querySelector(".sidebar").classList.remove("animated-sidebar");
+        if (window.location.hash === "#animate") {
+          window.location.hash = "";
+          setTimeout(() => document.querySelector(".sidebar").classList.add("animated-sidebar"), 0);
+          setTimeout(() =>
+          document.querySelector(".sidebar").classList.remove("animated-sidebar"), 3000);
+        }
+      });
+
+
       window.animationSequence = (url) => {
         setTimeout(() => {
           window.location.href = url;
         }, 1010);
         document.querySelector(".sidebar").classList.remove("animated-sidebar");
         setTimeout(() => {
-        document.querySelector(".sidebar").classList.add("animated-sidebar-reverse");
+          document.querySelector(".sidebar").classList.add("animated-sidebar-reverse");
         }, 1);
       }
     </script>

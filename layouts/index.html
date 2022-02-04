@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
     </head>
 
-  <body class="landing-page floating">
+  <body class="landing-page floating" style="background-color: #434345">
 
 <header class="site-header big-banner" role="banner">
       <pre class="code-banner" id="banner-snippet"></pre>
@@ -57,6 +57,14 @@
             container.appendChild(a);
             document.querySelector('.big-banner').appendChild(container);
           }))
+
+          window.animationSequence = (url) => {
+            setTimeout(() => {
+              window.location.href = url;
+            }, 600);
+            document.querySelector("body").classList.add("fade-transition");
+            document.querySelector("body").classList.add("slide-transition");
+          }
         }, false);
 
 
@@ -71,7 +79,8 @@
       <nav class="site-nav big-banner-nav">
         <div class="trigger">
 {{ range sort $.Site.Menus.home }}
-  <a class="page-link" href="{{ .URL }}">{{ title .Name }}</a>
+<!-- href="{{ .URL }}#animate" -->
+<a class="page-link" onClick="animationSequence('{{ .URL }}#animate')">{{ title .Name }}</a>
 {{ end }}
         </div>
       </nav>

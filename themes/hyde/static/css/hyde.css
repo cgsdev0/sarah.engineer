@@ -46,6 +46,10 @@ html {
 }
 
 
+.main-container {
+  min-height: 100vh;
+  background-color: #fafafa;
+}
 /*
  * Sidebar
  *
@@ -63,6 +67,21 @@ html {
 .sidebar .color-name {
   color: #61a0f1;
 }
+.sidebar .invisible-text {
+  color: transparent;
+}
+.sidebar .invisible-text {
+  text-decoration:none;
+}
+.sidebar-about {
+  opacity: 100%;
+}
+.sidebar-about a:hover {
+  text-decoration: none;
+}
+.sidebar-about a:hover .underline {
+  text-decoration: underline;
+}
 .sidebar .color-dot {
   color: #828285;
 }
@@ -74,6 +93,32 @@ html {
     bottom: 0;
     width: 18rem;
     text-align: left;
+  }
+  .animated-sidebar {
+    animation: slidein 1s ease;
+  }
+  .animated-sidebar .sidebar-about {
+      animation: fadein 1s ease-out 1.5s;
+      animation-fill-mode: forwards;
+      opacity: 0%;
+  }
+}
+@keyframes fadein {
+  from {
+    opacity: 0%;
+  }
+
+  to {
+    opacity: 100%;
+  }
+}
+@keyframes slidein {
+  from {
+    width: 100vw;
+  }
+
+  to {
+    width: 18em;
   }
 }
 

@@ -22,16 +22,14 @@
           document.querySelector(".sidebar").classList.remove("animated-sidebar-reverse");
           document.querySelector(".sidebar").classList.remove("animated-sidebar");
         }
-        if (window.location.hash === "#animate") {
-          const newLocation = new URL(window.location);
-          newLocation.hash = "";
-          history.replaceState(null, "", newLocation.href);
-          setTimeout(() => document.querySelector(".sidebar").classList.add("animated-sidebar"), 0);
-          setTimeout(() =>
-          document.querySelector(".sidebar").classList.remove("animated-sidebar"), 3000);
-        }
       });
-
+      if (window.location.hash === "#animate") {
+        const newLocation = new URL(window.location);
+        newLocation.hash = "";
+        history.replaceState(null, "", newLocation.href);
+        setTimeout(() => document.querySelector(".sidebar").classList.add("animated-sidebar"), 0);
+        setTimeout(() => document.querySelector(".sidebar").classList.remove("animated-sidebar"), 3000);
+      }
 
       window.animationSequence = (url) => {
         setTimeout(() => {

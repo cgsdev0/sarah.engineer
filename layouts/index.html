@@ -58,12 +58,18 @@
             container.appendChild(a);
             document.querySelector('.big-banner').appendChild(container);
           }))
-
+          window.addEventListener('pageshow', (e) => {
+              // Reset transition state on back button
+              if(e.persisted) {
+                document.querySelector("body").classList.remove("fade-transition");
+                document.querySelector("body").classList.remove("slide-transition");
+                const snippet = document.querySelector('#banner-snippet');
+                snippet.classList.remove("banner-scroller");
+                setTimeout(() => snippet.classList.add("banner-scroller"), 1);
+              }
+          });
           window.animationSequence = (url) => {
             setTimeout(() => {
-              // Sometimes the browser caches these in your browser history, weird
-              document.querySelector("body").classList.remove("fade-transition");
-              document.querySelector("body").classList.remove("slide-transition");
               window.location.href = url;
             }, 600);
             document.querySelector("body").classList.add("fade-transition");

@@ -20,6 +20,9 @@
       <pre class="code-banner" id="banner-snippet"></pre>
       <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', async function() {
+            // Sometimes the browser caches these in your browser history, weird
+            document.querySelector("body").classList.remove("fade-transition");
+            document.querySelector("body").classList.remove("slide-transition");
           const backgrounds = [
           {{ range $.Site.Data.snippets }}
             {

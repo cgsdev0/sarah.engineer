@@ -13,7 +13,7 @@ relativeURLs = true
 
 [params]
   themeColor = "theme-base-0d"
-  description = "not hotdog"
+  description = "full-stack software engineer • game designer"
 
 [mediaTypes]
 [mediaTypes."text/markdown"]

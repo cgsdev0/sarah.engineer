@@ -8,7 +8,8 @@ relativeURLs = true
 [Menus]
   main = [
       {Name = "Github", URL = "https://github.com/cgsdev0"},
-      {Name = "LinkedIn", URL = "https://www.linkedin.com/in/cgsdev"}
+      {Name = "LinkedIn", URL = "https://www.linkedin.com/in/cgsdev"},
+      {Name = "Twitch", URL = "https://twitch.tv/badcop_"}
   ]
 
 [params]

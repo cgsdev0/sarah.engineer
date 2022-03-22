@@ -1,0 +1,60 @@
+{{ define "main" -}}
+<h1>Contact Me</h1>
+<div class="two-column">
+<div>
+  <h2>Socials</h2>
+  <ul id="socials">
+  {{ range $.Site.Data.socials }}
+  <li><a href="{{ .url }}">{{ .name }}</a></li>
+  {{ end }}
+  </ul>
+</div>
+<div>
+  <h2>Send an E-mail</h2>
+  <!-- modify this form HTML and place wherever you want your form -->
+  <p id="contact_form_status"></p>
+  <form
+    action="https://formspree.io/f/xyyopakv"
+    method="POST"
+    id="contact_form"
+  >
+      <input type="email" name="email" required placeholder="you@example.com">
+      <textarea name="message" required cols="80" rows="12" placeholder="what's on your mind?"></textarea>
+    <!-- your other form fields go here -->
+    <button type="submit">Send</button>
+  </form>
+  <script>
+    var form = document.getElementById("contact_form");
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+      var status = document.getElementById("contact_form_status");
+      var data = new FormData(event.target);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          status.innerHTML = "Your message is on its way!";
+          form.reset()
+        } else {
+          response.json().then(data => {
+            if (Object.hasOwn(data, 'errors')) {
+              status.innerHTML = data["errors"].map(error => error["message"]).join(", ")
+            } else {
+              status.innerHTML = "Oops! There was a problem sending your message."
+            }
+          })
+        }
+      }).catch(error => {
+        status.innerHTML = "Oops! There was a problem sending your message."
+      });
+    }
+    form.addEventListener("submit", handleSubmit);
+</script>
+</div>
+</div>
+{{- end }}

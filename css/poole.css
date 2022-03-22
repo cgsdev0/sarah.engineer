@@ -402,3 +402,70 @@ a.pagination-item:hover {
     border-bottom-right-radius: 4px;
   }
 }
+
+#contact_form input,textarea {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #bbb;
+  outline: 0;
+  border-radius: 4px;
+  font-size: inherit;
+  color: #666;
+  padding: 8px 8px;
+  background: #eee;
+  transition: border-color 0.7s, color 0.7s;
+  margin-bottom: 16px;
+}
+
+#contact_form input:focus,textarea:focus {
+  border-bottom: 2px solid #61a0f1;
+  color: black;
+  transition: border-color 0.4s, color 0.4s;
+}
+
+#contact_form label {
+  transition: 0.2s;
+  color: #666;
+  margin-top: 4px;
+}
+
+#contact_form label:focus {
+  color: #61a0f1;
+}
+
+#contact_form button {
+  transition-duration: 0.4s;
+  border: 3px solid #61a0f1;
+  color: #61a0f1;
+  padding: 12px;
+  font-size: 1rem;
+  background-color: transparent;
+  border-radius: 6px;
+  min-width: 120px;
+}
+
+#contact_form button:hover {
+  background-color: #61a0f1; /* Green */
+  color: white;
+}
+
+.two-column {
+  display: flex;
+  width: 100%;
+  gap: 90px;
+  flex-direction: row-reverse;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 80em) {
+  .two-column {
+    gap: 20px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+}
+#socials {
+  padding: 0px;
+  list-style-type: none;
+}

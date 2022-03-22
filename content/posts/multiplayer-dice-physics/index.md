@@ -1,7 +1,6 @@
 ---
 title: "Simulating Multiplayer 3D Dice"
 date: 2022-01-30T22:30:07-08:00
-draft: true
 ---
 
 I wanted to add 3D, physics-based dice to my online game, [rolly cubes](https://rollycubes.com).

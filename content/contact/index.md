@@ -7,3 +7,11 @@ menu:
     home:
         weight: -50
 ---
+
+you found me!
+
+send a message to:
+
+easteregg [at] sarah [dot] engineer
+
+to win *absolutely nothing at all*

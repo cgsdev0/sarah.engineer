@@ -6,6 +6,10 @@
   rawUrl: https://gist.githubusercontent.com/cgsdev0/e2c518c30dac6c05376243ad0c5fbbbf/raw/6b0b96b716382dcd6f86a583629842244ac7ca77/fizzbuzz.cpp
   niceUrl: https://gist.github.com/cgsdev0/e2c518c30dac6c05376243ad0c5fbbbf
 
+- description: Bash Twitch Chat Bot
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/dotfiles/main/bin/twitch-cmds/twitch-chat
+  niceUrl: https://github.com/cgsdev0/dotfiles/blob/main/bin/twitch-cmds/twitch-chat
+  
 - description: TMUX Config
   rawUrl: https://raw.githubusercontent.com/cgsdev0/dotfiles/master/.tmux.conf
   niceUrl: https://github.com/cgsdev0/dotfiles/blob/master/.tmux.conf
@@ -27,8 +31,8 @@
   rawUrl: https://raw.githubusercontent.com/cgsdev0/rollycubes/master/client/src/3d/main.ts
 
 - description: Rolly Cubes Server
-  niceUrl: https://github.com/cgsdev0/rollycubes/blob/master/src/Game.cpp
-  rawUrl: https://raw.githubusercontent.com/cgsdev0/rollycubes/master/src/Game.cpp
+  niceUrl: https://github.com/cgsdev0/rollycubes/blob/master/game/src/Game.cpp
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/rollycubes/master/game/src/Game.cpp
 
 - description: SGDQ Site
   niceUrl: https://github.com/aeroberts/gdq-rate/blob/master/src/components/avatar.tsx

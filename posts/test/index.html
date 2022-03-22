@@ -39,6 +39,21 @@ full-stack software engineer • game designer
 <h1>New Personal Site</h1>
 <time datetime=2022-01-24T20:39:01-0700 class=post-date>Mon, Jan 24, 2022</time>
 <p>I decided to finally build a new website, using <a href=https://github.com/gohugoio/hugo>Hugo</a>.</p>
+<p>I have this tendency to fall down absurd rabbitholes while working on projects like this. In this case, it involved making the <a href=https://sarah.engineer/>home page</a> of my website contain a (very rough draft of a) <strong>POSIX-like shell</strong>. Check it out if you&rsquo;re a nerd like me! Just press &lsquo;enter&rsquo; on the main page to activate it.</p>
+<h2 id=how-its-built>How it&rsquo;s Built</h2>
+<p>The crux of this shell is <a href=https://github.com/cgsdev0/bash-parser>bash-parser</a>, a repository I stumbled across on GitHub. It&rsquo;s a javascript library with the capability of translating a string of bash to an AST. It&rsquo;s not <em>perfect</em>, and neither is my shell&rsquo;s implementation on top of it; however, I find it works well enough for the basics.</p>
+<p>For example, if you wanted to search for any posts mentioning <a href=https://rollycubes.com/>rolly cubes</a>, you could use the following command:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>find</span> <span style=color:#f92672>-</span><span style=color:#a6e22e>type</span> <span style=color:#a6e22e>f</span> . <span style=color:#f92672>|</span> <span style=color:#a6e22e>xargs</span> <span style=color:#a6e22e>cat</span> <span style=color:#f92672>|</span> <span style=color:#a6e22e>grep</span> <span style=color:#a6e22e>rolly</span>
+</code></pre></div><p>The purists will say that you should be able to xargs into grep directly, to which I say&mldr; you&rsquo;re right; <a href=https://github.com/cgsdev0/cgsdev0.github.io/blob/17bfe7259db771254cb948fa8464fe35fd5329e1/assets/js/commands.js#L77-L109>PRs welcome</a>!</p>
+<h2 id=handling-input>Handling Input</h2>
+<p>&mldr;I&rsquo;m stubborn. Like, really stubborn. This is how the default input cursor looks in my browser:
+<img src=./regular_cursor.gif alt="Default Cursor"></p>
+<p>Here&rsquo;s how I wanted it to look:
+<img src=./my_cursor.gif alt="My Custom Cursor"></p>
+<p>Unfortunately, at the time of writing, there&rsquo;s not great support for CSS for input cursors.</p>
+<p>So, what can we do? We can build our own!</p>
+<p>Not so fast - building a text input from scratch in JavaScript is <del>difficult</del> <em>impossible</em>. Browsers implement a variety of keyboard shortcuts, and they&rsquo;re impossible to hijack universally across all browsers. Instead of starting from scratch, though, we can build a text input in JavaScript using a <strong>real text input</strong> as our base!</p>
+<p>I&rsquo;ll spare you all the details for this post, but essentially I accomplished my goal by hijacking an always-focused off-screen text input, and spying on its text + selection state. If you&rsquo;re interested, you can find <a href=https://github.com/cgsdev0/cgsdev0.github.io/blob/main/assets/js/input.js>the code here</a>.</p>
 </div>
 </main>
 </div>

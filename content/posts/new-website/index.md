@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "New Personal Site"
+title: "New Website"
 date: 2022-01-24 20:39:01 -0700
 categories: hugo
 ---

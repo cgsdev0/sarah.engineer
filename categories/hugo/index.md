@@ -1,2 +1,2 @@
 hugo:
-  - New Personal Site
+  - New Website

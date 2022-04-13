@@ -1,2 +1,3 @@
 Categories:
+  - game-dev
   - hugo

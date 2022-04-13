@@ -154,6 +154,10 @@
   opacity: 0;
 }
 
+.hidden-no-animate {
+  display: none;
+}
+
 .titlebar {
   background-color: #202020;
   width: 100%;
@@ -173,24 +177,16 @@
     display: flex;
     flex-direction: row;
     div {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
+      font-size: 12pt;
+      color: $tld-color;
+      width: 16px;
+      padding-top: 1px;
       margin-left: 6px;
       opacity: 60%;
       cursor: pointer;
       &:hover {
         opacity: 100%;
       }
-    }
-    .green {
-      background-color: limegreen;
-    }
-    .red {
-      background-color: red;
-    }
-    .yellow {
-      background-color: yellow;
     }
   }
 }
@@ -674,4 +670,14 @@ footer .wrapper {
 
 .unslide {
   margin-top: 0px;
+}
+
+#hint-text {
+  color: $dot-color;
+  position: absolute;
+  top: -40px;
+  right: 40px;
+  font-size: 16pt;
+  opacity: 0%;
+  animation: fadeIn 1s 7s forwards;
 }

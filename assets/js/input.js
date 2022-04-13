@@ -43,14 +43,8 @@ module.exports = (shell) => async () => {
   let closing = false;
   document.querySelector(".buttons .green").addEventListener("click", () => {
     if (closing) return;
-    document.body.classList.remove("floating");
-    document.body.classList.add("fullscreen");
-  });
-
-  document.querySelector(".buttons .yellow").addEventListener("click", () => {
-    if (closing) return;
-    document.body.classList.remove("fullscreen");
-    document.body.classList.add("floating");
+    document.body.classList.toggle("floating");
+    document.body.classList.toggle("fullscreen");
   });
 
   document.querySelector(".buttons .red").addEventListener("click", () => {
@@ -184,6 +178,7 @@ module.exports = (shell) => async () => {
 
       output.classList.add("command-output"); // reveal the shell
       output.parentElement.classList.remove("hidden");
+      document.querySelector("#hint-text").classList.add("hidden-no-animate");
       input.value = "";
       update(input);
 
@@ -226,7 +221,9 @@ module.exports = (shell) => async () => {
       } else {
         output.prepend(createSpan(result.error, "red"));
       }
-      document.querySelector("#command-output").scrollTo({top: 0, left: 0, behavior: 'smooth'});
+      document
+        .querySelector("#command-output")
+        .scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }
 
     // Slide on any key-press

@@ -10,7 +10,10 @@ const parse = window.parseBash;
 
 class Shell {
   constructor() {
-    this.aliases = {};
+    this.aliases = {
+      mc: "minecraft",
+      ff: "find -type f .",
+    };
     this.env = {
       SHELL: "javascript 🚀",
       USER: "definitelynotroot",
@@ -59,8 +62,22 @@ class Shell {
     }
     const cmd = (await this.expand(command.name)).trim();
     if (!this.commands.commands.hasOwnProperty(cmd)) {
-      this.returnCode = 1;
-      return `command not found: ${cmd}\n`;
+      try {
+        // hack around aliases not working in subshell
+        // this feels... incorrect
+        if (!this.aliases.hasOwnProperty(cmd)) {
+          throw new Error("nope nope");
+        }
+        const new_ast = parse(cmd, {
+          resolveEnv: this.resolveEnv,
+          resolveParameter: this.resolveParameter,
+          resolveAlias: this.resolveAlias,
+        });
+        return await this.execAST(new_ast);
+      } catch (e) {
+        this.returnCode = 1;
+        return `command not found: ${cmd}\n`;
+      }
     }
     this.returnCode = 0;
     const res = await this.commands.commands[cmd](

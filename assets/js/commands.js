@@ -7,6 +7,7 @@ module.exports = class CommandSet {
     this.fs = fs;
 
     this.commands = {
+      help: this.help,
       false: this.falseProgram,
       true: this.trueProgram,
       find: this.find,
@@ -27,7 +28,6 @@ module.exports = class CommandSet {
       curl: this.curl,
       ls: this.ls,
       cd: this.cd,
-      mc: this.minecraft,
       minecraft: this.minecraft,
       /** pity points */
       bash: this.sad,
@@ -35,8 +35,38 @@ module.exports = class CommandSet {
       sh: this.sad,
       fish: this.sad,
       chsh: this.sad,
+      vim: this.edit,
+      emacs: this.edit,
+      vi: this.edit,
+      nano: this.edit,
+      code: this.edit,
     };
   }
+
+  edit = (file) => {
+    const path = this.fs.getFilePath(this.shell.cwd_p, file);
+    window.open(
+      "https://github.dev/cgsdev0/cgsdev0.github.io/blob/main/content" + path,
+      "_blank"
+    );
+    return "Opening editor session...";
+  };
+  help = () => {
+    const hide = ["sarah.engineer", "export", "alias", "unalias"];
+    return (
+      "The following commands are implemented (with varying degrees of accuracy):\n" +
+      Object.keys(this.commands)
+        .filter((c) => !hide.includes(c))
+        .join(", ") +
+      "\n\n" +
+      "The following aliased commands exist:\n" +
+      Object.keys(this.shell.aliases)
+        .map((a) => `${a}="${this.shell.aliases[a]}"`)
+        .join("\n") +
+      "\n\n" +
+      `For example, try typing: '${style.greenBright.open}find . | grep .md${style.greenBright.close}'`
+    );
+  };
 
   colortest = () => {
     const rainbow = function (i) {
@@ -157,18 +187,20 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
       return "directory not found\n";
     }
     const base = fileFilter ? [] : ["."];
-    return base
-      .concat(
-        find_r("")(inode)
-          .flat(Infinity)
-          .filter(
-            (file) =>
-              (!fileFilter && !dirFilter) ||
-              (fileFilter && !file.endsWith("/")) ||
-              (dirFilter && file.endsWith("/"))
-          )
-      )
-      .join("\n");
+    return (
+      base
+        .concat(
+          find_r("")(inode)
+            .flat(Infinity)
+            .filter(
+              (file) =>
+                (!fileFilter && !dirFilter) ||
+                (fileFilter && !file.endsWith("/")) ||
+                (dirFilter && file.endsWith("/"))
+            )
+        )
+        .join("\n") + "\n"
+    );
   };
 
   ls = async (dir) => {
@@ -179,7 +211,7 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
     }
     const base = ["."];
     if (inode.parent) base.push("..");
-    return base.concat(Object.keys(inode.children)).join("\n");
+    return base.concat(Object.keys(inode.children)).join("\n") + "\n";
   };
 
   curl = async (url) => {
@@ -257,11 +289,13 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
       return this.shell.stdin;
     } else {
       return (
-        await asyncMap(
-          files.map((fileList) => fileList.split("\n")).flat(),
-          printFile
-        )
-      ).join("\n");
+        (
+          await asyncMap(
+            files.map((fileList) => fileList.split("\n")).flat(),
+            printFile
+          )
+        ).join("\n") + "\n"
+      );
     }
   };
 
@@ -279,7 +313,9 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
     return await this.commands[command](...allArgs);
   };
   welcome = () => {
-    return "You've discovered the hidden shell!\nWhat else is there to find? 🤔\n";
+    return `Welcome to my website!
+This shell provides access to all of the same information
+as the links above. Type '${style.greenBright.open}help${style.greenBright.close}' to list commands.`;
   };
 
   sudo = () => {

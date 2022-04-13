@@ -62,7 +62,7 @@ loop (think _WarioWare_). We picked a few real-world social media sites to base 
 Our team consisted of 4 members, divided roughly as:
 * 1 artist
 * 1 writer
-* 2 programmer
+* 2 programmers
 
 We spun up a Google Doc to collaborate on writing the various prompts, and a Google Drive to share art assets.
 We also created a private channel in a Discord server so we could communicate asynchronously.

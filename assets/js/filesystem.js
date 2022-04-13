@@ -76,6 +76,30 @@ module.exports = class FileSystem {
     return inode;
   };
 
+  getFilePath = (cwd, file) => {
+    let inode = this.findFileNode(cwd, file);
+
+    if (!inode) {
+      throw new Error("directory not found\n");
+    }
+
+    if (inode.isDirectory) {
+      throw new Error(
+        `${inode.name} is a directory; only editing a file is supported\n`
+      );
+    }
+
+    // build full path
+    let path = inode.name;
+    let t_inode = inode;
+    while (t_inode.parent) {
+      path = t_inode.parent.name + path;
+      t_inode = t_inode.parent;
+    }
+
+    return path;
+  };
+
   readFileAsync = async (cwd, file) => {
     let inode = this.findFileNode(cwd, file);
     if (!inode) {

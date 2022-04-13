@@ -84,12 +84,11 @@
 
       </script>
   <div class="wrapper" id="header-wrapper">
-
-    <div id="outer" class="site-title" rel="author">
+    <span id="hint-text">Press 'Enter' &#129047;</span>
+    <div id="outer" class="site-title">
         <input type="text" id="hidden-input" />
         <span id="container" class="noselect"><span id="fake-input"></span><span class="fancy-caret">&nbsp;</span></span>
     </div>
-
       <nav class="site-nav big-banner-nav">
         <div class="trigger">
 {{ range sort $.Site.Menus.home }}
@@ -102,9 +101,8 @@
   <div class="hidden" id="command-output-wrapper">
     <div class="titlebar">SarahOS
       <div class="buttons">
-        <div class="green"></div>
-        <div class="yellow"></div>
-        <div class="red"></div>
+        <div class="green">&#9974;</div>
+        <div class="red">&#x2715;</div>
       </div>
     </div>
     <pre id="command-output"></pre>

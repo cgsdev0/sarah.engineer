@@ -12,23 +12,29 @@ We created an online whiteboard with Figma Jam, and started drafting ideas (and 
 
 ![Whiteboard](./figma_jam.png)
 
+The very first thing that popped into all of our heads was "tower defense". We wrote this down,
+and then *immediately crossed it out.* **If an idea is super obvious to you, it's probably super obvious to
+other participants too**. If you want to stand out from the crowd, you should try to dig into
+the theme a little deeper to find something unique.
+
 One of my favorite brainstorming techniques is to transform the theme into a question: _"What things can be protected?"_
 
-We made a list:
+So, we made a list:
  * Castles
  * Money
  * Land
  * People
+ * Livestock
  * etc.
 
-About halfway down the list, we wrote 'reputations' and 'brands', which were particularly interesting to me.
+About halfway down the list, we wrote 'reputations' and 'brands', which were particularly interesting to me;
 I started drafting an idea for a game incorporating these. The basic pitch was along the lines of,
-"what if you work as the social media manager for some large company, and your job is to protect their brand image?"
+*"what if you work as the social media manager for some large company, and your job is to protect their brand image?"*
 
 ![Potential Game Sketch](./figma_jam2.png)
 
 We toyed around with a few other ideas, but at the end of our brainstorming session,
-decided that this one was the most promising.
+decided that this one was the most promising to pursue.
 
 # Solidifying the Idea
 

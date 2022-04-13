@@ -333,6 +333,9 @@ body {
   transition: visibility 0.5s;
   opacity: 0; }
 
+.hidden-no-animate {
+  display: none; }
+
 .titlebar {
   background-color: #202020;
   width: 100%;
@@ -351,20 +354,15 @@ body {
     display: flex;
     flex-direction: row; }
     .titlebar .buttons div {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
+      font-size: 12pt;
+      color: #fdfdfd;
+      width: 16px;
+      padding-top: 1px;
       margin-left: 6px;
       opacity: 60%;
       cursor: pointer; }
       .titlebar .buttons div:hover {
         opacity: 100%; }
-    .titlebar .buttons .green {
-      background-color: limegreen; }
-    .titlebar .buttons .red {
-      background-color: red; }
-    .titlebar .buttons .yellow {
-      background-color: yellow; }
 
 .floating #command-output-wrapper {
   margin-top: 100px;
@@ -734,6 +732,15 @@ footer .wrapper {
 
 .unslide {
   margin-top: 0px; }
+
+#hint-text {
+  color: #828285;
+  position: absolute;
+  top: -40px;
+  right: 40px;
+  font-size: 16pt;
+  opacity: 0%;
+  animation: fadeIn 1s 7s forwards; }
 
 /**
  * Syntax highlighting styles

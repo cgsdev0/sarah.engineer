@@ -198,6 +198,7 @@ var require_commands = __commonJS({
         this.shell = shell;
         this.fs = fs;
         this.commands = {
+          help: this.help,
           false: this.falseProgram,
           true: this.trueProgram,
           find: this.find,
@@ -218,15 +219,30 @@ var require_commands = __commonJS({
           curl: this.curl,
           ls: this.ls,
           cd: this.cd,
-          mc: this.minecraft,
           minecraft: this.minecraft,
           bash: this.sad,
           zsh: this.sad,
           sh: this.sad,
           fish: this.sad,
-          chsh: this.sad
+          chsh: this.sad,
+          vim: this.edit,
+          emacs: this.edit,
+          vi: this.edit,
+          nano: this.edit,
+          code: this.edit
         };
       }
+      edit = (file) => {
+        const path = this.fs.getFilePath(this.shell.cwd_p, file);
+        window.open("https://github.dev/cgsdev0/cgsdev0.github.io/blob/main/content" + path, "_blank");
+        return "Opening editor session...";
+      };
+      help = () => {
+        const hide = ["sarah.engineer", "export", "alias", "unalias"];
+        return "The following commands are implemented (with varying degrees of accuracy):\n" + Object.keys(this.commands).filter((c) => !hide.includes(c)).join(", ") + "\n\nThe following aliased commands exist:\n" + Object.keys(this.shell.aliases).map((a) => `${a}="${this.shell.aliases[a]}"`).join("\n") + `
+
+For example, try typing: '${import_ansi_styles.default.greenBright.open}find . | grep .md${import_ansi_styles.default.greenBright.close}'`;
+      };
       colortest = () => {
         const rainbow = function(i) {
           const freq = 0.3;
@@ -325,7 +341,7 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
           return "directory not found\n";
         }
         const base = fileFilter ? [] : ["."];
-        return base.concat(find_r("")(inode).flat(Infinity).filter((file) => !fileFilter && !dirFilter || fileFilter && !file.endsWith("/") || dirFilter && file.endsWith("/"))).join("\n");
+        return base.concat(find_r("")(inode).flat(Infinity).filter((file) => !fileFilter && !dirFilter || fileFilter && !file.endsWith("/") || dirFilter && file.endsWith("/"))).join("\n") + "\n";
       };
       ls = async (dir) => {
         let inode = this.fs.findFileNode(this.shell.cwd_p, dir);
@@ -336,7 +352,7 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
         const base = ["."];
         if (inode.parent)
           base.push("..");
-        return base.concat(Object.keys(inode.children)).join("\n");
+        return base.concat(Object.keys(inode.children)).join("\n") + "\n";
       };
       curl = async (url) => {
         const resp = await window.fetch(url);
@@ -401,7 +417,7 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
         if (this.shell.stdin) {
           return this.shell.stdin;
         } else {
-          return (await asyncMap(files.map((fileList) => fileList.split("\n")).flat(), printFile)).join("\n");
+          return (await asyncMap(files.map((fileList) => fileList.split("\n")).flat(), printFile)).join("\n") + "\n";
         }
       };
       xargs = async (...args) => {
@@ -415,7 +431,9 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
         return await this.commands[command](...allArgs);
       };
       welcome = () => {
-        return "You've discovered the hidden shell!\nWhat else is there to find? \u{1F914}\n";
+        return `Welcome to my website!
+This shell provides access to all of the same information
+as the links above. Type '${import_ansi_styles.default.greenBright.open}help${import_ansi_styles.default.greenBright.close}' to list commands.`;
       };
       sudo = () => {
         this.shell.returnCode = 1;
@@ -495,6 +513,23 @@ var require_filesystem = __commonJS({
           }
         }
         return inode;
+      };
+      getFilePath = (cwd, file) => {
+        let inode = this.findFileNode(cwd, file);
+        if (!inode) {
+          throw new Error("directory not found\n");
+        }
+        if (inode.isDirectory) {
+          throw new Error(`${inode.name} is a directory; only editing a file is supported
+`);
+        }
+        let path = inode.name;
+        let t_inode = inode;
+        while (t_inode.parent) {
+          path = t_inode.parent.name + path;
+          t_inode = t_inode.parent;
+        }
+        return path;
       };
       readFileAsync = async (cwd, file) => {
         let inode = this.findFileNode(cwd, file);
@@ -1336,14 +1371,8 @@ var require_input = __commonJS({
       document.querySelector(".buttons .green").addEventListener("click", () => {
         if (closing)
           return;
-        document.body.classList.remove("floating");
-        document.body.classList.add("fullscreen");
-      });
-      document.querySelector(".buttons .yellow").addEventListener("click", () => {
-        if (closing)
-          return;
-        document.body.classList.remove("fullscreen");
-        document.body.classList.add("floating");
+        document.body.classList.toggle("floating");
+        document.body.classList.toggle("fullscreen");
       });
       document.querySelector(".buttons .red").addEventListener("click", () => {
         const close = () => {
@@ -1458,6 +1487,7 @@ var require_input = __commonJS({
             return;
           output.classList.add("command-output");
           output.parentElement.classList.remove("hidden");
+          document.querySelector("#hint-text").classList.add("hidden-no-animate");
           input.value = "";
           update(input);
           if (total === "clear") {
@@ -1503,7 +1533,10 @@ init_utils();
 var parse = window.parseBash;
 var Shell = class {
   constructor() {
-    this.aliases = {};
+    this.aliases = {
+      mc: "minecraft",
+      ff: "find -type f ."
+    };
     this.env = {
       SHELL: "javascript \u{1F680}",
       USER: "definitelynotroot"
@@ -1544,9 +1577,21 @@ var Shell = class {
     }
     const cmd = (await this.expand(command.name)).trim();
     if (!this.commands.commands.hasOwnProperty(cmd)) {
-      this.returnCode = 1;
-      return `command not found: ${cmd}
+      try {
+        if (!this.aliases.hasOwnProperty(cmd)) {
+          throw new Error("nope nope");
+        }
+        const new_ast = parse(cmd, {
+          resolveEnv: this.resolveEnv,
+          resolveParameter: this.resolveParameter,
+          resolveAlias: this.resolveAlias
+        });
+        return await this.execAST(new_ast);
+      } catch (e) {
+        this.returnCode = 1;
+        return `command not found: ${cmd}
 `;
+      }
     }
     this.returnCode = 0;
     const res = await this.commands.commands[cmd](...command.suffix ? await asyncMap(command.suffix, this.expand) : []);

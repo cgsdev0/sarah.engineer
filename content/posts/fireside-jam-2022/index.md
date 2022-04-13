@@ -1,6 +1,8 @@
 ---
 title: "Building a Game in 10 Days: How We Won a Game Jam"
 date: 2022-04-12T14:52:07-08:00
+categories:
+  - game-dev
 ---
 
 *You can play our entry to the Fireside Game Jam 2022 here: [PR Protector](https://badcop.itch.io/pr-protector). It was rated #1 overall by the judges and other contestants of the jam.*

@@ -1,5 +1,7 @@
 ---
 title: "Simulating Multiplayer 3D Dice"
+categories:
+  - game-dev
 date: 2022-01-30T22:30:07-08:00
 ---
 

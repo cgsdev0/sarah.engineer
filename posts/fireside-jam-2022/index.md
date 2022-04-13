@@ -9,6 +9,7 @@ The starting day rolled around, and the theme was announced: **Protect.**
 # Brainstorming
 
 We created an online whiteboard with Figma Jam, and started drafting ideas (and inevitably, some doodles):
+
 ![Whiteboard](./figma_jam.png)
 
 One of my favorite brainstorming techniques is to transform the theme into a question: _"What things can be protected?"_
@@ -21,24 +22,30 @@ We made a list:
  * etc.
 
 About halfway down the list, we wrote 'reputations' and 'brands', which were particularly interesting to me.
-I started drafting an idea for a game incorporating these.
+I started drafting an idea for a game incorporating these. The basic pitch was along the lines of,
+"what if you work as the social media manager for some large company, and your job is to protect their brand image?"
+
 ![Potential Game Sketch](./figma_jam2.png)
 
-We toyed around with a few other ideas, but at the end of our brainstorming session, decided to pursue this one.
+We toyed around with a few other ideas, but at the end of our brainstorming session,
+decided that this one was the most promising.
 
 # Solidifying the Idea
 
 From the initial sketch, we knew that this game would take place in a simulated computer desktop environment.
-We decided to create a quick inspiration board for ways our game could look.
+We drafted up a quick inspiration board for ways our game could look:
+
 ![Inspiration](./inspiration.png)
 
 We decided that the game _[Papers, Please](https://papersplea.se/)_ was similar to what we wanted to create;
 in order to not end up with a re-skinned version of that game, we wanted to build a more mini-game style gameplay
-loop (think _WarioWare_). We decided to base each of the mini-games on some real-world social media site:
-* Reddit
-* Twitter
-* Youtube
-* Instagram
+loop (think _WarioWare_). We picked a few real-world social media sites to base each of the minigames on:
+* **Reddit** - upvoting / downvoting posts related to the brand
+* **Twitter** - "cancelling" users with negative opinions on the company
+* **Youtube** - filing copyright claims on negative videos
+* **Instagram** - photoshopping images
+* **News Articles** - filling in the blank to create a headline
+    * We ended up de-scoping this one to save time
 
 # Divide and Conquer
 
@@ -47,15 +54,18 @@ Our team consisted of 4 members, divided roughly as:
 * 1 writer
 * 2 programmer
 
-We created a Google Doc to collaborate on writing the various prompts, and a Google Drive to share art assets.
+We spun up a Google Doc to collaborate on writing the various prompts, and a Google Drive to share art assets.
 We also created a private channel in a Discord server so we could communicate asynchronously.
 
 Since building a minigame based game is a fairly tall order,
 we set a target deadline of 5 days (half the jam duration) to have a playable demo.
 
+Getting to a playable demo early is key in a game jam; you should be constantly playing your game and iterating on
+the main gameplay loop throughout the development process.
+
 # Know Your Audience
 
-The audience of a jam game is different than publishing to a wider audience;
+The audience of a jam game is different than publishing to a wider audience:
 * They're likely fellow game developers
 * They're playing a bunch of other submissions
 
@@ -95,5 +105,5 @@ glad other people enjoyed playing it! Thanks to everyone else involved with the 
 out all of the other entries and interpretations of the theme. If you're curious, you can see [all of the game
 submissions here.](https://itch.io/jam/fireside-jam-2022/results)
 
-Hopefully I'll be back to participate next year!
+Hopefully, I'll be back to participate next year!
 

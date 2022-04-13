@@ -13,7 +13,7 @@
   {{- else -}}
   <title>{{ .Title }} &middot; {{ .Site.Title }}</title>
   {{- end }}
-  <meta name="description" content="{{if .IsHome}}{{ $.Site.Params.description }}{{else}}{{.Description}}{{end}}" />
+  <meta name="description" property="og:description" content="{{if .IsHome}}{{ $.Site.Params.description }}{{else}}{{.Summary}}{{end}}" />
 
   <!-- JS -->
     <script type="text/javascript">

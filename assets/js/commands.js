@@ -64,7 +64,8 @@ module.exports = class CommandSet {
         .map((a) => `${a}="${this.shell.aliases[a]}"`)
         .join("\n") +
       "\n\n" +
-      `For example, try typing: '${style.greenBright.open}find . | grep .md${style.greenBright.close}'`
+      `For example, try typing: '${style.greenBright.open}ff | grep dice${style.greenBright.close}'\n` +
+      `or, to be even fancier: '${style.yellowBright.open}ff | grep dice | xargs vim${style.yellowBright.close}'`
     );
   };
 

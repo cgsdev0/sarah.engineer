@@ -241,7 +241,8 @@ var require_commands = __commonJS({
         const hide = ["sarah.engineer", "export", "alias", "unalias"];
         return "The following commands are implemented (with varying degrees of accuracy):\n" + Object.keys(this.commands).filter((c) => !hide.includes(c)).join(", ") + "\n\nThe following aliased commands exist:\n" + Object.keys(this.shell.aliases).map((a) => `${a}="${this.shell.aliases[a]}"`).join("\n") + `
 
-For example, try typing: '${import_ansi_styles.default.greenBright.open}find . | grep .md${import_ansi_styles.default.greenBright.close}'`;
+For example, try typing: '${import_ansi_styles.default.greenBright.open}ff | grep dice${import_ansi_styles.default.greenBright.close}'
+or, to be even fancier: '${import_ansi_styles.default.yellowBright.open}ff | grep dice | xargs vim${import_ansi_styles.default.yellowBright.close}'`;
       };
       colortest = () => {
         const rainbow = function(i) {

@@ -395,6 +395,7 @@ body {
   100% {
     opacity: 100%; } }
   .fullscreen #header-wrapper .site-title {
+    transform: translate(0px, -12px);
     font-size: 16px;
     line-height: 63px;
     opacity: 0;

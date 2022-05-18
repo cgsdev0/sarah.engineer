@@ -3,9 +3,11 @@
 
     <head>
       <meta http-equiv="content-type" content="text/html; charset=utf-8">
+      <link rel="canonical" href="{{ .Permalink }}" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="description" content="{{if .IsHome}}{{ $.Site.Params.description }}{{else}}{{.Description}}{{end}}" />
       <title>Sarah Schulte | Software Engineer & Indie Game Dev</title>
+      <meta name="description" content="{{ $.Site.Params.description }}" />
+
         {{ $sass := resources.Get "sass/main.scss" }}
         {{ $styles := $sass | resources.ToCSS | resources.Fingerprint }}
         {{ $externals := slice "fs" "path" }}

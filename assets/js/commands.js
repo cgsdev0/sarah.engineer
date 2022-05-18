@@ -292,7 +292,10 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
       return (
         (
           await asyncMap(
-            files.map((fileList) => fileList.split("\n")).flat(),
+            files
+              .map((fileList) => fileList.split("\n"))
+              .flat()
+              .filter((a) => a),
             printFile
           )
         ).join("\n") + "\n"

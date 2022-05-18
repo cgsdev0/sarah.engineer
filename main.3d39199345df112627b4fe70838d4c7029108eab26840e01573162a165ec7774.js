@@ -418,7 +418,7 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
         if (this.shell.stdin) {
           return this.shell.stdin;
         } else {
-          return (await asyncMap(files.map((fileList) => fileList.split("\n")).flat(), printFile)).join("\n") + "\n";
+          return (await asyncMap(files.map((fileList) => fileList.split("\n")).flat().filter((a) => a), printFile)).join("\n") + "\n";
         }
       };
       xargs = async (...args) => {

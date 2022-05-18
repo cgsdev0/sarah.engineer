@@ -12,7 +12,7 @@ We checked out the [jam calendar on itch.io](https://itch.io/jams) and found a c
 
 The starting day rolled around, and the theme was announced: **Protect.**
 
-# Brainstorming
+## Brainstorming
 
 We created an online whiteboard with Figma Jam, and started drafting ideas (and inevitably, some doodles):
 
@@ -42,7 +42,7 @@ I started drafting an idea for a game incorporating these. The basic pitch was a
 We toyed around with a few other ideas, but at the end of our brainstorming session,
 decided that this one was the most promising to pursue.
 
-# Solidifying the Idea
+## Solidifying the Idea
 
 From the initial sketch, we knew that this game would take place in a simulated computer desktop environment.
 We drafted up a quick inspiration board for ways our game could look:
@@ -59,7 +59,7 @@ loop (think _WarioWare_). We picked a few real-world social media sites to base 
 * **News Articles** - filling in the blank to create a headline
     * We ended up de-scoping this one to save time
 
-# Divide and Conquer
+## Divide and Conquer
 
 Our team consisted of 4 members, divided roughly as:
 * 1 artist
@@ -75,7 +75,7 @@ we set a target deadline of 5 days (half the jam duration) to have a playable de
 Getting to a playable demo early is key in a game jam; you should be constantly playing your game and iterating on
 the main gameplay loop throughout the development process.
 
-# Know Your Audience
+## Know Your Audience
 
 The audience of a jam game is different than publishing to a wider audience:
 * They're likely fellow game developers
@@ -90,7 +90,7 @@ the other contestants, they will likely only spend a short amount of time on you
 Admittedly, we somewhat missed the mark on this; our game's average ended up being around ~25 minutes for completion,
 because we under-estimated the difficulty of our game.
 
-## Include a Tutorial
+### Include a Tutorial
 
 Since your audience is playing a bunch of games, they're not going to be keen to read a giant wall of text on
 your game's page before jumping into the gameplay. Ideally, this should be baked into the gameplay of your game.
@@ -104,7 +104,7 @@ and we bake the introductions into the "story" emails at the start of each level
 The first 3 levels of our game are actually impossible to fail - we added a rubber-banding mechanic to the stock price
 so that you can take as long as you like on them.
 
-# Conclusions
+## Conclusions
 
 This was my 5th time entering a game jam, but my first time working with this particular team.
 For each of the other team members, it was their first time participating in a jam.

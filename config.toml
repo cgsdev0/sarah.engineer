@@ -1,6 +1,6 @@
 baseURL = "https://sarah.engineer/"
 languageCode = "en-us"
-title = "sarah.engineer"
+title = "Sarah Schulte"
 theme = "hyde"
 enableEmoji = true
 relativeURLs = true

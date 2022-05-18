@@ -5,7 +5,7 @@
       <meta http-equiv="content-type" content="text/html; charset=utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="description" content="{{if .IsHome}}{{ $.Site.Params.description }}{{else}}{{.Description}}{{end}}" />
-      <title>{{ .Site.Title }}</title>
+      <title>Sarah Schulte | Software Engineer & Indie Game Dev</title>
         {{ $sass := resources.Get "sass/main.scss" }}
         {{ $styles := $sass | resources.ToCSS | resources.Fingerprint }}
         {{ $externals := slice "fs" "path" }}
@@ -19,7 +19,7 @@
     </head>
 
   <body class="landing-page floating" style="background-color: #434345">
-
+  <h1>Sarah Schulte | Software Engineer & Indie Game Dev</h1>
 <header class="site-header big-banner" role="banner">
       <pre class="code-banner" id="banner-snippet"></pre>
       <script type="text/javascript">

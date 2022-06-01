@@ -19,8 +19,8 @@
   niceUrl: https://github.com/cgsdev0/jira-tools/blob/master/jira-tools
 
 - description: Golfed Flappy Bird
-  rawUrl: https://raw.githubusercontent.com/cgsdev0/flap/main/golf.cpp
-  niceUrl: https://github.com/cgsdev0/flap/blob/main/golf.cpp
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/flap/main/flap.cpp
+  niceUrl: https://github.com/cgsdev0/flap/blob/main/flap.cpp
 
 - description: ComputerCraft Energy Monitor
   niceUrl: https://github.com/cgsdev0/computercraft-energy-monitor/blob/master/server.lua

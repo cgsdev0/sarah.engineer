@@ -255,7 +255,7 @@ or, to be even fancier: '${import_ansi_styles.default.yellowBright.open}ff | gre
         return this.shell.stdin.split("").map((c, i) => rainbow(i) + c).join("");
       };
       minecraft = async () => {
-        const res = await window.fetch("https://api.mcsrvstat.us/2/mc2.badcop.games");
+        const res = await window.fetch("https://api.mcsrvstat.us/2/mc.badcop.games");
         const data = await res.json();
         if (!data.online) {
           this.shell.returnCode = 1;

@@ -90,7 +90,7 @@ module.exports = class CommandSet {
 
   minecraft = async () => {
     const res = await window.fetch(
-      "https://api.mcsrvstat.us/2/mc2.badcop.games"
+      "https://api.mcsrvstat.us/2/mc.badcop.games"
     );
     const data = await res.json();
     if (!data.online) {

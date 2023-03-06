@@ -54,7 +54,7 @@ full-stack software engineer • game designer
 <p>:tmi.twitch.tv NOTICE * :Improperly formatted auth</p>
 </blockquote>
 <p>It&rsquo;s a start!</p>
-<h1 id=authenticating>Authenticating</h1>
+<h1 id=authentication>Authentication</h1>
 <p>Twitch expects a certain set of commands in order to verify your identity. OAuth is out of scope for this post, but you can use <a href=https://twitchapps.com/tmi/>apps such as this one</a> to generate an access token.</p>
 <p>Once you have the token, you can run the following commands to sign in:</p>
 <pre tabindex=0><code>CAP REQ :twitch.tv/tags twitch.tv/commands
@@ -115,7 +115,7 @@ auth | netcat irc.chat.twitch.tv <span style=color:#ae81ff>6667</span>
     echo <span style=color:#e6db74>&#34;</span>$name<span style=color:#e6db74>: </span>$msg<span style=color:#e6db74>&#34;</span> 1&gt;&amp;<span style=color:#ae81ff>2</span>
 <span style=color:#f92672>}</span>
 </code></pre></div><p>We extract the message from the line by splitting on &lsquo;:&rsquo; and returning the 2nd field onwards (<code>-f2-</code>). We also extract the username in a similar way. Then we print the message to <code>stderr</code> (we&rsquo;re reserving <code>stdout</code> for the special magic coming next!)</p>
-<h1 id=going-full-circle>Going Full Circle</h1>
+<h2 id=going-full-circle>Going Full Circle</h2>
 <p>So far, we&rsquo;ve seen a variety of pipelines used in bash. These work by feeding the output of the first command into the input of the second command, and so on. The pipeline goes in order; the data flows from one command to the next, and finally to <code>stdout</code>. However&mldr; what happens if we connect one end of the pipeline to the other?</p>
 <p>This is possible! Enter <code>mkfifo</code>:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkfifo /tmp/twitch_pipe;
@@ -144,7 +144,7 @@ auth | netcat irc.chat.twitch.tv <span style=color:#ae81ff>6667</span>
     echo <span style=color:#e6db74>&#34;PRIVMSG #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74> :</span>$@<span style=color:#e6db74>&#34;</span>
 <span style=color:#f92672>}</span>
 </code></pre></div><p>With that final piece of the puzzle, we should have our first command on the bot!</p>
-<h1 id=the-final-product>The Final Product</h1>
+<h2 id=the-final-product>The Final Product</h2>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>#!/usr/bin/env bash
 </span><span style=color:#75715e></span>
 cd <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>0%/*<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
@@ -195,7 +195,7 @@ mkfifo /tmp/twitch_pipe;
 </span><span style=color:#ae81ff></span>    | netcat <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>      irc.chat.twitch.tv <span style=color:#ae81ff>6667</span> <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>    &gt;/tmp/twitch_pipe;
-</code></pre></div><h2 id=conclusion>Conclusion</h2>
+</code></pre></div><h1 id=conclusion>Conclusion</h1>
 <p>Hopefully you learned something from this deep dive! If you want to see the current iteration of my actual bot, you can <a href=https://github.com/cgsdev0/dotfiles/blob/main/bin/twitch-cmds/twitch-chat>check it out on my GitHub</a>.</p>
 </div>
 </main>

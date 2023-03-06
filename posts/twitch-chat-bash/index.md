@@ -23,7 +23,7 @@ Twitch sends us a lovely reply:
 
 It's a start!
 
-# Authenticating
+# Authentication
 
 Twitch expects a certain set of commands in order to verify your identity. OAuth is out of scope for this post, but you can use [apps such as this one](https://twitchapps.com/tmi/) to generate an access token.
 
@@ -111,7 +111,7 @@ function parsecmd() {
 
 We extract the message from the line by splitting on ':' and returning the 2nd field onwards (`-f2-`). We also extract the username in a similar way. Then we print the message to `stderr` (we're reserving `stdout` for the special magic coming next!)
 
-# Going Full Circle
+## Going Full Circle
 
 So far, we've seen a variety of pipelines used in bash. These work by feeding the output of the first command into the input of the second command, and so on. The pipeline goes in order; the data flows from one command to the next, and finally to `stdout`. However... what happens if we connect one end of the pipeline to the other?
 
@@ -156,7 +156,7 @@ function reply() {
 
 With that final piece of the puzzle, we should have our first command on the bot!
 
-# The Final Product
+## The Final Product
 
 ```bash
 #!/usr/bin/env bash
@@ -211,7 +211,7 @@ function auth() {
     >/tmp/twitch_pipe;
 ```
 
-## Conclusion
+# Conclusion
 
 Hopefully you learned something from this deep dive! If you want to see the current iteration of my actual bot, you can [check it out on my GitHub](https://github.com/cgsdev0/dotfiles/blob/main/bin/twitch-cmds/twitch-chat).
 

@@ -159,7 +159,7 @@ var require_ansi_styles = __commonJS({
   }
 });
 
-// ns-hugo:/home/runner/work/cgsdev0.github.io/cgsdev0.github.io/assets/js/utils.js
+// ns-hugo:/home/runner/work/sarah.engineer/sarah.engineer/assets/js/utils.js
 function createSpan(str, color = void 0) {
   const span = document.createElement("span");
   span.innerText = str;
@@ -181,16 +181,16 @@ function timeout(ms) {
 }
 var asyncMap;
 var init_utils = __esm({
-  "ns-hugo:/home/runner/work/cgsdev0.github.io/cgsdev0.github.io/assets/js/utils.js"() {
+  "ns-hugo:/home/runner/work/sarah.engineer/sarah.engineer/assets/js/utils.js"() {
     asyncMap = async (arr, fn) => {
       return await Promise.all(arr.map(fn));
     };
   }
 });
 
-// ns-hugo:/home/runner/work/cgsdev0.github.io/cgsdev0.github.io/assets/js/commands.js
+// ns-hugo:/home/runner/work/sarah.engineer/sarah.engineer/assets/js/commands.js
 var require_commands = __commonJS({
-  "ns-hugo:/home/runner/work/cgsdev0.github.io/cgsdev0.github.io/assets/js/commands.js"(exports, module) {
+  "ns-hugo:/home/runner/work/sarah.engineer/sarah.engineer/assets/js/commands.js"(exports, module) {
     var import_ansi_styles = __toESM(require_ansi_styles());
     init_utils();
     module.exports = class CommandSet {
@@ -456,9 +456,9 @@ as the links above. Type '${import_ansi_styles.default.greenBright.open}help${im
   }
 });
 
-// ns-hugo:/home/runner/work/cgsdev0.github.io/cgsdev0.github.io/assets/js/filesystem.js
+// ns-hugo:/home/runner/work/sarah.engineer/sarah.engineer/assets/js/filesystem.js
 var require_filesystem = __commonJS({
-  "ns-hugo:/home/runner/work/cgsdev0.github.io/cgsdev0.github.io/assets/js/filesystem.js"(exports, module) {
+  "ns-hugo:/home/runner/work/sarah.engineer/sarah.engineer/assets/js/filesystem.js"(exports, module) {
     var identity = (a) => a;
     module.exports = class FileSystem {
       constructor() {
@@ -1336,9 +1336,9 @@ var require_ansi_to_html = __commonJS({
   }
 });
 
-// ns-hugo:/home/runner/work/cgsdev0.github.io/cgsdev0.github.io/assets/js/input.js
+// ns-hugo:/home/runner/work/sarah.engineer/sarah.engineer/assets/js/input.js
 var require_input = __commonJS({
-  "ns-hugo:/home/runner/work/cgsdev0.github.io/cgsdev0.github.io/assets/js/input.js"(exports, module) {
+  "ns-hugo:/home/runner/work/sarah.engineer/sarah.engineer/assets/js/input.js"(exports, module) {
     var import_ansi_to_html = __toESM(require_ansi_to_html());
     init_utils();
     var convert = new import_ansi_to_html.default();

@@ -37,3 +37,15 @@
 - description: SGDQ Site
   niceUrl: https://github.com/aeroberts/gdq-rate/blob/master/src/components/avatar.tsx
   rawUrl: https://raw.githubusercontent.com/aeroberts/gdq-rate/master/src/components/avatar.tsx
+  
+- description: Bash Web Framework
+  niceUrl: https://github.com/cgsdev0/bash-stack/blob/9a43cd35702d148e1228bfb536c10f9ddf2920e4/core.sh
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/bash-stack/9a43cd35702d148e1228bfb536c10f9ddf2920e4/core.sh
+  
+- description: This Website
+  niceUrl: https://github.com/cgsdev0/sarah.engineer/blob/main/assets/js/commands.js
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/sarah.engineer/main/assets/js/commands.js
+  
+- description: OBS Hold-To-Show Scene
+  niceUrl: https://github.com/cgsdev0/obs-hold-to-show-scene/blob/main/hotkey-hold-scene.lua
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/obs-hold-to-show-scene/main/hotkey-hold-scene.lua

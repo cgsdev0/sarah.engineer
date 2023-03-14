@@ -113,7 +113,7 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
     args = args.filter((arg) => arg !== "-v");
     let re = new RegExp(args[0] || "", "gi");
     if (!this.shell.stdin) {
-      this.shell.stdin = await readFileAsync(this.shell.cwd_p, args[1]);
+      this.shell.stdin = await this.fs.readFileAsync(this.shell.cwd_p, args[1]);
     }
     return this.shell.stdin
       .split("\n")

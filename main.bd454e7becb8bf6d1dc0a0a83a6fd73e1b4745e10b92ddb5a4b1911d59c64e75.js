@@ -199,8 +199,6 @@ var require_commands = __commonJS({
         this.fs = fs;
         this.commands = {
           help: this.help,
-          false: this.falseProgram,
-          true: this.trueProgram,
           find: this.find,
           clear: this.clear,
           echo: this.echo,
@@ -220,6 +218,10 @@ var require_commands = __commonJS({
           ls: this.ls,
           cd: this.cd,
           minecraft: this.minecraft,
+          false: this.falseProgram,
+          true: this.trueProgram,
+          which: this.which,
+          rm: this.readonly,
           bash: this.sad,
           zsh: this.sad,
           sh: this.sad,
@@ -231,6 +233,17 @@ var require_commands = __commonJS({
           nano: this.edit,
           code: this.edit
         };
+        const children = {};
+        Object.entries(this.commands).forEach(([cmd, fn]) => {
+          children[cmd] = {
+            cache: fn.toString()
+          };
+        });
+        this.fs.filesystem.children["/"].children["bin/"] = {
+          children
+        };
+        this.fs.indexFilesystem();
+        console.log(this.fs.filesystem);
       }
       edit = (file) => {
         const path = this.fs.getFilePath(this.shell.cwd_p, file);
@@ -238,11 +251,30 @@ var require_commands = __commonJS({
         return "Opening editor session...";
       };
       help = () => {
-        const hide = ["sarah.engineer", "export", "alias", "unalias"];
-        return "The following commands are implemented (with varying degrees of accuracy):\n" + Object.keys(this.commands).filter((c) => !hide.includes(c)).join(", ") + "\n\nThe following aliased commands exist:\n" + Object.keys(this.shell.aliases).map((a) => `${a}="${this.shell.aliases[a]}"`).join("\n") + `
+        const hide = [
+          "sarah.engineer",
+          "export",
+          "alias",
+          "unalias",
+          "help",
+          "fish",
+          "bash",
+          "zsh",
+          "sh",
+          "chsh",
+          "sudo",
+          "emacs",
+          "nano",
+          "code",
+          "vim",
+          "vi",
+          "nvim"
+        ];
+        return "commands:\n" + Object.keys(this.commands).filter((c) => !hide.includes(c)).join(", ") + "\n\naliases:\n" + Object.keys(this.shell.aliases).filter((c) => !hide.includes(c)).map((a) => `${a}="${this.shell.aliases[a]}"`).join("\n") + `
 
-For example, try typing: '${import_ansi_styles.default.greenBright.open}ff | grep dice${import_ansi_styles.default.greenBright.close}'
-or, to be even fancier: '${import_ansi_styles.default.yellowBright.open}ff | grep dice | xargs vim${import_ansi_styles.default.yellowBright.close}'`;
+example 1: ${import_ansi_styles.default.yellowBright.open}cat $(which echo)${import_ansi_styles.default.yellowBright.close}
+example 2: ${import_ansi_styles.default.greenBright.open}ff | grep website${import_ansi_styles.default.greenBright.close}
+`;
       };
       colortest = () => {
         const rainbow = function(i) {
@@ -253,6 +285,16 @@ or, to be even fancier: '${import_ansi_styles.default.yellowBright.open}ff | gre
           return import_ansi_styles.default.color.ansi256(import_ansi_styles.default.rgbToAnsi256(red, green, blue));
         };
         return this.shell.stdin.split("").map((c, i) => rainbow(i) + c).join("");
+      };
+      which = async (command) => {
+        if (Object.keys(this.shell.aliases).includes(command)) {
+          return "aliased to " + this.shell.aliases[command];
+        }
+        if (Object.keys(this.commands).includes(command)) {
+          return `/bin/${command}`;
+        }
+        this.shell.returnCode = 1;
+        return `${command} not found`;
       };
       minecraft = async () => {
         const res = await window.fetch("https://api.mcsrvstat.us/2/mc.badcop.games");
@@ -371,6 +413,10 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
         return `${this.shell.env["USER"]}
 `;
       };
+      readonly = () => {
+        this.shell.returnCode = 4;
+        return "this filesystem is readonly.\n";
+      };
       sad = () => {
         this.shell.returnCode = 4;
         return "Why would you want to use a different shell? \u{1F62D}\n";
@@ -432,9 +478,8 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
         return await this.commands[command](...allArgs);
       };
       welcome = () => {
-        return `Welcome to my website!
-This shell provides access to all of the same information
-as the links above. Type '${import_ansi_styles.default.greenBright.open}help${import_ansi_styles.default.greenBright.close}' to list commands.`;
+        return `Shell loaded.
+Type '${import_ansi_styles.default.greenBright.open}help${import_ansi_styles.default.greenBright.close}' to list commands.`;
       };
       sudo = () => {
         this.shell.returnCode = 1;
@@ -1342,7 +1387,7 @@ var require_input = __commonJS({
     var import_ansi_to_html = __toESM(require_ansi_to_html());
     init_utils();
     var convert = new import_ansi_to_html.default();
-    var SHELL_INTERACTIVITY_DELAY = 4e3;
+    var SHELL_INTERACTIVITY_DELAY = 3e3;
     module.exports = (shell) => async () => {
       const commandHistory = [];
       let historyPointer = -1;
@@ -1535,7 +1580,7 @@ var parse = window.parseBash;
 var Shell = class {
   constructor() {
     this.aliases = {
-      mc: "minecraft",
+      nvim: "vim",
       ff: "find -type f ."
     };
     this.env = {

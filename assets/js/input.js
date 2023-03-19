@@ -6,7 +6,7 @@ import { timeout, createSpanWithClasses, isLetter, createSpan } from "./utils";
 const convert = new Convert();
 
 // Consts
-const SHELL_INTERACTIVITY_DELAY = 4000;
+const SHELL_INTERACTIVITY_DELAY = 3000;
 
 module.exports = (shell) => async () => {
   const commandHistory = [];

@@ -365,7 +365,7 @@
   height: auto;
   line-height: 1.5em;
   animation: appearing 3s forwards;
-  animation-delay: 10s;
+  animation-delay: 7s;
   animation-iteration-count: 1;
   white-space: nowrap;
   z-index: -10;
@@ -450,7 +450,6 @@
   .banner-scroller {
     animation: scrolling linear forwards;
     animation-duration: var(--scrollDuration);
-    animation-delay: 2s;
   }
 
   @keyframes scrolling {
@@ -680,5 +679,5 @@ footer .wrapper {
   right: 40px;
   font-size: 16pt;
   opacity: 0%;
-  animation: fadeIn 1s 7s forwards;
+  animation: fadeIn 1s 5s forwards;
 }

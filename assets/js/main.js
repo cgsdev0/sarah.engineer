@@ -11,7 +11,7 @@ const parse = window.parseBash;
 class Shell {
   constructor() {
     this.aliases = {
-      mc: "minecraft",
+      nvim: "vim",
       ff: "find -type f .",
     };
     this.env = {

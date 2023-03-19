@@ -8,8 +8,6 @@ module.exports = class CommandSet {
 
     this.commands = {
       help: this.help,
-      false: this.falseProgram,
-      true: this.trueProgram,
       find: this.find,
       clear: this.clear,
       echo: this.echo,
@@ -29,7 +27,11 @@ module.exports = class CommandSet {
       ls: this.ls,
       cd: this.cd,
       minecraft: this.minecraft,
+      false: this.falseProgram,
+      true: this.trueProgram,
+      which: this.which,
       /** pity points */
+      rm: this.readonly,
       bash: this.sad,
       zsh: this.sad,
       sh: this.sad,
@@ -41,6 +43,18 @@ module.exports = class CommandSet {
       nano: this.edit,
       code: this.edit,
     };
+
+    const children = {};
+    Object.entries(this.commands).forEach(([cmd, fn]) => {
+      children[cmd] = {
+        cache: fn.toString(),
+      };
+    });
+    this.fs.filesystem.children["/"].children["bin/"] = {
+      children,
+    };
+    this.fs.indexFilesystem();
+    console.log(this.fs.filesystem);
   }
 
   edit = (file) => {
@@ -52,20 +66,39 @@ module.exports = class CommandSet {
     return "Opening editor session...";
   };
   help = () => {
-    const hide = ["sarah.engineer", "export", "alias", "unalias"];
+    const hide = [
+      "sarah.engineer",
+      "export",
+      "alias",
+      "unalias",
+      "help",
+      "fish",
+      "bash",
+      "zsh",
+      "sh",
+      "chsh",
+      "sudo",
+      "emacs",
+      "nano",
+      "code",
+      "vim",
+      "vi",
+      "nvim",
+    ];
     return (
-      "The following commands are implemented (with varying degrees of accuracy):\n" +
+      "commands:\n" +
       Object.keys(this.commands)
         .filter((c) => !hide.includes(c))
         .join(", ") +
       "\n\n" +
-      "The following aliased commands exist:\n" +
+      "aliases:\n" +
       Object.keys(this.shell.aliases)
+        .filter((c) => !hide.includes(c))
         .map((a) => `${a}="${this.shell.aliases[a]}"`)
         .join("\n") +
       "\n\n" +
-      `For example, try typing: '${style.greenBright.open}ff | grep dice${style.greenBright.close}'\n` +
-      `or, to be even fancier: '${style.yellowBright.open}ff | grep dice | xargs vim${style.yellowBright.close}'`
+      `example 1: ${style.yellowBright.open}cat $(which echo)${style.yellowBright.close}\n` +
+      `example 2: ${style.greenBright.open}ff | grep website${style.greenBright.close}\n`
     );
   };
 
@@ -88,6 +121,16 @@ module.exports = class CommandSet {
       .join("");
   };
 
+  which = async (command) => {
+    if (Object.keys(this.shell.aliases).includes(command)) {
+      return "aliased to " + this.shell.aliases[command];
+    }
+    if (Object.keys(this.commands).includes(command)) {
+      return `/bin/${command}`;
+    }
+    this.shell.returnCode = 1;
+    return `${command} not found`;
+  };
   minecraft = async () => {
     const res = await window.fetch(
       "https://api.mcsrvstat.us/2/mc.badcop.games"
@@ -234,6 +277,10 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
     return `${this.shell.env["USER"]}\n`;
   };
 
+  readonly = () => {
+    this.shell.returnCode = 4;
+    return "this filesystem is readonly.\n";
+  };
   sad = () => {
     this.shell.returnCode = 4;
     return "Why would you want to use a different shell? 😭\n";
@@ -317,9 +364,8 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
     return await this.commands[command](...allArgs);
   };
   welcome = () => {
-    return `Welcome to my website!
-This shell provides access to all of the same information
-as the links above. Type '${style.greenBright.open}help${style.greenBright.close}' to list commands.`;
+    return `Shell loaded.
+Type '${style.greenBright.open}help${style.greenBright.close}' to list commands.`;
   };
 
   sudo = () => {

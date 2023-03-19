@@ -29,12 +29,12 @@
           const newLocation = new URL(window.location);
           newLocation.hash = "";
           history.replaceState(null, "", newLocation.href);
-          setTimeout(() => document.querySelector(".sidebar").classList.add("animated-sidebar"), 0);
+          document.querySelector(".sidebar").classList.add("animated-sidebar");
           setTimeout(() => document.querySelector(".sidebar").classList.remove("animated-sidebar"), 3000);
         }
       }
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", animateIn);
+        document.addEventListener("readystatechange", animateIn);
       }
       else {
         animateIn();

@@ -255,7 +255,8 @@ body {
 
 .page-link {
   color: #e0e0e2 !important;
-  line-height: 1.5; }
+  line-height: 1.5;
+  cursor: pointer; }
   .page-link:not(:last-child) {
     margin-right: 20px; }
 
@@ -740,7 +741,7 @@ footer .wrapper {
   right: 40px;
   font-size: 16pt;
   opacity: 0%;
-  animation: fadeIn 1s 5s forwards; }
+  animation: fadeIn 1s 4.2s forwards; }
 
 /**
  * Syntax highlighting styles

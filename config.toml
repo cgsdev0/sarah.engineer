@@ -4,6 +4,7 @@ title = "Sarah Schulte"
 theme = "hyde"
 enableEmoji = true
 relativeURLs = true
+summaryLength = 20
 
 [params]
   themeColor = "theme-base-0d"

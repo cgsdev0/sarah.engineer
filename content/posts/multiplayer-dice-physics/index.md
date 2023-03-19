@@ -3,6 +3,8 @@ title: "Simulating Multiplayer 3D Dice"
 categories:
   - game-dev
 date: 2022-01-30T22:30:07-08:00
+summary: |
+  Alternative title: how I cheated the laws of physics and rigged my own dice game
 ---
 
 I wanted to add 3D, physics-based dice to my online game, [rolly cubes](https://rollycubes.com).

@@ -3,6 +3,8 @@ layout: post
 title: "Writing a Twitch Chatbot in Bash"
 date: 2023-03-05 20:39:01 -0700
 categories: bash
+summary: |
+  A deep-dive into building a simple twitch.tv IRC bot with netcat
 ---
 
 One of the rites of passage for a programming Twitch streamer is building your own chat bot. There's a plethora of tools and libraries available to make this task simpler; however, sometimes doing things the hard way is an opportunity to learn.

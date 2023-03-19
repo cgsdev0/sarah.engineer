@@ -3,6 +3,7 @@ layout: post
 title: "New Website"
 date: 2022-01-24 20:39:01 -0700
 categories: hugo
+summary: "Obligatory 'new website' post, and a quick peek at how my home page works"
 ---
 
 I decided to finally build a new website, using [Hugo][hugo-gh].

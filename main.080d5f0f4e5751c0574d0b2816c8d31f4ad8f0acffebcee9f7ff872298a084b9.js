@@ -1509,7 +1509,6 @@ var require_input = __commonJS({
         if (key === "ArrowUp") {
           if (!commandHistory.length || !historyPointer)
             return;
-          headerWrapper.classList.add("slide-to-top");
           if (historyPointer === -1)
             historyPointer = commandHistory.length;
           input.value = commandHistory[--historyPointer];
@@ -1518,7 +1517,6 @@ var require_input = __commonJS({
         if (key === "ArrowDown") {
           if (!commandHistory.length || historyPointer === -1)
             return;
-          headerWrapper.classList.add("slide-to-top");
           if (historyPointer === commandHistory.length - 1) {
             historyPointer = -1;
             input.value = "";
@@ -1531,6 +1529,7 @@ var require_input = __commonJS({
           let total = input.value;
           if (!total)
             return;
+          headerWrapper.classList.add("slide-to-top");
           output.classList.add("command-output");
           output.parentElement.classList.remove("hidden");
           document.querySelector("#hint-text").classList.add("hidden-no-animate");
@@ -1564,7 +1563,6 @@ var require_input = __commonJS({
           }
           document.querySelector("#command-output").scrollTo({ top: 0, left: 0, behavior: "smooth" });
         }
-        headerWrapper.classList.add("slide-to-top");
         update(e.target);
       });
     };

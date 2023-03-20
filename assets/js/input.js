@@ -154,14 +154,12 @@ module.exports = (shell) => async () => {
     // Shell history controls
     if (key === "ArrowUp") {
       if (!commandHistory.length || !historyPointer) return;
-      headerWrapper.classList.add("slide-to-top");
       if (historyPointer === -1) historyPointer = commandHistory.length;
       input.value = commandHistory[--historyPointer];
       selectEnd();
     }
     if (key === "ArrowDown") {
       if (!commandHistory.length || historyPointer === -1) return;
-      headerWrapper.classList.add("slide-to-top");
       if (historyPointer === commandHistory.length - 1) {
         historyPointer = -1;
         input.value = "";
@@ -175,6 +173,8 @@ module.exports = (shell) => async () => {
     if (key === "Enter") {
       let total = input.value;
       if (!total) return;
+      
+      headerWrapper.classList.add("slide-to-top");
 
       output.classList.add("command-output"); // reveal the shell
       output.parentElement.classList.remove("hidden");
@@ -224,10 +224,7 @@ module.exports = (shell) => async () => {
       document
         .querySelector("#command-output")
         .scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    }
-
-    // Slide on any key-press
-    headerWrapper.classList.add("slide-to-top");
+    }    
 
     update(e.target);
   });

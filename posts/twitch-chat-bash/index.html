@@ -78,7 +78,7 @@ TWITCH_USERNAME<span style=color:#f92672>=</span> <span style=color:#75715e># ..
   echo <span style=color:#e6db74>&#34;CAP REQ :twitch.tv/tags twitch.tv/commands&#34;</span>
   echo <span style=color:#e6db74>&#34;PASS oauth:</span><span style=color:#e6db74>${</span>TWITCH_TOKEN<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
   echo <span style=color:#e6db74>&#34;NICK </span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
-  echo <span style=color:#e6db74>&#34;JOIN </span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+  echo <span style=color:#e6db74>&#34;JOIN #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
 <span style=color:#f92672>}</span>
 
 auth | netcat irc.chat.twitch.tv <span style=color:#ae81ff>6667</span>

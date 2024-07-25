@@ -1,4 +1,4 @@
 Categories:
-  - bash
-  - game-dev
-  - hugo
+  - Bash
+  - Game-Dev
+  - Hugo

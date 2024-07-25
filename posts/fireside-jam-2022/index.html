@@ -1,135 +1,27 @@
-<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us>
-<head>
-<link href=https://gmpg.org/xfn/11 rel=profile>
-<meta charset=utf-8>
-<meta name=generator content="Hugo 0.91.2">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<link rel=canonical href=https://sarah.engineer/posts/fireside-jam-2022/>
-<title>Building a Game in 10 Days: How We Won a Game Jam &#183; Sarah Schulte</title>
-<meta name=description property="og:description" content="See behind the creative process of making &lsquo;PR Protector&rsquo; in under two weeks">
-<script type=text/javascript>window.addEventListener('pageshow',a=>{a.persisted&&(document.querySelector(".sidebar").classList.remove("animated-sidebar-reverse"),document.querySelector(".sidebar").classList.remove("animated-sidebar"))});const animateIn=()=>{if(window.location.hash==="#animate"){const a=new URL(window.location);a.hash="",history.replaceState(null,"",a.href),document.querySelector(".sidebar").classList.add("animated-sidebar"),setTimeout(()=>document.querySelector(".sidebar").classList.remove("animated-sidebar"),3e3)}};document.readyState==="loading"?document.addEventListener("readystatechange",animateIn):animateIn(),window.animationSequence=a=>{setTimeout(()=>{window.location.href=a},1010),document.querySelector(".sidebar").classList.remove("animated-sidebar"),setTimeout(()=>{document.querySelector(".sidebar").classList.add("animated-sidebar-reverse")},1)}</script>
-<link type=text/css rel=stylesheet href=../../css/print.css media=print>
-<link type=text/css rel=stylesheet href=../../css/poole.css>
-<link type=text/css rel=stylesheet href=../../css/syntax.css>
-<link type=text/css rel=stylesheet href=../../css/hyde.css>
-<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
-<link rel=apple-touch-icon-precomposed sizes=144x144 href=../../apple-touch-icon-144-precomposed.png>
-<link rel="shortcut icon" href=../../favicon.ico>
-<link href=../../posts/fireside-jam-2022/index.md rel=alternate type=text/markdown title="Sarah Schulte">
-</head>
-<body style=background-color:#434345 class=theme-base-0d>
-<aside class=sidebar>
-<div class="container sidebar-sticky">
-<div class=sidebar-about>
-<a onclick="animationSequence('/')"><h1><span class="color-name underline">sarah</span><span class="color-dot underline">.</span><span class=invisible-text>&shy;</span><span class=underline>engineer</span></h1></a>
-<p class=lead>
-full-stack software engineer • game designer
-</p>
-</div>
-<nav>
-<ul class=sidebar-nav>
-<li><a href=../../posts/> Posts </a></li><li><a href=../../about/> About </a></li><li><a href=../../contact/> Contact </a></li>
-</ul>
-</nav>
-<p class=copyright>&copy; 2024. All rights reserved. </p>
-</div>
-</aside>
-<div class=main-container>
-<main class="content container">
-<div class=post>
-<h1>Building a Game in 10 Days: How We Won a Game Jam</h1>
-<time datetime=2022-04-12T14:52:07-0800 class=post-date>Tue, Apr 12, 2022</time>
-<p><em>You can play our entry to the Fireside Game Jam 2022 here: <a href=https://badcop.itch.io/pr-protector>PR Protector</a>. It was rated #1 overall by the judges and other contestants of the jam.</em></p>
-<p>After taking a break from game development for a while, I decided to enter a game jam with a few friends.
-We checked out the <a href=https://itch.io/jams>jam calendar on itch.io</a> and found a casual looking 10-day jam called <a href=https://itch.io/jam/fireside-jam-2022>Fireside Jam 2022</a>.</p>
-<p>The starting day rolled around, and the theme was announced: <strong>Protect.</strong></p>
-<h2 id=brainstorming>Brainstorming</h2>
-<p>We created an online whiteboard with Figma Jam, and started drafting ideas (and inevitably, some doodles):</p>
-<p><img src=./figma_jam.png alt=Whiteboard></p>
-<p>The very first thing that popped into all of our heads was &ldquo;tower defense&rdquo;. We wrote this down,
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><link href=https://gmpg.org/xfn/11 rel=profile><meta charset=utf-8><meta name=generator content="Hugo 0.129.0"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://sarah.engineer/posts/fireside-jam-2022/><title>Building a Game in 10 Days: How We Won a Game Jam &#183; Sarah Schulte</title>
+<meta name=description property="og:description" content="See behind the creative process of making &lsquo;PR Protector&rsquo; in under two weeks"><script type=text/javascript>window.addEventListener("pageshow",e=>{e.persisted&&(document.querySelector(".sidebar").classList.remove("animated-sidebar-reverse"),document.querySelector(".sidebar").classList.remove("animated-sidebar"))});const animateIn=()=>{if(window.location.hash==="#animate"){const e=new URL(window.location);e.hash="",history.replaceState(null,"",e.href),document.querySelector(".sidebar").classList.add("animated-sidebar"),setTimeout(()=>document.querySelector(".sidebar").classList.remove("animated-sidebar"),3e3)}};document.readyState==="loading"?document.addEventListener("readystatechange",animateIn):animateIn(),window.animationSequence=e=>{setTimeout(()=>{window.location.href=e},1010),document.querySelector(".sidebar").classList.remove("animated-sidebar"),setTimeout(()=>{document.querySelector(".sidebar").classList.add("animated-sidebar-reverse")},1)}</script><link type=text/css rel=stylesheet href=../../css/print.css media=print><link type=text/css rel=stylesheet href=../../css/poole.css><link type=text/css rel=stylesheet href=../../css/syntax.css><link type=text/css rel=stylesheet href=../../css/hyde.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700"><link rel=apple-touch-icon-precomposed sizes=144x144 href=../../apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=../../favicon.ico><link href=../../posts/fireside-jam-2022/index.md rel=alternate type=text/markdown title="Sarah Schulte"></head><body style=background-color:#434345 class=theme-base-0d><aside class=sidebar><div class="container sidebar-sticky"><div class=sidebar-about><a onclick='animationSequence("/")'><h1><span class="color-name underline">sarah</span><span class="color-dot underline">.</span><span class=invisible-text>&shy;</span><span class=underline>engineer</span></h1></a><p class=lead>full-stack software engineer • game designer</p></div><nav><ul class=sidebar-nav><li><a href=../../posts/>Posts</a></li><li><a href=../../links/>Links</a></li><li><a href=../../about/>About</a></li><li><a href=../../contact/>Contact</a></li></ul></nav><p class=copyright>&copy; 2024. All rights reserved.</p></div></aside><div class=main-container><main class="content container"><div class=post><h1>Building a Game in 10 Days: How We Won a Game Jam</h1><time datetime=2022-04-12T14:52:07-0800 class=post-date>Tue, Apr 12, 2022</time><p><em>You can play our entry to the Fireside Game Jam 2022 here: <a href=https://badcop.itch.io/pr-protector>PR Protector</a>. It was rated #1 overall by the judges and other contestants of the jam.</em></p><p>After taking a break from game development for a while, I decided to enter a game jam with a few friends.
+We checked out the <a href=https://itch.io/jams>jam calendar on itch.io</a> and found a casual looking 10-day jam called <a href=https://itch.io/jam/fireside-jam-2022>Fireside Jam 2022</a>.</p><p>The starting day rolled around, and the theme was announced: <strong>Protect.</strong></p><h2 id=brainstorming>Brainstorming</h2><p>We created an online whiteboard with Figma Jam, and started drafting ideas (and inevitably, some doodles):</p><p><img src=./figma_jam.png alt=Whiteboard></p><p>The very first thing that popped into all of our heads was &ldquo;tower defense&rdquo;. We wrote this down,
 and then <em>immediately crossed it out.</em> <strong>If an idea is super obvious to you, it&rsquo;s probably super obvious to
 other participants too</strong>. If you want to stand out from the crowd, you should try to dig into
-the theme a little deeper to find something unique.</p>
-<p>One of my favorite brainstorming techniques is to transform the theme into a question: <em>&ldquo;What things can be protected?"</em></p>
-<p>So, we made a list:</p>
-<ul>
-<li>Castles</li>
-<li>Money</li>
-<li>Land</li>
-<li>People</li>
-<li>Livestock</li>
-<li>etc.</li>
-</ul>
-<p>About halfway down the list, we wrote &lsquo;reputations&rsquo; and &lsquo;brands&rsquo;, which were particularly interesting to me;
+the theme a little deeper to find something unique.</p><p>One of my favorite brainstorming techniques is to transform the theme into a question: <em>&ldquo;What things can be protected?&rdquo;</em></p><p>So, we made a list:</p><ul><li>Castles</li><li>Money</li><li>Land</li><li>People</li><li>Livestock</li><li>etc.</li></ul><p>About halfway down the list, we wrote &lsquo;reputations&rsquo; and &lsquo;brands&rsquo;, which were particularly interesting to me;
 I started drafting an idea for a game incorporating these. The basic pitch was along the lines of,
-<em>&ldquo;what if you work as the social media manager for some large company, and your job is to protect their brand image?"</em></p>
-<p><img src=./figma_jam2.png alt="Potential Game Sketch"></p>
-<p>We toyed around with a few other ideas, but at the end of our brainstorming session,
-decided that this one was the most promising to pursue.</p>
-<h2 id=solidifying-the-idea>Solidifying the Idea</h2>
-<p>From the initial sketch, we knew that this game would take place in a simulated computer desktop environment.
-We drafted up a quick inspiration board for ways our game could look:</p>
-<p><img src=./inspiration.png alt=Inspiration></p>
-<p>We decided that the game <em><a href=https://papersplea.se/>Papers, Please</a></em> was similar to what we wanted to create;
+<em>&ldquo;what if you work as the social media manager for some large company, and your job is to protect their brand image?&rdquo;</em></p><p><img src=./figma_jam2.png alt="Potential Game Sketch"></p><p>We toyed around with a few other ideas, but at the end of our brainstorming session,
+decided that this one was the most promising to pursue.</p><h2 id=solidifying-the-idea>Solidifying the Idea</h2><p>From the initial sketch, we knew that this game would take place in a simulated computer desktop environment.
+We drafted up a quick inspiration board for ways our game could look:</p><p><img src=./inspiration.png alt=Inspiration></p><p>We decided that the game <em><a href=https://papersplea.se/>Papers, Please</a></em> was similar to what we wanted to create;
 in order to not end up with a re-skinned version of that game, we wanted to build a more mini-game style gameplay
-loop (think <em>WarioWare</em>). We picked a few real-world social media sites to base each of the minigames on:</p>
-<ul>
-<li><strong>Reddit</strong> - upvoting / downvoting posts related to the brand</li>
-<li><strong>Twitter</strong> - &ldquo;cancelling&rdquo; users with negative opinions on the company</li>
-<li><strong>Youtube</strong> - filing copyright claims on negative videos</li>
-<li><strong>Instagram</strong> - photoshopping images</li>
-<li><strong>News Articles</strong> - filling in the blank to create a headline
-<ul>
-<li>We ended up de-scoping this one to save time</li>
-</ul>
-</li>
-</ul>
-<h2 id=divide-and-conquer>Divide and Conquer</h2>
-<p>Our team consisted of 4 members, divided roughly as:</p>
-<ul>
-<li>1 artist</li>
-<li>1 writer</li>
-<li>2 programmers</li>
-</ul>
-<p>We spun up a Google Doc to collaborate on writing the various prompts, and a Google Drive to share art assets.
-We also created a private channel in a Discord server so we could communicate asynchronously.</p>
-<p>Since building a minigame based game is a fairly tall order,
-we set a target deadline of 5 days (half the jam duration) to have a playable demo.</p>
-<p>Getting to a playable demo early is key in a game jam; you should be constantly playing your game and iterating on
-the main gameplay loop throughout the development process.</p>
-<h2 id=know-your-audience>Know Your Audience</h2>
-<p>The audience of a jam game is different than publishing to a wider audience:</p>
-<ul>
-<li>They&rsquo;re likely fellow game developers</li>
-<li>They&rsquo;re playing a bunch of other submissions</li>
-</ul>
-<p>You should design your game to use this as an advantage.</p>
-<p>Since time is a very limited resource, you should focus on building a polished, vertical slice of a game.
+loop (think <em>WarioWare</em>). We picked a few real-world social media sites to base each of the minigames on:</p><ul><li><strong>Reddit</strong> - upvoting / downvoting posts related to the brand</li><li><strong>Twitter</strong> - &ldquo;cancelling&rdquo; users with negative opinions on the company</li><li><strong>Youtube</strong> - filing copyright claims on negative videos</li><li><strong>Instagram</strong> - photoshopping images</li><li><strong>News Articles</strong> - filling in the blank to create a headline<ul><li>We ended up de-scoping this one to save time</li></ul></li></ul><h2 id=divide-and-conquer>Divide and Conquer</h2><p>Our team consisted of 4 members, divided roughly as:</p><ul><li>1 artist</li><li>1 writer</li><li>2 programmers</li></ul><p>We spun up a Google Doc to collaborate on writing the various prompts, and a Google Drive to share art assets.
+We also created a private channel in a Discord server so we could communicate asynchronously.</p><p>Since building a minigame based game is a fairly tall order,
+we set a target deadline of 5 days (half the jam duration) to have a playable demo.</p><p>Getting to a playable demo early is key in a game jam; you should be constantly playing your game and iterating on
+the main gameplay loop throughout the development process.</p><h2 id=know-your-audience>Know Your Audience</h2><p>The audience of a jam game is different than publishing to a wider audience:</p><ul><li>They&rsquo;re likely fellow game developers</li><li>They&rsquo;re playing a bunch of other submissions</li></ul><p>You should design your game to use this as an advantage.</p><p>Since time is a very limited resource, you should focus on building a polished, vertical slice of a game.
 Ideally, you should aim to have <strong>5-10 minutes worth of gameplay.</strong> Since your audience in a game jam is typically
-the other contestants, they will likely only spend a short amount of time on your game before moving on to the next.</p>
-<p>Admittedly, we somewhat missed the mark on this; our game&rsquo;s average ended up being around ~25 minutes for completion,
-because we under-estimated the difficulty of our game.</p>
-<h3 id=include-a-tutorial>Include a Tutorial</h3>
-<p>Since your audience is playing a bunch of games, they&rsquo;re not going to be keen to read a giant wall of text on
-your game&rsquo;s page before jumping into the gameplay. Ideally, this should be baked into the gameplay of your game.</p>
-<p>This can be as simple as putting some text on the walls in the first few levels of your game,
-and designing the levels to introduce the mechanics in order while onboarding the player.</p>
-<p>For our game, we designed the <em>first half of the game</em> to be a tutorial. We introduce the mini-games one-by-one,
-and we bake the introductions into the &ldquo;story&rdquo; emails at the start of each level.</p>
-<p>The first 3 levels of our game are actually impossible to fail - we added a rubber-banding mechanic to the stock price
-so that you can take as long as you like on them.</p>
-<h2 id=conclusions>Conclusions</h2>
-<p>This was my 5th time entering a game jam, but my first time working with this particular team.
-For each of the other team members, it was their first time participating in a jam.</p>
-<p>Because of this, I spent maybe a bit more time wearing the &ldquo;team lead&rdquo; hat than I initially intended;
-this caused the experience to be a bit more stressful than I would have liked.</p>
-<p>However, in the end, I&rsquo;m fairly happy with the finished product. I think we made a fun game, and I&rsquo;m
+the other contestants, they will likely only spend a short amount of time on your game before moving on to the next.</p><p>Admittedly, we somewhat missed the mark on this; our game&rsquo;s average ended up being around ~25 minutes for completion,
+because we under-estimated the difficulty of our game.</p><h3 id=include-a-tutorial>Include a Tutorial</h3><p>Since your audience is playing a bunch of games, they&rsquo;re not going to be keen to read a giant wall of text on
+your game&rsquo;s page before jumping into the gameplay. Ideally, this should be baked into the gameplay of your game.</p><p>This can be as simple as putting some text on the walls in the first few levels of your game,
+and designing the levels to introduce the mechanics in order while onboarding the player.</p><p>For our game, we designed the <em>first half of the game</em> to be a tutorial. We introduce the mini-games one-by-one,
+and we bake the introductions into the &ldquo;story&rdquo; emails at the start of each level.</p><p>The first 3 levels of our game are actually impossible to fail - we added a rubber-banding mechanic to the stock price
+so that you can take as long as you like on them.</p><h2 id=conclusions>Conclusions</h2><p>This was my 5th time entering a game jam, but my first time working with this particular team.
+For each of the other team members, it was their first time participating in a jam.</p><p>Because of this, I spent maybe a bit more time wearing the &ldquo;team lead&rdquo; hat than I initially intended;
+this caused the experience to be a bit more stressful than I would have liked.</p><p>However, in the end, I&rsquo;m fairly happy with the finished product. I think we made a fun game, and I&rsquo;m
 glad other people enjoyed playing it! Thanks to everyone else involved with the jam; it was really fun to check
 out all of the other entries and interpretations of the theme. If you&rsquo;re curious, you can see <a href=https://itch.io/jam/fireside-jam-2022/results>all of the game
-submissions here.</a></p>
-<p>Hopefully, I&rsquo;ll be back to participate next year!</p>
-</div>
-</main>
-</div>
-</body>
-</html>
+submissions here.</a></p><p>Hopefully, I&rsquo;ll be back to participate next year!</p></div></main></div></body></html>

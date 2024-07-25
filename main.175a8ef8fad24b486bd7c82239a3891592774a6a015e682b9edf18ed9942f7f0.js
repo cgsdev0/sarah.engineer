@@ -1,41 +1,45 @@
-"use strict";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __esm = (fn, res) => function __init() {
   return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
 };
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
-var __reExport = (target, module, copyDefault, desc) => {
-  if (module && typeof module === "object" || typeof module === "function") {
-    for (let key of __getOwnPropNames(module))
-      if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
-        __defProp(target, key, { get: () => module[key], enumerable: !(desc = __getOwnPropDesc(module, key)) || desc.enumerable });
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
-  return target;
+  return to;
 };
-var __toESM = (module, isNodeMode) => {
-  return __reExport(__markAsModule(__defProp(module != null ? __create(__getProtoOf(module)) : {}, "default", !isNodeMode && module && module.__esModule ? { get: () => module.default, enumerable: true } : { value: module, enumerable: true })), module);
-};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 
 // node_modules/ansi-styles/index.js
 var require_ansi_styles = __commonJS({
   "node_modules/ansi-styles/index.js"(exports, module) {
     "use strict";
     var ANSI_BACKGROUND_OFFSET = 10;
-    var wrapAnsi256 = (offset = 0) => (code) => `[${38 + offset};5;${code}m`;
-    var wrapAnsi16m = (offset = 0) => (red, green, blue) => `[${38 + offset};2;${red};${green};${blue}m`;
+    var wrapAnsi256 = (offset = 0) => (code) => `\x1B[${38 + offset};5;${code}m`;
+    var wrapAnsi16m = (offset = 0) => (red, green, blue) => `\x1B[${38 + offset};2;${red};${green};${blue}m`;
     function assembleStyles() {
       const codes = /* @__PURE__ */ new Map();
       const styles = {
         modifier: {
           reset: [0, 0],
+          // 21 isn't widely supported and 22 does the same thing
           bold: [1, 22],
           dim: [2, 22],
           italic: [3, 23],
@@ -54,6 +58,7 @@ var require_ansi_styles = __commonJS({
           magenta: [35, 39],
           cyan: [36, 39],
           white: [37, 39],
+          // Bright color
           blackBright: [90, 39],
           redBright: [91, 39],
           greenBright: [92, 39],
@@ -72,6 +77,7 @@ var require_ansi_styles = __commonJS({
           bgMagenta: [45, 49],
           bgCyan: [46, 49],
           bgWhite: [47, 49],
+          // Bright color
           bgBlackBright: [100, 49],
           bgRedBright: [101, 49],
           bgGreenBright: [102, 49],
@@ -89,8 +95,8 @@ var require_ansi_styles = __commonJS({
       for (const [groupName, group] of Object.entries(styles)) {
         for (const [styleName, style] of Object.entries(group)) {
           styles[styleName] = {
-            open: `[${style[0]}m`,
-            close: `[${style[1]}m`
+            open: `\x1B[${style[0]}m`,
+            close: `\x1B[${style[1]}m`
           };
           group[styleName] = styles[styleName];
           codes.set(style[0], style[1]);
@@ -104,8 +110,8 @@ var require_ansi_styles = __commonJS({
         value: codes,
         enumerable: false
       });
-      styles.color.close = "[39m";
-      styles.bgColor.close = "[49m";
+      styles.color.close = "\x1B[39m";
+      styles.bgColor.close = "\x1B[49m";
       styles.color.ansi256 = wrapAnsi256();
       styles.color.ansi16m = wrapAnsi16m();
       styles.bgColor.ansi256 = wrapAnsi256(ANSI_BACKGROUND_OFFSET);
@@ -221,6 +227,7 @@ var require_commands = __commonJS({
           false: this.falseProgram,
           true: this.trueProgram,
           which: this.which,
+          /** pity points */
           rm: this.readonly,
           bash: this.sad,
           zsh: this.sad,
@@ -247,7 +254,10 @@ var require_commands = __commonJS({
       }
       edit = (file) => {
         const path = this.fs.getFilePath(this.shell.cwd_p, file);
-        window.open("https://github.dev/cgsdev0/cgsdev0.github.io/blob/main/content" + path, "_blank");
+        window.open(
+          "https://github.dev/cgsdev0/cgsdev0.github.io/blob/main/content" + path,
+          "_blank"
+        );
         return "Opening editor session...";
       };
       help = () => {
@@ -280,8 +290,12 @@ example 2: ${import_ansi_styles.default.greenBright.open}ff | grep website${impo
         const rainbow = function(i) {
           const freq = 0.3;
           const red = Math.round(Math.sin(freq * i + 0) * 127 + 128);
-          const green = Math.round(Math.sin(freq * i + 2 * Math.PI / 3) * 127 + 128);
-          const blue = Math.round(Math.sin(freq * i + 4 * Math.PI / 3) * 127 + 128);
+          const green = Math.round(
+            Math.sin(freq * i + 2 * Math.PI / 3) * 127 + 128
+          );
+          const blue = Math.round(
+            Math.sin(freq * i + 4 * Math.PI / 3) * 127 + 128
+          );
           return import_ansi_styles.default.color.ansi256(import_ansi_styles.default.rgbToAnsi256(red, green, blue));
         };
         return this.shell.stdin.split("").map((c, i) => rainbow(i) + c).join("");
@@ -297,7 +311,9 @@ example 2: ${import_ansi_styles.default.greenBright.open}ff | grep website${impo
         return `${command} not found`;
       };
       minecraft = async () => {
-        const res = await window.fetch("https://api.mcsrvstat.us/2/mc.badcop.games");
+        const res = await window.fetch(
+          "https://api.mcsrvstat.us/2/mc.badcop.games"
+        );
         const data = await res.json();
         if (!data.online) {
           this.shell.returnCode = 1;
@@ -358,7 +374,9 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
           if (!inode2.children) {
             return [path + inode2.name];
           }
-          return [path + inode2.name].concat(Object.values(inode2.children).map(find_r(path + inode2.name)));
+          return [path + inode2.name].concat(
+            Object.values(inode2.children).map(find_r(path + inode2.name))
+          );
         };
         let fileFilter = false;
         let dirFilter = false;
@@ -384,7 +402,11 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
           return "directory not found\n";
         }
         const base = fileFilter ? [] : ["."];
-        return base.concat(find_r("")(inode).flat(Infinity).filter((file) => !fileFilter && !dirFilter || fileFilter && !file.endsWith("/") || dirFilter && file.endsWith("/"))).join("\n") + "\n";
+        return base.concat(
+          find_r("")(inode).flat(Infinity).filter(
+            (file) => !fileFilter && !dirFilter || fileFilter && !file.endsWith("/") || dirFilter && file.endsWith("/")
+          )
+        ).join("\n") + "\n";
       };
       ls = async (dir) => {
         let inode = this.fs.findFileNode(this.shell.cwd_p, dir);
@@ -393,13 +415,12 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
           return "directory not found\n";
         }
         const base = ["."];
-        if (inode.parent)
-          base.push("..");
+        if (inode.parent) base.push("..");
         return base.concat(Object.keys(inode.children)).join("\n") + "\n";
       };
       curl = async (url) => {
         const resp = await window.fetch(url);
-        return await resp.text();
+        return await resp.text().replaceAll("<", "&lt;");
       };
       trueProgram = () => {
         this.shell.returnCode = 0;
@@ -457,14 +478,19 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
       };
       cat = async (...files) => {
         const printFile = async (file) => {
-          if (this.shell.returnCode)
-            return;
-          return await this.fs.readFileAsync(this.shell.cwd_p, file);
+          if (this.shell.returnCode) return;
+          return (await this.fs.readFileAsync(this.shell.cwd_p, file)).replaceAll(
+            "<",
+            "&lt;"
+          );
         };
         if (this.shell.stdin) {
           return this.shell.stdin;
         } else {
-          return (await asyncMap(files.map((fileList) => fileList.split("\n")).flat().filter((a) => a), printFile)).join("\n") + "\n";
+          return (await asyncMap(
+            files.map((fileList) => fileList.split("\n")).flat().filter((a) => a),
+            printFile
+          )).join("\n") + "\n";
         }
       };
       xargs = async (...args) => {
@@ -472,7 +498,9 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
           return;
         }
         const command = args.shift();
-        const expandedArgs = [await asyncMap(args, this.shell.expand)].flat(Infinity);
+        const expandedArgs = [await asyncMap(args, this.shell.expand)].flat(
+          Infinity
+        );
         const allArgs = expandedArgs.concat(this.shell.stdin.split("\n"));
         this.shell.stdin = "";
         return await this.commands[command](...allArgs);
@@ -510,7 +538,22 @@ var require_filesystem = __commonJS({
         this.filesystem = {
           children: {
             "/": {
-              children: {}
+              children: {
+                // 'about/': {
+                // children: {
+                //     'index.html': {
+                //         linkTo: identity,
+                //     }
+                // }
+                // },
+                // 'blog/': {
+                // children: {
+                //     'post-1.html': {
+                //         linkTo: (path) => path.replace('.html', '.md'),
+                //     }
+                // }
+                // }
+              }
             }
           }
         };
@@ -546,8 +589,7 @@ var require_filesystem = __commonJS({
         if (path) {
           try {
             path.split("/").filter((p) => p).forEach((seg) => {
-              if (!seg || seg === ".")
-                return;
+              if (!seg || seg === ".") return;
               if (seg === "..") {
                 inode = inode.parent || inode;
               } else {
@@ -566,8 +608,10 @@ var require_filesystem = __commonJS({
           throw new Error("directory not found\n");
         }
         if (inode.isDirectory) {
-          throw new Error(`${inode.name} is a directory; only editing a file is supported
-`);
+          throw new Error(
+            `${inode.name} is a directory; only editing a file is supported
+`
+          );
         }
         let path = inode.name;
         let t_inode = inode;
@@ -606,12 +650,13 @@ var require_filesystem = __commonJS({
         const urls = xmlDoc.getElementsByTagName("url");
         let pages = [];
         for (let i = 0; i < urls.length; ++i) {
-          pages.push(new URL(urls[i].getElementsByTagName("loc")[0].innerHTML).pathname);
+          pages.push(
+            new URL(urls[i].getElementsByTagName("loc")[0].innerHTML).pathname
+          );
         }
         pages = pages.filter((p) => p !== "/").map((page) => {
           let newPage = page.replace(".html", ".md");
-          if (newPage.endsWith("/"))
-            newPage += "index.md";
+          if (newPage.endsWith("/")) newPage += "index.md";
           return newPage;
         });
         pages.forEach((page) => {
@@ -670,16 +715,19 @@ var require_decode_codepoint = __commonJS({
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     var decode_json_1 = __importDefault(require_decode());
-    var fromCodePoint = String.fromCodePoint || function(codePoint) {
-      var output = "";
-      if (codePoint > 65535) {
-        codePoint -= 65536;
-        output += String.fromCharCode(codePoint >>> 10 & 1023 | 55296);
-        codePoint = 56320 | codePoint & 1023;
+    var fromCodePoint = (
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      String.fromCodePoint || function(codePoint) {
+        var output = "";
+        if (codePoint > 65535) {
+          codePoint -= 65536;
+          output += String.fromCharCode(codePoint >>> 10 & 1023 | 55296);
+          codePoint = 56320 | codePoint & 1023;
+        }
+        output += String.fromCharCode(codePoint);
+        return output;
       }
-      output += String.fromCharCode(codePoint);
-      return output;
-    };
+    );
     function decodeCodePoint(codePoint) {
       if (codePoint >= 55296 && codePoint <= 57343 || codePoint > 1114111) {
         return "\uFFFD";
@@ -805,11 +853,20 @@ var require_encode = __commonJS({
       return new RegExp(multiple.join("|"), "g");
     }
     var reNonASCII = /(?:[\x80-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])/g;
-    var getCodePoint = String.prototype.codePointAt != null ? function(str) {
-      return str.codePointAt(0);
-    } : function(c) {
-      return (c.charCodeAt(0) - 55296) * 1024 + c.charCodeAt(1) - 56320 + 65536;
-    };
+    var getCodePoint = (
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      String.prototype.codePointAt != null ? (
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        function(str) {
+          return str.codePointAt(0);
+        }
+      ) : (
+        // http://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+        function(c) {
+          return (c.charCodeAt(0) - 55296) * 1024 + c.charCodeAt(1) - 56320 + 65536;
+        }
+      )
+    );
     function singleCharReplacer(c) {
       return "&#x" + (c.length > 1 ? getCodePoint(c) : c.charCodeAt(0)).toString(16).toUpperCase() + ";";
     }
@@ -923,16 +980,13 @@ var require_ansi_to_html = __commonJS({
         var descriptor = props[i];
         descriptor.enumerable = descriptor.enumerable || false;
         descriptor.configurable = true;
-        if ("value" in descriptor)
-          descriptor.writable = true;
+        if ("value" in descriptor) descriptor.writable = true;
         Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
     function _createClass(Constructor, protoProps, staticProps) {
-      if (protoProps)
-        _defineProperties(Constructor.prototype, protoProps);
-      if (staticProps)
-        _defineProperties(Constructor, staticProps);
+      if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties(Constructor, staticProps);
       return Constructor;
     }
     function _createForOfIteratorHelper(o) {
@@ -942,8 +996,7 @@ var require_ansi_to_html = __commonJS({
           var F = function F2() {
           };
           return { s: F, n: function n() {
-            if (i >= o.length)
-              return { done: true };
+            if (i >= o.length) return { done: true };
             return { done: false, value: o[i++] };
           }, e: function e(_e) {
             throw _e;
@@ -963,30 +1016,22 @@ var require_ansi_to_html = __commonJS({
         err = _e2;
       }, f: function f() {
         try {
-          if (!normalCompletion && it["return"] != null)
-            it["return"]();
+          if (!normalCompletion && it["return"] != null) it["return"]();
         } finally {
-          if (didErr)
-            throw err;
+          if (didErr) throw err;
         }
       } };
     }
     function _unsupportedIterableToArray(o, minLen) {
-      if (!o)
-        return;
-      if (typeof o === "string")
-        return _arrayLikeToArray(o, minLen);
+      if (!o) return;
+      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
       var n = Object.prototype.toString.call(o).slice(8, -1);
-      if (n === "Object" && o.constructor)
-        n = o.constructor.name;
-      if (n === "Map" || n === "Set")
-        return Array.from(n);
-      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-        return _arrayLikeToArray(o, minLen);
+      if (n === "Object" && o.constructor) n = o.constructor.name;
+      if (n === "Map" || n === "Set") return Array.from(n);
+      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
     }
     function _arrayLikeToArray(arr, len) {
-      if (len == null || len > arr.length)
-        len = arr.length;
+      if (len == null || len > arr.length) len = arr.length;
       for (var i = 0, arr2 = new Array(len); i < len; i++) {
         arr2[i] = arr[i];
       }
@@ -1286,15 +1331,32 @@ var require_ansi_to_html = __commonJS({
         pattern: /^\x1b\[((?:\d{1,3};?)+|)m/,
         sub: ansiMess
       }, {
+        // CSI n J
+        // ED - Erase in Display Clears part of the screen.
+        // If n is 0 (or missing), clear from cursor to end of screen.
+        // If n is 1, clear from cursor to beginning of the screen.
+        // If n is 2, clear entire screen (and moves cursor to upper left on DOS ANSI.SYS).
+        // If n is 3, clear entire screen and delete all lines saved in the scrollback buffer
+        //   (this feature was added for xterm and is supported by other terminal applications).
         pattern: /^\x1b\[\d?J/,
         sub: remove
       }, {
+        // CSI n ; m f
+        // HVP - Horizontal Vertical Position Same as CUP
         pattern: /^\x1b\[\d{0,3};\d{0,3}f/,
         sub: remove
       }, {
+        // catch-all for CSI sequences?
         pattern: /^\x1b\[?[\d;]{0,3}/,
         sub: remove
       }, {
+        /**
+         * extracts real text - not containing:
+         * - `\x1b' - ESC - escape (Ascii 27)
+         * - '\x08' - BS - backspace (Ascii 8)
+         * - `\n` - Newline - linefeed (LF) (ascii 10)
+         * - `\r` - Windows Carriage Return (CR)
+         */
         pattern: /^(([^\x1b\x08\r\n])+)/,
         sub: realText
       }];
@@ -1307,22 +1369,21 @@ var require_ansi_to_html = __commonJS({
       }
       var results1 = [];
       var _text = text, length = _text.length;
-      outer:
-        while (length > 0) {
-          for (var i = 0, o = 0, len = tokens.length; o < len; i = ++o) {
-            var handler = tokens[i];
-            process(handler, i);
-            if (text.length !== length) {
-              length = text.length;
-              continue outer;
-            }
+      outer: while (length > 0) {
+        for (var i = 0, o = 0, len = tokens.length; o < len; i = ++o) {
+          var handler = tokens[i];
+          process(handler, i);
+          if (text.length !== length) {
+            length = text.length;
+            continue outer;
           }
-          if (text.length === length) {
-            break;
-          }
-          results1.push(0);
-          length = text.length;
         }
+        if (text.length === length) {
+          break;
+        }
+        results1.push(0);
+        length = text.length;
+      }
       return results1;
     }
     function updateStickyStack(stickyStack, token, data) {
@@ -1415,8 +1476,7 @@ var require_input = __commonJS({
       spawn_title();
       let closing = false;
       document.querySelector(".buttons .green").addEventListener("click", () => {
-        if (closing)
-          return;
+        if (closing) return;
         document.body.classList.toggle("floating");
         document.body.classList.toggle("fullscreen");
       });
@@ -1488,10 +1548,8 @@ var require_input = __commonJS({
             if (!hasSelection && i === caret) {
               span.classList.add("caret");
             }
-            if (c === " ")
-              span.innerHTML = "&nbsp;";
-            else
-              span.innerText = c;
+            if (c === " ") span.innerHTML = "&nbsp;";
+            else span.innerText = c;
             fake.appendChild(span);
           }
           if (!hasSelection && i + 1 === caret) {
@@ -1507,16 +1565,13 @@ var require_input = __commonJS({
       input.addEventListener("keydown", async function(e) {
         const { key } = e;
         if (key === "ArrowUp") {
-          if (!commandHistory.length || !historyPointer)
-            return;
-          if (historyPointer === -1)
-            historyPointer = commandHistory.length;
+          if (!commandHistory.length || !historyPointer) return;
+          if (historyPointer === -1) historyPointer = commandHistory.length;
           input.value = commandHistory[--historyPointer];
           selectEnd();
         }
         if (key === "ArrowDown") {
-          if (!commandHistory.length || historyPointer === -1)
-            return;
+          if (!commandHistory.length || historyPointer === -1) return;
           if (historyPointer === commandHistory.length - 1) {
             historyPointer = -1;
             input.value = "";
@@ -1527,8 +1582,7 @@ var require_input = __commonJS({
         }
         if (key === "Enter") {
           let total = input.value;
-          if (!total)
-            return;
+          if (!total) return;
           headerWrapper.classList.add("slide-to-top");
           output.classList.add("command-output");
           output.parentElement.classList.remove("hidden");
@@ -1542,12 +1596,18 @@ var require_input = __commonJS({
           historyPointer = -1;
           commandHistory.push(total);
           const result = await shell.executeBash(total);
-          const cmd = createSpan(total, shell.returnCode ? "red" : "cyan");
+          const cmd = createSpan(
+            // style.green.open + total + style.green.close,
+            total,
+            shell.returnCode ? "red" : "cyan"
+          );
           cmd.classList.add("shell-command");
           output.prepend(cmd);
           if (typeof result === "string") {
             const span = document.createElement("span");
-            span.innerHTML = convert.toHtml(result.replace(">", "&gt;").replace("<", "&lt;"));
+            span.innerHTML = convert.toHtml(
+              result.replace(">", "&gt;").replace("<", "&lt;")
+            );
             span.querySelectorAll("u").forEach((u) => {
               var node = u, newNode = document.createElement("a"), parent = node.parentNode, children = node.childNodes;
               newNode.setAttribute("href", u.innerText);
@@ -1606,8 +1666,10 @@ var Shell = class {
         break;
       default:
         this.returnCode = 1;
-        throw new Error(`stop trying to be so fancy, with your ${prefix.type} \u{1F61C}
-`);
+        throw new Error(
+          `stop trying to be so fancy, with your ${prefix.type} \u{1F61C}
+`
+        );
     }
   };
   execCommand = async (command) => {
@@ -1638,7 +1700,9 @@ var Shell = class {
       }
     }
     this.returnCode = 0;
-    const res = await this.commands.commands[cmd](...command.suffix ? await asyncMap(command.suffix, this.expand) : []);
+    const res = await this.commands.commands[cmd](
+      ...command.suffix ? await asyncMap(command.suffix, this.expand) : []
+    );
     this.stdin = "";
     return res;
   };
@@ -1656,7 +1720,10 @@ var Shell = class {
       case "ParameterExpansion":
         return this.resolveParameter(expansion);
       case "CommandExpansion":
-        return (await this.execAST(expansion)).replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "").trim();
+        return (await this.execAST(expansion)).replace(
+          /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+          ""
+        ).trim();
       default:
         throw new Error(`Unknown expansion type ${expansion.type}
 `);
@@ -1669,7 +1736,10 @@ var Shell = class {
     for (let i = 0; i < commands.length; ++i) {
       this.stdin = await this.execCommand(commands[i]);
       if (i + 1 < commands.length) {
-        this.stdin = this.stdin.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
+        this.stdin = this.stdin.replace(
+          /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+          ""
+        );
       }
     }
     const res = this.stdin;
@@ -1749,4 +1819,8 @@ var Shell = class {
     }
   };
 };
-document.addEventListener("DOMContentLoaded", (0, import_input.default)(new Shell()), false);
+document.addEventListener(
+  "DOMContentLoaded",
+  (0, import_input.default)(new Shell()),
+  false
+);

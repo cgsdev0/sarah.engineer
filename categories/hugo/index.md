@@ -1,2 +1,2 @@
-hugo:
+Hugo:
   - New Website

@@ -1,65 +1,10 @@
-<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us>
-<head>
-<link href=https://gmpg.org/xfn/11 rel=profile>
-<meta charset=utf-8>
-<meta name=generator content="Hugo 0.91.2">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<link rel=canonical href=https://sarah.engineer/posts/twitch-chat-bash/>
-<title>Writing a Twitch Chatbot in Bash &#183; Sarah Schulte</title>
-<meta name=description property="og:description" content="A deep-dive into building a simple twitch.tv IRC bot with netcat">
-<script type=text/javascript>window.addEventListener('pageshow',a=>{a.persisted&&(document.querySelector(".sidebar").classList.remove("animated-sidebar-reverse"),document.querySelector(".sidebar").classList.remove("animated-sidebar"))});const animateIn=()=>{if(window.location.hash==="#animate"){const a=new URL(window.location);a.hash="",history.replaceState(null,"",a.href),document.querySelector(".sidebar").classList.add("animated-sidebar"),setTimeout(()=>document.querySelector(".sidebar").classList.remove("animated-sidebar"),3e3)}};document.readyState==="loading"?document.addEventListener("readystatechange",animateIn):animateIn(),window.animationSequence=a=>{setTimeout(()=>{window.location.href=a},1010),document.querySelector(".sidebar").classList.remove("animated-sidebar"),setTimeout(()=>{document.querySelector(".sidebar").classList.add("animated-sidebar-reverse")},1)}</script>
-<link type=text/css rel=stylesheet href=../../css/print.css media=print>
-<link type=text/css rel=stylesheet href=../../css/poole.css>
-<link type=text/css rel=stylesheet href=../../css/syntax.css>
-<link type=text/css rel=stylesheet href=../../css/hyde.css>
-<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
-<link rel=apple-touch-icon-precomposed sizes=144x144 href=../../apple-touch-icon-144-precomposed.png>
-<link rel="shortcut icon" href=../../favicon.ico>
-<link href=../../posts/twitch-chat-bash/index.md rel=alternate type=text/markdown title="Sarah Schulte">
-</head>
-<body style=background-color:#434345 class=theme-base-0d>
-<aside class=sidebar>
-<div class="container sidebar-sticky">
-<div class=sidebar-about>
-<a onclick="animationSequence('/')"><h1><span class="color-name underline">sarah</span><span class="color-dot underline">.</span><span class=invisible-text>&shy;</span><span class=underline>engineer</span></h1></a>
-<p class=lead>
-full-stack software engineer • game designer
-</p>
-</div>
-<nav>
-<ul class=sidebar-nav>
-<li><a href=../../posts/> Posts </a></li><li><a href=../../about/> About </a></li><li><a href=../../contact/> Contact </a></li>
-</ul>
-</nav>
-<p class=copyright>&copy; 2024. All rights reserved. </p>
-</div>
-</aside>
-<div class=main-container>
-<main class="content container">
-<div class=post>
-<h1>Writing a Twitch Chatbot in Bash</h1>
-<time datetime=2023-03-05T20:39:01-0700 class=post-date>Sun, Mar 5, 2023</time>
-<p>One of the rites of passage for a programming Twitch streamer is building your own chat bot. There&rsquo;s a plethora of tools and libraries available to make this task simpler; however, sometimes doing things the hard way is an opportunity to learn.</p>
-<p>In this post, I&rsquo;m going to do a deep dive into the implementation of my twitch chat bot, written in bash.</p>
-<h1 id=getting-started>Getting Started</h1>
-<p>My first step into this project was to consult <a href=https://dev.twitch.tv/docs/irc/>Twitch&rsquo;s docs</a>. I was surprised to learn that Twitch chat uses <strong>IRC</strong> (<strong>I</strong>nternet <strong>R</strong>elay <strong>C</strong>hat) as the underlying protocol. <em>It&rsquo;s an older code, but it checks out.</em> According to the docs, we can connect to the server at <code>irc://irc.chat.twitch.tv:6667</code>.</p>
-<p>IRC is a wonderfully simple protocol; you connect via TCP and communicate with plaintext messages. Because of this, we can connect to the server like so:</p>
-<pre tabindex=0><code>netcat irc.chat.twitch.tv 6667
-</code></pre><p>once <code>netcat</code> connects to the server, we can send a command:</p>
-<pre tabindex=0><code>NICK badcop_
-</code></pre><p>Twitch sends us a lovely reply:</p>
-<blockquote>
-<p>:tmi.twitch.tv NOTICE * :Improperly formatted auth</p>
-</blockquote>
-<p>It&rsquo;s a start!</p>
-<h1 id=authentication>Authentication</h1>
-<p>Twitch expects a certain set of commands in order to verify your identity. OAuth is out of scope for this post, but you can use <a href=https://twitchapps.com/tmi/>apps such as this one</a> to generate an access token.</p>
-<p>Once you have the token, you can run the following commands to sign in:</p>
-<pre tabindex=0><code>CAP REQ :twitch.tv/tags twitch.tv/commands
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><link href=https://gmpg.org/xfn/11 rel=profile><meta charset=utf-8><meta name=generator content="Hugo 0.129.0"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://sarah.engineer/posts/twitch-chat-bash/><title>Writing a Twitch Chatbot in Bash &#183; Sarah Schulte</title>
+<meta name=description property="og:description" content="A deep-dive into building a simple twitch.tv IRC bot with netcat"><script type=text/javascript>window.addEventListener("pageshow",e=>{e.persisted&&(document.querySelector(".sidebar").classList.remove("animated-sidebar-reverse"),document.querySelector(".sidebar").classList.remove("animated-sidebar"))});const animateIn=()=>{if(window.location.hash==="#animate"){const e=new URL(window.location);e.hash="",history.replaceState(null,"",e.href),document.querySelector(".sidebar").classList.add("animated-sidebar"),setTimeout(()=>document.querySelector(".sidebar").classList.remove("animated-sidebar"),3e3)}};document.readyState==="loading"?document.addEventListener("readystatechange",animateIn):animateIn(),window.animationSequence=e=>{setTimeout(()=>{window.location.href=e},1010),document.querySelector(".sidebar").classList.remove("animated-sidebar"),setTimeout(()=>{document.querySelector(".sidebar").classList.add("animated-sidebar-reverse")},1)}</script><link type=text/css rel=stylesheet href=../../css/print.css media=print><link type=text/css rel=stylesheet href=../../css/poole.css><link type=text/css rel=stylesheet href=../../css/syntax.css><link type=text/css rel=stylesheet href=../../css/hyde.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700"><link rel=apple-touch-icon-precomposed sizes=144x144 href=../../apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=../../favicon.ico><link href=../../posts/twitch-chat-bash/index.md rel=alternate type=text/markdown title="Sarah Schulte"></head><body style=background-color:#434345 class=theme-base-0d><aside class=sidebar><div class="container sidebar-sticky"><div class=sidebar-about><a onclick='animationSequence("/")'><h1><span class="color-name underline">sarah</span><span class="color-dot underline">.</span><span class=invisible-text>&shy;</span><span class=underline>engineer</span></h1></a><p class=lead>full-stack software engineer • game designer</p></div><nav><ul class=sidebar-nav><li><a href=../../posts/>Posts</a></li><li><a href=../../links/>Links</a></li><li><a href=../../about/>About</a></li><li><a href=../../contact/>Contact</a></li></ul></nav><p class=copyright>&copy; 2024. All rights reserved.</p></div></aside><div class=main-container><main class="content container"><div class=post><h1>Writing a Twitch Chatbot in Bash</h1><time datetime=2023-03-05T20:39:01-0700 class=post-date>Sun, Mar 5, 2023</time><p>One of the rites of passage for a programming Twitch streamer is building your own chat bot. There&rsquo;s a plethora of tools and libraries available to make this task simpler; however, sometimes doing things the hard way is an opportunity to learn.</p><p>In this post, I&rsquo;m going to do a deep dive into the implementation of my twitch chat bot, written in bash.</p><h1 id=getting-started>Getting Started</h1><p>My first step into this project was to consult <a href=https://dev.twitch.tv/docs/irc/>Twitch&rsquo;s docs</a>. I was surprised to learn that Twitch chat uses <strong>IRC</strong> (<strong>I</strong>nternet <strong>R</strong>elay <strong>C</strong>hat) as the underlying protocol. <em>It&rsquo;s an older code, but it checks out.</em> According to the docs, we can connect to the server at <code>irc://irc.chat.twitch.tv:6667</code>.</p><p>IRC is a wonderfully simple protocol; you connect via TCP and communicate with plaintext messages. Because of this, we can connect to the server like so:</p><pre tabindex=0><code>netcat irc.chat.twitch.tv 6667
+</code></pre><p>once <code>netcat</code> connects to the server, we can send a command:</p><pre tabindex=0><code>NICK badcop_
+</code></pre><p>Twitch sends us a lovely reply:</p><blockquote><p>:tmi.twitch.tv NOTICE * :Improperly formatted auth</p></blockquote><p>It&rsquo;s a start!</p><h1 id=authentication>Authentication</h1><p>Twitch expects a certain set of commands in order to verify your identity. OAuth is out of scope for this post, but you can use <a href=https://twitchapps.com/tmi/>apps such as this one</a> to generate an access token.</p><p>Once you have the token, you can run the following commands to sign in:</p><pre tabindex=0><code>CAP REQ :twitch.tv/tags twitch.tv/commands
 PASS oauth:{YOUR TOKEN HERE}
 NICK {YOUR USERNAME}
-</code></pre><p>If successful, you should see a similar response from Twitch:</p>
-<pre tabindex=0><code>:tmi.twitch.tv CAP * ACK :twitch.tv/tags twitch.tv/commands
+</code></pre><p>If successful, you should see a similar response from Twitch:</p><pre tabindex=0><code>:tmi.twitch.tv CAP * ACK :twitch.tv/tags twitch.tv/commands
 :tmi.twitch.tv 001 badcop_ :Welcome, GLHF!
 :tmi.twitch.tv 002 badcop_ :Your host is tmi.twitch.tv
 :tmi.twitch.tv 003 badcop_ :This server is rather new
@@ -67,136 +12,114 @@ NICK {YOUR USERNAME}
 :tmi.twitch.tv 375 badcop_ :-
 :tmi.twitch.tv 372 badcop_ :You are in a maze of twisty passages, all alike.
 :tmi.twitch.tv 376 badcop_ :&gt;
-</code></pre><h1 id=bash-is-a-scripting-language>Bash is a Scripting Language</h1>
-<p>What we&rsquo;ve done so far is interesting, but not very practical. Now&rsquo;s a good time to start turning what we have into a script. Create a new file called <code>twitch-chat</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>#!/usr/bin/env bash
-</span><span style=color:#75715e></span>
-TWITCH_TOKEN<span style=color:#f92672>=</span>    <span style=color:#75715e># ...</span>
-TWITCH_USERNAME<span style=color:#f92672>=</span> <span style=color:#75715e># ...</span>
-
-<span style=color:#66d9ef>function</span> auth<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-  echo <span style=color:#e6db74>&#34;CAP REQ :twitch.tv/tags twitch.tv/commands&#34;</span>
-  echo <span style=color:#e6db74>&#34;PASS oauth:</span><span style=color:#e6db74>${</span>TWITCH_TOKEN<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
-  echo <span style=color:#e6db74>&#34;NICK </span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
-  echo <span style=color:#e6db74>&#34;JOIN #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
-<span style=color:#f92672>}</span>
-
-auth | netcat irc.chat.twitch.tv <span style=color:#ae81ff>6667</span>
-</code></pre></div><p>Now run the command <code>chmod +x twitch-chat</code> to make the file executable, and execute it with <code>./twitch-chat</code>. It should automatically log in!</p>
-<h2 id=parsing-output>Parsing Output</h2>
-<p>The next step is to write a function that we can pipe the output of netcat to and decide what to do. First, the code:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>
-<span style=color:#75715e># usage: netcat {...} | reqreader</span>
-<span style=color:#66d9ef>function</span> reqreader<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-  <span style=color:#66d9ef>while</span> IFS<span style=color:#f92672>=</span> read -r line; <span style=color:#66d9ef>do</span>
-    <span style=color:#75715e># Respond to Twitch PINGs with PONGs</span>
-    <span style=color:#f92672>[[</span> $line <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;PING&#34;</span>* <span style=color:#f92672>]]</span> <span style=color:#f92672>&amp;&amp;</span> echo <span style=color:#e6db74>&#34;PONG :tmi.twitch.tv&#34;</span>;
-
-    <span style=color:#75715e># All user messages are &#39;PRIVMSG&#39; commands</span>
-    <span style=color:#f92672>[[</span> <span style=color:#e6db74>&#34;</span>$line<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>==</span> *<span style=color:#e6db74>&#34; PRIVMSG &#34;</span>* <span style=color:#f92672>]]</span> <span style=color:#f92672>&amp;&amp;</span> parsecmd <span style=color:#e6db74>&#34;</span>$line<span style=color:#e6db74>&#34;</span>
-  <span style=color:#66d9ef>done</span>;
-<span style=color:#f92672>}</span>
-</code></pre></div><p>This function reads from stdin using the <code>read</code> command, into the variable <code>$line</code>. For each line, we test if the line starts with &ldquo;PING&rdquo;. If it does, we respond with the &ldquo;PONG&rdquo; command.</p>
-<p>We also test if the line contains " PRIVMSG &ldquo;. If it does, we call another function, <code>parsecmd</code>. Let&rsquo;s define that as well:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#66d9ef>function</span> parsecmd<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    msg<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>echo -n <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>            | grep -oP <span style=color:#e6db74>&#34;PRIVMSG.*</span>$<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>            | cut -d<span style=color:#e6db74>&#39;:&#39;</span> -f2- <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>            | tr <span style=color:#e6db74>&#39;[:upper:]&#39;</span> <span style=color:#e6db74>&#39;[:lower:]&#39;</span><span style=color:#66d9ef>)</span>
-
-    name<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>echo -n <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>            | grep -oP <span style=color:#e6db74>&#34;display-name=.*?;&#34;</span> <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>            | cut -d<span style=color:#e6db74>&#39;=&#39;</span> -f2- <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>            | tr -d <span style=color:#e6db74>&#39;;\n&#39;</span><span style=color:#66d9ef>)</span>
-
-    <span style=color:#75715e># Print the message to stderr</span>
-    echo <span style=color:#e6db74>&#34;</span>$name<span style=color:#e6db74>: </span>$msg<span style=color:#e6db74>&#34;</span> 1&gt;&amp;<span style=color:#ae81ff>2</span>
-<span style=color:#f92672>}</span>
-</code></pre></div><p>We extract the message from the line by splitting on &lsquo;:&rsquo; and returning the 2nd field onwards (<code>-f2-</code>). We also extract the username in a similar way. Then we print the message to <code>stderr</code> (we&rsquo;re reserving <code>stdout</code> for the special magic coming next!)</p>
-<h2 id=going-full-circle>Going Full Circle</h2>
-<p>So far, we&rsquo;ve seen a variety of pipelines used in bash. These work by feeding the output of the first command into the input of the second command, and so on. The pipeline goes in order; the data flows from one command to the next, and finally to <code>stdout</code>. However&mldr; what happens if we connect one end of the pipeline to the other?</p>
-<p>This is possible! Enter <code>mkfifo</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkfifo /tmp/twitch_pipe;
-
-<span style=color:#f92672>(</span>auth <span style=color:#f92672>&amp;&amp;</span> cat /tmp/twitch_pipe | reqreader<span style=color:#f92672>)</span> <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    | netcat irc.chat.twitch.tv <span style=color:#ae81ff>6667</span> <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    &gt; /tmp/twitch_pipe;
-</code></pre></div><p><code>mkfifo</code> creates a <em>named pipe</em> that can be written to and read from as though it were a regular file. In the snippet above, we are printing the contents of the pipe using <code>cat</code>, piping it through <code>reqreader</code> and <code>netcat</code>, and then redirecting the <code>stdout</code> of <code>netcat</code> back into the pipe.</p>
-<p>Currently, <code>reqreader</code> only emits <code>PONG</code> commands on <code>stdout</code>. Let&rsquo;s change that by adding this to <code>parsecmd</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#66d9ef>function</span> parsecmd<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-
-  <span style=color:#75715e># ... exisiting code</span>
-
-  <span style=color:#66d9ef>case</span> $msg in
-      <span style=color:#e6db74>&#34;!ping&#34;</span>*<span style=color:#f92672>)</span>
-          reply <span style=color:#e6db74>&#34;pong!&#34;</span>
-          ;;
-  <span style=color:#66d9ef>esac</span>
-<span style=color:#f92672>}</span>
-</code></pre></div><p>We create a case statement and see if the message matches any of our commands. If it matches &ldquo;!ping&rdquo;, we call the function <code>reply</code> with &ldquo;pong!&rdquo;. Let&rsquo;s create that <code>reply</code> function:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#66d9ef>function</span> reply<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    <span style=color:#75715e># Print the message to stderr</span>
-    echo <span style=color:#e6db74>&#34;bot: </span>$@<span style=color:#e6db74>&#34;</span> 1&gt;&amp;<span style=color:#ae81ff>2</span>
-
-    <span style=color:#75715e># Send our response command to stdout</span>
-    echo <span style=color:#e6db74>&#34;PRIVMSG #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74> :</span>$@<span style=color:#e6db74>&#34;</span>
-<span style=color:#f92672>}</span>
-</code></pre></div><p>With that final piece of the puzzle, we should have our first command on the bot!</p>
-<h2 id=the-final-product>The Final Product</h2>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>#!/usr/bin/env bash
-</span><span style=color:#75715e></span>
-cd <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>0%/*<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
-
-TWITCH_USERNAME<span style=color:#f92672>=</span>$1
-
-rm -f /tmp/twitch_pipe;
-mkfifo /tmp/twitch_pipe;
-
-<span style=color:#66d9ef>function</span> reply<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    <span style=color:#75715e># Print the message to stderr</span>
-    echo <span style=color:#e6db74>&#34;bot: </span>$@<span style=color:#e6db74>&#34;</span> 1&gt;&amp;<span style=color:#ae81ff>2</span>
-
-    <span style=color:#75715e># Send our response command to stdout</span>
-    echo <span style=color:#e6db74>&#34;PRIVMSG #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74> :</span>$@<span style=color:#e6db74>&#34;</span>
-<span style=color:#f92672>}</span>
-
-<span style=color:#66d9ef>function</span> parsecmd<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    msg<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>echo -n <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> | grep -oP <span style=color:#e6db74>&#34;PRIVMSG.*</span>$<span style=color:#e6db74>&#34;</span> | cut -d<span style=color:#e6db74>&#39;:&#39;</span> -f2- | tr <span style=color:#e6db74>&#39;[:upper:]&#39;</span> <span style=color:#e6db74>&#39;[:lower:]&#39;</span><span style=color:#66d9ef>)</span>
-    name<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>echo -n <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> | grep -oP <span style=color:#e6db74>&#34;display-name=.*?;&#34;</span> | cut -d<span style=color:#e6db74>&#39;=&#39;</span> -f2- | tr -d <span style=color:#e6db74>&#39;;\n&#39;</span><span style=color:#66d9ef>)</span>
-
-    <span style=color:#75715e># Print the message to stderr</span>
-    echo <span style=color:#e6db74>&#34;</span>$name<span style=color:#e6db74>: </span>$msg<span style=color:#e6db74>&#34;</span> 1&gt;&amp;<span style=color:#ae81ff>2</span>
-
-    <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;</span>$msg<span style=color:#e6db74>&#34;</span> in
-        <span style=color:#e6db74>&#34;!ping&#34;</span>*<span style=color:#f92672>)</span>
-            reply <span style=color:#e6db74>&#34;pong!&#34;</span>
-            ;;
-    <span style=color:#66d9ef>esac</span>
-<span style=color:#f92672>}</span>
-
-<span style=color:#66d9ef>function</span> reqreader<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-  cat /tmp/twitch_pipe | <span style=color:#66d9ef>while</span> IFS<span style=color:#f92672>=</span> read -r line; <span style=color:#66d9ef>do</span>
-    <span style=color:#f92672>[[</span> $line <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;PING&#34;</span>* <span style=color:#f92672>]]</span> <span style=color:#f92672>&amp;&amp;</span> echo <span style=color:#e6db74>&#34;PONG :tmi.twitch.tv&#34;</span>;
-    <span style=color:#f92672>[[</span> <span style=color:#e6db74>&#34;</span>$line<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>==</span> *<span style=color:#e6db74>&#34; PRIVMSG &#34;</span>* <span style=color:#f92672>]]</span> <span style=color:#f92672>&amp;&amp;</span> parsecmd <span style=color:#e6db74>&#34;</span>$line<span style=color:#e6db74>&#34;</span>
-  <span style=color:#66d9ef>done</span>;
-  exit 0;
-<span style=color:#f92672>}</span>
-
-<span style=color:#66d9ef>function</span> auth<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-  echo <span style=color:#e6db74>&#34;CAP REQ :twitch.tv/tags twitch.tv/commands&#34;</span>
-  echo <span style=color:#e6db74>&#34;PASS oauth:</span><span style=color:#e6db74>${</span>TWITCH_ACCESS_TOKEN<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
-  echo <span style=color:#e6db74>&#34;NICK </span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
-  echo <span style=color:#e6db74>&#34;JOIN #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
-<span style=color:#f92672>}</span>
-
-<span style=color:#f92672>(</span>auth; reqreader<span style=color:#f92672>)</span> <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    | netcat <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>      irc.chat.twitch.tv <span style=color:#ae81ff>6667</span> <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    &gt;/tmp/twitch_pipe;
-</code></pre></div><h1 id=conclusion>Conclusion</h1>
-<p>Hopefully you learned something from this deep dive! If you want to see the current iteration of my actual bot, you can <a href=https://github.com/cgsdev0/dotfiles/blob/main/bin/twitch-cmds/twitch-chat>check it out on my GitHub</a>.</p>
-</div>
-</main>
-</div>
-</body>
-</html>
+</code></pre><h1 id=bash-is-a-scripting-language>Bash is a Scripting Language</h1><p>What we&rsquo;ve done so far is interesting, but not very practical. Now&rsquo;s a good time to start turning what we have into a script. Create a new file called <code>twitch-chat</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>TWITCH_TOKEN<span style=color:#f92672>=</span>    <span style=color:#75715e># ...</span>
+</span></span><span style=display:flex><span>TWITCH_USERNAME<span style=color:#f92672>=</span> <span style=color:#75715e># ...</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> auth<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>  echo <span style=color:#e6db74>&#34;CAP REQ :twitch.tv/tags twitch.tv/commands&#34;</span>
+</span></span><span style=display:flex><span>  echo <span style=color:#e6db74>&#34;PASS oauth:</span><span style=color:#e6db74>${</span>TWITCH_TOKEN<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>  echo <span style=color:#e6db74>&#34;NICK </span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>  echo <span style=color:#e6db74>&#34;JOIN #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>auth | netcat irc.chat.twitch.tv <span style=color:#ae81ff>6667</span>
+</span></span></code></pre></div><p>Now run the command <code>chmod +x twitch-chat</code> to make the file executable, and execute it with <code>./twitch-chat</code>. It should automatically log in!</p><h2 id=parsing-output>Parsing Output</h2><p>The next step is to write a function that we can pipe the output of netcat to and decide what to do. First, the code:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># usage: netcat {...} | reqreader</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> reqreader<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span> IFS<span style=color:#f92672>=</span> read -r line; <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Respond to Twitch PINGs with PONGs</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>[[</span> $line <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;PING&#34;</span>* <span style=color:#f92672>]]</span> <span style=color:#f92672>&amp;&amp;</span> echo <span style=color:#e6db74>&#34;PONG :tmi.twitch.tv&#34;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># All user messages are &#39;PRIVMSG&#39; commands</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>[[</span> <span style=color:#e6db74>&#34;</span>$line<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>==</span> *<span style=color:#e6db74>&#34; PRIVMSG &#34;</span>* <span style=color:#f92672>]]</span> <span style=color:#f92672>&amp;&amp;</span> parsecmd <span style=color:#e6db74>&#34;</span>$line<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>done</span>;
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><p>This function reads from stdin using the <code>read</code> command, into the variable <code>$line</code>. For each line, we test if the line starts with &ldquo;PING&rdquo;. If it does, we respond with the &ldquo;PONG&rdquo; command.</p><p>We also test if the line contains " PRIVMSG &ldquo;. If it does, we call another function, <code>parsecmd</code>. Let&rsquo;s define that as well:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#66d9ef>function</span> parsecmd<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    msg<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>echo -n <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>            | grep -oP <span style=color:#e6db74>&#34;PRIVMSG.*</span>$<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>            | cut -d<span style=color:#e6db74>&#39;:&#39;</span> -f2- <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>            | tr <span style=color:#e6db74>&#39;[:upper:]&#39;</span> <span style=color:#e6db74>&#39;[:lower:]&#39;</span><span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    name<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>echo -n <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>            | grep -oP <span style=color:#e6db74>&#34;display-name=.*?;&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>            | cut -d<span style=color:#e6db74>&#39;=&#39;</span> -f2- <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>            | tr -d <span style=color:#e6db74>&#39;;\n&#39;</span><span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Print the message to stderr</span>
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;</span>$name<span style=color:#e6db74>: </span>$msg<span style=color:#e6db74>&#34;</span> 1&gt;&amp;<span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><p>We extract the message from the line by splitting on &lsquo;:&rsquo; and returning the 2nd field onwards (<code>-f2-</code>). We also extract the username in a similar way. Then we print the message to <code>stderr</code> (we&rsquo;re reserving <code>stdout</code> for the special magic coming next!)</p><h2 id=going-full-circle>Going Full Circle</h2><p>So far, we&rsquo;ve seen a variety of pipelines used in bash. These work by feeding the output of the first command into the input of the second command, and so on. The pipeline goes in order; the data flows from one command to the next, and finally to <code>stdout</code>. However&mldr; what happens if we connect one end of the pipeline to the other?</p><p>This is possible! Enter <code>mkfifo</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>mkfifo /tmp/twitch_pipe;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span>auth <span style=color:#f92672>&amp;&amp;</span> cat /tmp/twitch_pipe | reqreader<span style=color:#f92672>)</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    | netcat irc.chat.twitch.tv <span style=color:#ae81ff>6667</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    &gt; /tmp/twitch_pipe;
+</span></span></code></pre></div><p><code>mkfifo</code> creates a <em>named pipe</em> that can be written to and read from as though it were a regular file. In the snippet above, we are printing the contents of the pipe using <code>cat</code>, piping it through <code>reqreader</code> and <code>netcat</code>, and then redirecting the <code>stdout</code> of <code>netcat</code> back into the pipe.</p><p>Currently, <code>reqreader</code> only emits <code>PONG</code> commands on <code>stdout</code>. Let&rsquo;s change that by adding this to <code>parsecmd</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#66d9ef>function</span> parsecmd<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># ... exisiting code</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>case</span> $msg in
+</span></span><span style=display:flex><span>      <span style=color:#e6db74>&#34;!ping&#34;</span>*<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>          reply <span style=color:#e6db74>&#34;pong!&#34;</span>
+</span></span><span style=display:flex><span>          ;;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>esac</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><p>We create a case statement and see if the message matches any of our commands. If it matches &ldquo;!ping&rdquo;, we call the function <code>reply</code> with &ldquo;pong!&rdquo;. Let&rsquo;s create that <code>reply</code> function:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#66d9ef>function</span> reply<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Print the message to stderr</span>
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;bot: </span>$@<span style=color:#e6db74>&#34;</span> 1&gt;&amp;<span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Send our response command to stdout</span>
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;PRIVMSG #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74> :</span>$@<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><p>With that final piece of the puzzle, we should have our first command on the bot!</p><h2 id=the-final-product>The Final Product</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>cd <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>0%/*<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>TWITCH_USERNAME<span style=color:#f92672>=</span>$1
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>rm -f /tmp/twitch_pipe;
+</span></span><span style=display:flex><span>mkfifo /tmp/twitch_pipe;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> reply<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Print the message to stderr</span>
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;bot: </span>$@<span style=color:#e6db74>&#34;</span> 1&gt;&amp;<span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Send our response command to stdout</span>
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;PRIVMSG #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74> :</span>$@<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> parsecmd<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    msg<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>echo -n <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> | grep -oP <span style=color:#e6db74>&#34;PRIVMSG.*</span>$<span style=color:#e6db74>&#34;</span> | cut -d<span style=color:#e6db74>&#39;:&#39;</span> -f2- | tr <span style=color:#e6db74>&#39;[:upper:]&#39;</span> <span style=color:#e6db74>&#39;[:lower:]&#39;</span><span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>    name<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>echo -n <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> | grep -oP <span style=color:#e6db74>&#34;display-name=.*?;&#34;</span> | cut -d<span style=color:#e6db74>&#39;=&#39;</span> -f2- | tr -d <span style=color:#e6db74>&#39;;\n&#39;</span><span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Print the message to stderr</span>
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;</span>$name<span style=color:#e6db74>: </span>$msg<span style=color:#e6db74>&#34;</span> 1&gt;&amp;<span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;</span>$msg<span style=color:#e6db74>&#34;</span> in
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;!ping&#34;</span>*<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>            reply <span style=color:#e6db74>&#34;pong!&#34;</span>
+</span></span><span style=display:flex><span>            ;;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>esac</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> reqreader<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>  cat /tmp/twitch_pipe | <span style=color:#66d9ef>while</span> IFS<span style=color:#f92672>=</span> read -r line; <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>[[</span> $line <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;PING&#34;</span>* <span style=color:#f92672>]]</span> <span style=color:#f92672>&amp;&amp;</span> echo <span style=color:#e6db74>&#34;PONG :tmi.twitch.tv&#34;</span>;
+</span></span><span style=display:flex><span>    <span style=color:#f92672>[[</span> <span style=color:#e6db74>&#34;</span>$line<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>==</span> *<span style=color:#e6db74>&#34; PRIVMSG &#34;</span>* <span style=color:#f92672>]]</span> <span style=color:#f92672>&amp;&amp;</span> parsecmd <span style=color:#e6db74>&#34;</span>$line<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>done</span>;
+</span></span><span style=display:flex><span>  exit 0;
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> auth<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>  echo <span style=color:#e6db74>&#34;CAP REQ :twitch.tv/tags twitch.tv/commands&#34;</span>
+</span></span><span style=display:flex><span>  echo <span style=color:#e6db74>&#34;PASS oauth:</span><span style=color:#e6db74>${</span>TWITCH_ACCESS_TOKEN<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>  echo <span style=color:#e6db74>&#34;NICK </span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>  echo <span style=color:#e6db74>&#34;JOIN #</span><span style=color:#e6db74>${</span>TWITCH_USERNAME<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span>auth; reqreader<span style=color:#f92672>)</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    | netcat <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>      irc.chat.twitch.tv <span style=color:#ae81ff>6667</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    &gt;/tmp/twitch_pipe;
+</span></span></code></pre></div><h1 id=conclusion>Conclusion</h1><p>Hopefully you learned something from this deep dive! If you want to see the current iteration of my actual bot, you can <a href=https://github.com/cgsdev0/dotfiles/blob/main/bin/twitch-cmds/twitch-chat>check it out on my GitHub</a>.</p></div></main></div></body></html>

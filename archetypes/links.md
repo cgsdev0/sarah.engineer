@@ -1,5 +1,7 @@
 ---
 title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
-href: ""
+params:
+    href: ""
+    section: ""
 ---

@@ -6,7 +6,12 @@
 <ul class="posts">
   {{ range .Pages -}}
   <li>
-    <span><a href="{{ .Params.href }}">{{ .Title }}</a></span>
+    <span><a href="{{ .Params.href }}">{{ .Title }}</a>
+      {{ $source := .Params.source }}
+      {{ if $source }}
+(<a href="{{ .Params.source }}">source</a>)
+      {{ end }}
+    </span>
     <span>{{ .Content }}</span>
   </li>
 {{- end }}

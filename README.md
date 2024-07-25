@@ -1,3 +1,3 @@
-# my website
+# my website sucks
 
 hi

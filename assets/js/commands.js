@@ -260,7 +260,7 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
 
   curl = async (url) => {
     const resp = await window.fetch(url);
-    return await resp.text();
+    return await resp.text().replaceAll("<", "&lt;");
   };
 
   trueProgram = () => {
@@ -331,7 +331,10 @@ ${data.players.list ? data.players.list.join(", ") : "(No one online)"}
   cat = async (...files) => {
     const printFile = async (file) => {
       if (this.shell.returnCode) return;
-      return await this.fs.readFileAsync(this.shell.cwd_p, file);
+      return (await this.fs.readFileAsync(this.shell.cwd_p, file)).replaceAll(
+        "<",
+        "&lt;"
+      );
     };
     if (this.shell.stdin) {
       return this.shell.stdin;

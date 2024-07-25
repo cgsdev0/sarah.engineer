@@ -1,0 +1,15 @@
+{{ define "main" -}}
+<h1>Links</h1>
+<p>This page contains a variety of links to things I either find useful, or that I've created.</p>
+{{ range .Data.Pages.GroupByParam "Section" -}}
+  <h3>{{ .Key }}</h3>
+<ul class="posts">
+  {{ range .Pages -}}
+  <li>
+    <span><a href="{{ .Params.href }}">{{ .Title }}</a></span>
+    <span>{{ .Content }}</span>
+  </li>
+{{- end }}
+</ul>
+{{- end }}
+{{- end }}

@@ -1,6 +1,7 @@
 ---
 title: "printf is weird"
 date: 2024-08-02T13:59:27-07:00
+summary: ...but in a surprisingly useful way
 draft: false
 ---
 

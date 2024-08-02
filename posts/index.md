@@ -1,4 +1,5 @@
 Posts:
+  - printf is weird
   - Writing a Twitch Chatbot in Bash
   - Building a Game in 10 Days: How We Won a Game Jam
   - Simulating Multiplayer 3D Dice

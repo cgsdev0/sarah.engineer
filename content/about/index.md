@@ -8,7 +8,7 @@ menu:
         weight: -50
 ---
 
-hi, i'm sarah! i am a [software engineer](https://github.com/cgsdev0) and [indie game developer](https://badcop.games/)
+hi, i'm sarah! i am a [programmer](https://github.com/cgsdev0) and [indie game developer](https://badcop.games/)
 
 I also occasionally stream on [twitch](https://twitch.tv/badcop_) and write ~~bad~~ code
 

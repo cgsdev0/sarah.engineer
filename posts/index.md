@@ -1,4 +1,5 @@
 Posts:
+  - My Thoughts on AI
   - AI is search (but worse)
   - printf is weird
   - Writing a Twitch Chatbot in Bash

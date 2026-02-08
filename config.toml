@@ -8,7 +8,7 @@ summaryLength = 20
 
 [params]
   themeColor = "theme-base-0d"
-  description = "full-stack software engineer • game designer • twitch streamer"
+  description = "bash influencer • game designer • twitch streamer"
 
 [mediaTypes]
 [mediaTypes."text/markdown"]

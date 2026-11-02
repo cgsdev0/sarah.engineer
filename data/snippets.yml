@@ -9,7 +9,7 @@
 - description: Bash Twitch Chat Bot
   rawUrl: https://raw.githubusercontent.com/cgsdev0/dotfiles/main/bin/twitch-cmds/twitch-chat
   niceUrl: https://github.com/cgsdev0/dotfiles/blob/main/bin/twitch-cmds/twitch-chat
-  
+
 - description: TMUX Config
   rawUrl: https://raw.githubusercontent.com/cgsdev0/dotfiles/master/.tmux.conf
   niceUrl: https://github.com/cgsdev0/dotfiles/blob/master/.tmux.conf
@@ -37,15 +37,39 @@
 - description: SGDQ Site
   niceUrl: https://github.com/aeroberts/gdq-rate/blob/master/src/components/avatar.tsx
   rawUrl: https://raw.githubusercontent.com/aeroberts/gdq-rate/master/src/components/avatar.tsx
-  
+
 - description: Bash Web Framework
   niceUrl: https://github.com/cgsdev0/bash-stack/blob/9a43cd35702d148e1228bfb536c10f9ddf2920e4/core.sh
   rawUrl: https://raw.githubusercontent.com/cgsdev0/bash-stack/9a43cd35702d148e1228bfb536c10f9ddf2920e4/core.sh
-  
+
 - description: This Website
   niceUrl: https://github.com/cgsdev0/sarah.engineer/blob/main/assets/js/commands.js
   rawUrl: https://raw.githubusercontent.com/cgsdev0/sarah.engineer/main/assets/js/commands.js
-  
+
 - description: OBS Hold-To-Show Scene
   niceUrl: https://github.com/cgsdev0/obs-hold-to-show-scene/blob/main/hotkey-hold-scene.lua
   rawUrl: https://raw.githubusercontent.com/cgsdev0/obs-hold-to-show-scene/main/hotkey-hold-scene.lua
+
+- description: Battleship in Bash
+  niceUrl: https://gist.github.com/cgsdev0/3c94e76170b3bb117c583afd8a4458de
+  rawUrl: https://gist.githubusercontent.com/cgsdev0/3c94e76170b3bb117c583afd8a4458de/raw/7d34ea7db4e6099caf802c7603dc67d652e309d6/battleship.sh
+
+- description: Chess in Bash
+  niceUrl: https://github.com/cgsdev0/bash-chess/blob/main/chess.sh
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/bash-chess/refs/heads/main/chess.sh
+
+- description: Tetris in Bash
+  niceUrl: https://github.com/cgsdev0/betris/blob/main/betris
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/betris/refs/heads/main/betris
+
+- description: Termsand
+  niceUrl: https://github.com/cgsdev0/termsand/blob/main/src/main.rs
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/termsand/refs/heads/main/src/main.rs
+
+- description: Bash IRC Server
+  niceUrl: https://github.com/cgsdev0/bash-irc/blob/main/server
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/bash-irc/refs/heads/main/server
+
+- description: Pong.c
+  niceUrl: https://github.com/cgsdev0/pong/blob/master/pong.c
+  rawUrl: https://raw.githubusercontent.com/cgsdev0/pong/refs/heads/master/pong.c

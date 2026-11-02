@@ -1450,6 +1450,7 @@ var require_input = __commonJS({
     var convert = new import_ansi_to_html.default();
     var SHELL_INTERACTIVITY_DELAY = 3e3;
     module.exports = (shell) => async () => {
+      let startCmd = new URLSearchParams(window.location.search).get("cmd");
       const commandHistory = [];
       let historyPointer = -1;
       const headerWrapper = document.querySelector("#header-wrapper");
@@ -1473,7 +1474,7 @@ var require_input = __commonJS({
           }
         }
       };
-      spawn_title();
+      if (!startCmd) spawn_title();
       let closing = false;
       document.querySelector(".buttons .green").addEventListener("click", () => {
         if (closing) return;
@@ -1562,6 +1563,49 @@ var require_input = __commonJS({
       }
       input.addEventListener("blur", (e) => e.target.focus());
       input.addEventListener("input", (e) => update(e.target));
+      const submit = async (alt) => {
+        let total = alt || input.value;
+        if (!total) return;
+        headerWrapper.classList.add("slide-to-top");
+        output.classList.add("command-output");
+        output.parentElement.classList.remove("hidden");
+        document.querySelector("#hint-text").classList.add("hidden-no-animate");
+        input.value = "";
+        update(input);
+        if (total === "clear") {
+          output.innerText = "";
+          return;
+        }
+        historyPointer = -1;
+        commandHistory.push(total);
+        const result = await shell.executeBash(total);
+        const cmd = createSpan(
+          // style.green.open + total + style.green.close,
+          total,
+          shell.returnCode ? "red" : "cyan"
+        );
+        cmd.classList.add("shell-command");
+        output.prepend(cmd);
+        if (typeof result === "string") {
+          const span = document.createElement("span");
+          span.innerHTML = convert.toHtml(
+            result.replace(">", "&gt;").replace("<", "&lt;")
+          );
+          span.querySelectorAll("u").forEach((u) => {
+            var node = u, newNode = document.createElement("a"), parent = node.parentNode, children = node.childNodes;
+            newNode.setAttribute("href", u.innerText);
+            newNode.setAttribute("target", "_blank");
+            Array.prototype.forEach.call(children, function(elem) {
+              newNode.appendChild(elem);
+            });
+            parent.replaceChild(newNode, node);
+          });
+          output.prepend(span);
+        } else {
+          output.prepend(createSpan(result.error, "red"));
+        }
+        document.querySelector("#command-output").scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      };
       input.addEventListener("keydown", async function(e) {
         const { key } = e;
         if (key === "ArrowUp") {
@@ -1581,50 +1625,11 @@ var require_input = __commonJS({
           selectEnd();
         }
         if (key === "Enter") {
-          let total = input.value;
-          if (!total) return;
-          headerWrapper.classList.add("slide-to-top");
-          output.classList.add("command-output");
-          output.parentElement.classList.remove("hidden");
-          document.querySelector("#hint-text").classList.add("hidden-no-animate");
-          input.value = "";
-          update(input);
-          if (total === "clear") {
-            output.innerText = "";
-            return;
-          }
-          historyPointer = -1;
-          commandHistory.push(total);
-          const result = await shell.executeBash(total);
-          const cmd = createSpan(
-            // style.green.open + total + style.green.close,
-            total,
-            shell.returnCode ? "red" : "cyan"
-          );
-          cmd.classList.add("shell-command");
-          output.prepend(cmd);
-          if (typeof result === "string") {
-            const span = document.createElement("span");
-            span.innerHTML = convert.toHtml(
-              result.replace(">", "&gt;").replace("<", "&lt;")
-            );
-            span.querySelectorAll("u").forEach((u) => {
-              var node = u, newNode = document.createElement("a"), parent = node.parentNode, children = node.childNodes;
-              newNode.setAttribute("href", u.innerText);
-              newNode.setAttribute("target", "_blank");
-              Array.prototype.forEach.call(children, function(elem) {
-                newNode.appendChild(elem);
-              });
-              parent.replaceChild(newNode, node);
-            });
-            output.prepend(span);
-          } else {
-            output.prepend(createSpan(result.error, "red"));
-          }
-          document.querySelector("#command-output").scrollTo({ top: 0, left: 0, behavior: "smooth" });
+          submit();
         }
         update(e.target);
       });
+      if (startCmd) submit(startCmd);
     };
   }
 });

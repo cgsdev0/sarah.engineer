@@ -11,6 +11,10 @@
       {{ if $source }}
 (<a href="{{ .Params.source }}">source</a>)
       {{ end }}
+      {{ $slides := .Params.slides }}
+      {{ if $slides }}
+(<a href="{{ .Params.slides }}">slides</a>)
+      {{ end }}
     </span>
     <span>{{ .Content }}</span>
   </li>

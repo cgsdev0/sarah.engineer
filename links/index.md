@@ -16,6 +16,10 @@ Random Tools:
 
   - [Minecraft Skin Exploder](https://cgs.dev/minecraft_skin_exploder.html)
 
+Talks:
+
+  - [Using Godot for mixed-reality livestreaming [Godotcon 2025]](https://www.youtube.com/watch?v=Rg8K0szRGoc)
+
 Websites using Bash Stack:
 
   - [Meme Maker Pro 2003 EE](https://mememakerpro2003-enterpriseedition.bashsta.cc/)

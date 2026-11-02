@@ -9,6 +9,7 @@ const convert = new Convert();
 const SHELL_INTERACTIVITY_DELAY = 3000;
 
 module.exports = (shell) => async () => {
+  let startCmd = new URLSearchParams(window.location.search).get("cmd");
   const commandHistory = [];
   let historyPointer = -1;
 
@@ -37,7 +38,7 @@ module.exports = (shell) => async () => {
     }
   };
 
-  spawn_title();
+  if (!startCmd) spawn_title();
 
   // Button handlers
   let closing = false;
@@ -149,6 +150,62 @@ module.exports = (shell) => async () => {
 
   input.addEventListener("blur", (e) => e.target.focus());
   input.addEventListener("input", (e) => update(e.target));
+
+  const submit = async (alt) => {
+    let total = alt || input.value;
+    if (!total) return;
+
+    headerWrapper.classList.add("slide-to-top");
+
+    output.classList.add("command-output"); // reveal the shell
+    output.parentElement.classList.remove("hidden");
+    document.querySelector("#hint-text").classList.add("hidden-no-animate");
+    input.value = "";
+    update(input);
+
+    if (total === "clear") {
+      output.innerText = "";
+      return;
+    }
+
+    // Execute the command
+    historyPointer = -1;
+    commandHistory.push(total);
+    const result = await shell.executeBash(total);
+    const cmd = createSpan(
+      // style.green.open + total + style.green.close,
+      total,
+      shell.returnCode ? "red" : "cyan"
+    );
+    cmd.classList.add("shell-command");
+    output.prepend(cmd);
+    if (typeof result === "string") {
+      const span = document.createElement("span");
+      span.innerHTML = convert.toHtml(
+        result.replace(">", "&gt;").replace("<", "&lt;")
+      );
+      // Parse links
+      span.querySelectorAll("u").forEach((u) => {
+        var node = u,
+          newNode = document.createElement("a"),
+          parent = node.parentNode,
+          children = node.childNodes;
+
+        newNode.setAttribute("href", u.innerText);
+        newNode.setAttribute("target", "_blank");
+        Array.prototype.forEach.call(children, function (elem) {
+          newNode.appendChild(elem);
+        });
+        parent.replaceChild(newNode, node);
+      });
+      output.prepend(span);
+    } else {
+      output.prepend(createSpan(result.error, "red"));
+    }
+    document
+      .querySelector("#command-output")
+      .scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  };
   input.addEventListener("keydown", async function (e) {
     const { key } = e;
     // Shell history controls
@@ -171,61 +228,10 @@ module.exports = (shell) => async () => {
 
     // Input submit
     if (key === "Enter") {
-      let total = input.value;
-      if (!total) return;
-      
-      headerWrapper.classList.add("slide-to-top");
-
-      output.classList.add("command-output"); // reveal the shell
-      output.parentElement.classList.remove("hidden");
-      document.querySelector("#hint-text").classList.add("hidden-no-animate");
-      input.value = "";
-      update(input);
-
-      if (total === "clear") {
-        output.innerText = "";
-        return;
-      }
-
-      // Execute the command
-      historyPointer = -1;
-      commandHistory.push(total);
-      const result = await shell.executeBash(total);
-      const cmd = createSpan(
-        // style.green.open + total + style.green.close,
-        total,
-        shell.returnCode ? "red" : "cyan"
-      );
-      cmd.classList.add("shell-command");
-      output.prepend(cmd);
-      if (typeof result === "string") {
-        const span = document.createElement("span");
-        span.innerHTML = convert.toHtml(
-          result.replace(">", "&gt;").replace("<", "&lt;")
-        );
-        // Parse links
-        span.querySelectorAll("u").forEach((u) => {
-          var node = u,
-            newNode = document.createElement("a"),
-            parent = node.parentNode,
-            children = node.childNodes;
-
-          newNode.setAttribute("href", u.innerText);
-          newNode.setAttribute("target", "_blank");
-          Array.prototype.forEach.call(children, function (elem) {
-            newNode.appendChild(elem);
-          });
-          parent.replaceChild(newNode, node);
-        });
-        output.prepend(span);
-      } else {
-        output.prepend(createSpan(result.error, "red"));
-      }
-      document
-        .querySelector("#command-output")
-        .scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    }    
+      submit();
+    }
 
     update(e.target);
   });
+  if (startCmd) submit(startCmd);
 };

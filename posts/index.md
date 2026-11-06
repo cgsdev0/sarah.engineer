@@ -1,4 +1,5 @@
 Posts:
+  - Is AI a Tool?
   - Why I Don't Use AI for Games
   - My Thoughts on AI
   - AI is search (but worse)
